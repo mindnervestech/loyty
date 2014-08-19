@@ -1,0 +1,252 @@
+@(_searchContext:com.mnt.core.helper.SearchContext)
+
+<div class="wizard" id='@(_searchContext.entityName + "_edit-wizard")'>
+ 
+		    <h1></h1>
+		    @for(wizard<-_searchContext.getWizards){
+		    	<div class="wizard-card" data-cardname='@(wizard.name + "_edit")' data-validate='@("form_"+_searchContext.entityName + "_edit_wizard")'>
+		        	<h3>@wizard.name</h3>
+		        		@for(fieldType<-wizard.card.iterator){
+		        			@fieldType.ctype.name match{
+								case "INPUT" => {
+									@if(!fieldType.hidden){
+										@if(!fieldType.autocomplete){
+											@if(fieldType.order % 2 == 1){
+		        								<div class="control-group" style="float:left;width:40%;margin: 0px; height:75px;">
+		        							}else{
+		        								<div class="control-group" style=" height:75px;" >
+		        							}
+											  <label class="control-label" for="textinput">@fieldType.label
+											  @if(fieldType.validation !=null && fieldType.validation.required){
+												  	<sup style="color: red"> *</sup>
+											  }
+											  </label>
+											  <div class="controls">
+											  	 @if(fieldType.validation !=null && fieldType.validation.required){
+											    	<input id='@(_searchContext.entityName + "edit" + fieldType.name)' value='@(fieldType.value.o)' @fieldType.htmlAttrib name="@fieldType.name" placeholder="@fieldType.name" class="input-large" type="text" required rel="popover">
+											      }else{
+											      	<input id='@(_searchContext.entityName + "edit" + fieldType.name)' value='@(fieldType.value.o)' @fieldType.htmlAttrib name="@fieldType.name"  class="input-large" type="text">
+											      }
+											  </div>
+											</div>
+										}else{
+											@if(fieldType.order % 2 == 1){
+		        								<div class="control-group" style="float:left;width:40%;margin: 0px; height:75px;">
+		        							}else{
+		        								<div class="control-group" style=" height:75px;" >
+		        							}
+											  <label class="control-label" for="textinput">@fieldType.label
+											  @if(fieldType.validation !=null && fieldType.validation.required){
+													  	<sup style="color: red"> *</sup>
+											   }
+											  </label>
+											  <div class="fuelux controls">
+											  @if(fieldType.value.o != null){
+												  @if(fieldType.validation !=null && fieldType.validation.required){
+												    <input id='@(_searchContext.entityName + "edit" + fieldType.name)' @fieldType.htmlAttrib value='@(fieldType.value.o.toString)' required placeholder="@fieldType.name"   type="text">
+												   }else{
+												      <input id='@(_searchContext.entityName + "edit" + fieldType.name)' @fieldType.htmlAttrib value='@(fieldType.value.o.toString)'  placeholder="@fieldType.name"   type="text">
+												   } 
+												    <input id='@(_searchContext.entityName +  "edit" + fieldType.name +"_hidden")' value='@(fieldType.value.id)' name='@(fieldType.name + "_id")'  type="hidden">
+											  }else{
+											  		<input id='@(_searchContext.entityName + "edit" + fieldType.name)'   placeholder="@fieldType.name" autocomplete="off"  type="text">
+											    	<input id='@(_searchContext.entityName + "edit" + fieldType.name +"_hidden")'  name='@(fieldType.name + "_id")'  type="hidden">
+											  }
+					  						  
+					  					      </div>
+											</div>
+											<script>
+											@(_searchContext.entityName + fieldType.name + "map")={};
+											$('#@(_searchContext.entityName + "edit" + fieldType.name)').select2({
+												placeholder: "Search for a movie",
+												minimumInputLength: 1,
+											    ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+											        url: "@(_searchContext.autoCompleteUrls.get(fieldType.label))",
+											        dataType: 'json',
+											        data: function (term, page) {
+											            return {
+											                query: term, // search term
+											                param: function(){
+											                	console.log('@(_searchContext.entityName + "edit" + fieldType.name)_customParameterBuilder');
+                                                                if(typeof(@(_searchContext.entityName + "edit" + fieldType.name)_customParameterBuilder) == "function"){
+                                                                     return @(_searchContext.entityName + "edit" + fieldType.name)_customParameterBuilder();
+                                                                }else{
+                                                                     return "";
+                                                                }
+                                                            },
+											                page_limit: 10
+											            };
+											        },
+											        results: function (data, page) { // parse the results into the format expected by Select2.
+											            // since we are using custom formatting functions we do not need to alter remote JSON data
+											            //console.log(data);
+											            return {results: data.results};
+											        }
+											    },
+											    formatResult: function(exercise) { 
+											    	$('#'+'@(_searchContext.entityName +  "edit" + fieldType.name +"_hidden")').val(exercise.id);
+											        return "<div class='select2-user-result'>" + exercise._1 + "</div>"; 
+											    },
+											    formatSelection: function(exercise) { 
+											        return exercise._1; 
+											    },
+											    initSelection: function(element, callback) {
+											    	var _id=$(element).val();
+											    	var data = {_1:_id,id:$('#@(_searchContext.entityName +  "edit" + fieldType.name +"_hidden")').val()};
+											    	callback(data);
+											    }
+											});
+											</script>
+										}
+									}else{
+											<input id='@(_searchContext.entityName + "edit" + fieldType.name)' name='@(fieldType.name)'  value='@(fieldType.value.o)' type="hidden">
+									}
+								}
+								case "SELECT_OPTION" => {
+									@if(fieldType.order % 2 == 1){
+		        								<div class="control-group" style="float:left;width:40%;margin: 0px; height:75px;">
+		        					}else{
+		        								<div class="control-group" style=" height:75px;" >
+		        					}
+									  <label class="control-label" for="selectbasic">@fieldType.label</label>
+									  <div class="controls">
+									    <select id='@(_searchContext.entityName + "edit" + fieldType.name)' name="@fieldType.name" class="input-large">
+										    @for(option<-fieldType.options){
+										    	@if(option.name.equals(fieldType.value.display)){
+										    		<option value='@option' selected >@option.getName</option>
+										    	}else{
+										    	<option value='@option' >@option.getName</option>
+										    	}
+										    }	
+									      
+									    </select>
+									  </div>
+									</div>
+								}
+								case "SEARCH" => {
+									<div class="control-group">
+		        					
+		        					  <label class="control-label" for="selectbasic">@fieldType.label</label>
+									  <div class="controls">
+									    @searchContext(_searchContext.getSearchContexts.get(fieldType.name),(_searchContext.entityName),"edit") 	
+									   </div>
+									   <input class="OneToMany" entity='@(_searchContext.entityName)' id='@(_searchContext.entityName + "edit" + fieldType.name +"_hidden")' name='@(fieldType.name + "_ids")'  type="hidden">
+									<script type="text/javascript">
+									@if(fieldType.value.li!=null){
+										@for(mo<-fieldType.value.li){
+											$('#@(_searchContext.getSearchContexts.get(fieldType.name).entityName  + "edit" +  "_Pillbox ul")').append("<li data-id='@mo.id' class='status-info'>@mo.o</li>");
+										}    
+									}
+									</script>
+									</div>
+									
+								}
+								case "DATE" => {
+									@if(fieldType.order % 2 == 1){
+		        						<div class="control-group" style="float:left;width:40%;margin: 0px; height:75px;">
+		        					}else{
+		        						<div class="control-group" style=" height:75px;" >
+		        					}
+									  	<label class="control-label" for="selectbasic">@fieldType.label
+									@if(fieldType.validation !=null && fieldType.validation.required){
+								    	<sup style="color: red"> *</sup>
+									}
+									<i class="icon-calendar"></i>
+									</label>
+									<div data-provide="datepicker" class="input-append date datepicker" data-date="" data-date-format="dd-mm-yyyy">
+    									@if(fieldType.value.dt!=null){
+    										<input size="16" type="text" value='@(fieldType.value.dt.format("dd-MM-yyyy"))' name='@(fieldType.name)' readonly class="add-on">
+    									}else{
+    										<input size="16" type="text" value='' name='@(fieldType.name)' readonly class="add-on">
+    									}
+									</div>
+								</div>
+								}
+								case "BLOB" => {
+									@if(fieldType.order % 2 == 1){
+		        								<div class="control-group" style="float:left;width:40%;margin: 0px; height:75px;">
+		        							}else{
+		        								<div class="control-group" style="height:75px;">
+		        							}
+									  	<label class="control-label" for="selectbasic">@fieldType.label
+									  	 @if(fieldType.validation !=null && fieldType.validation.required){
+												  	<sup style="color: red"> *</sup>
+										 }
+										</label>
+									  
+										<input  type="file" id="@(_searchContext.entityName + fieldType.name)"  name="@(fieldType.name)">
+	    								<script>
+	    									$('#@("form"+ _searchContext.entityName + "_edit-wizard")').attr("enctype","multipart/form-data");
+	    								
+	    								</script>	
+										
+									</div>
+								}
+							}
+		        		}
+		    	</div>
+		    }
+		     <div class="wizard-success">
+        			@(_searchContext.entityName + " Edited Successfully")
+    		</div>
+ 
+		    <div class="wizard-error">
+		        submission had an error
+		    </div>
+ 
+		    <div class="wizard-failure">
+		        submission failed
+		    </div>
+		</div>
+
+<script>
+function @("form_"+_searchContext.entityName + "_edit_wizard")(){
+	$('#@("form_"+_searchContext.entityName + "_edit-wizard")').validate({
+		//errorElement:"", 
+		rules: {
+		    	 @for(wizard<-_searchContext.getWizards){
+		    		 @for(fieldType<-wizard.card.iterator){
+		    			 @if(fieldType.validation !=null ){
+			    			 	 @(fieldType.name) :{
+				    				 minlength: @fieldType.validation.minlength,
+				    				 required : @fieldType.validation.required,
+				    				 email: @fieldType.validation.email,
+				    				 maxlength: @fieldType.validation.maxlength,
+				    				 date: @fieldType.validation.date,
+				    				 digits: @fieldType.validation.digits,
+									 number: @fieldType.validation.number			    				 
+				    			 },
+			    			 
+			    			 
+		    		 	}
+		    		 }
+		    	 }
+	    	 },
+	    	 messages: {
+	    	 	@for(wizard<-_searchContext.getWizards){
+	    		 @for(fieldType<-wizard.card.iterator){
+	    			 @if(fieldType.validation !=null ){
+	    				 @if(!fieldType.validation.messages.equals("")){
+		    				 @fieldType.name :  '@fieldType.validation.messages',
+	    				 }
+		    		 }
+	    		  }
+	    		 }
+	    	 },
+	    			 
+	        
+	    
+	    highlight: function (element) {
+	        $(element).closest('.control-group').removeClass('success').addClass('error');
+	    },
+	    success: function(element) {
+	        element
+	        .addClass('valid')
+	        .closest('.control-group').removeClass('error').addClass('success');
+	      }
+	});
+	return $('#@("form_"+_searchContext.entityName + "_edit-wizard")').valid();
+}
+
+
+</script>

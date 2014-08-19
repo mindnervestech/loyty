@@ -1,0 +1,6 @@
+@(_menuContext: com.mnt.core.menu.MenuBar,user : models.merchant.Merchant,_treeNode: com.mnt.core.ui.component.TreeNode)
+@main("") {
+    @menuContext(_menuContext,user)
+    <h4><b style=" width: 1051px; margin-left: 20px;"><i>Catalog View</i></b></h4>
+    @tree(_treeNode)
+}

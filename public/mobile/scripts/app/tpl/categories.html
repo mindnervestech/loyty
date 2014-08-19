@@ -1,0 +1,11 @@
+
+	<div id="categories" page-role="page"  style="margin-top: 2%">
+		<%	_.each(rc,function(item, key, list) { %>
+				<a transition="fade"  class="tile bg-color-<%= item.attributes.color %>">
+		 			<div class="tile-content">
+					<h4><%= item.attributes.name %></h4>
+		 			</div>    
+				</a>		
+		<%	}); %>
+		
+	</div>	

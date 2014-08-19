@@ -1,0 +1,6 @@
+@(context:com.mnt.core.helper.SearchContext,_menuContext: com.mnt.core.menu.MenuBar,user : models.merchant.Merchant)
+@main("Loyalty Management") {
+    @menuContext(_menuContext,user)
+    <h4><b><i style="margin-left: 1%">My Actions</i></b></h4>
+    @searchContext(context,null,"add")
+}

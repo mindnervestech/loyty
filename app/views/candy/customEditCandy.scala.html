@@ -1,0 +1,553 @@
+@(candy : models.candy.Candy)
+<style>
+.prev_container{
+	overflow: auto;
+	width: 200px;
+	height: 115px;
+}
+.visitDiv{
+	float: left;
+	width: 100%;
+	margin-top: 1%;
+}
+.visitImage{
+	margin-bottom: 0%;
+}
+.inputTextBox {
+	height: 11px !important;
+}
+
+.add-on{
+	cursor: pointer !important;;
+}	
+.controlInput{
+	margin: 8% 11%;
+}
+.file{
+	width: 85% !important;
+}
+
+#upload-file-container {
+   background: url("@routes.Assets.at("images/image_button.png")") no-repeat;
+    width: 20%;
+   margin: -13% 87%;
+   float: left;
+}
+
+#upload-file-container input {
+   filter: alpha(opacity=0);
+   opacity: 0;
+}
+	
+.candyImage{
+	
+	margin-top: 20%;
+}
+.prev_thumb{
+	height: 100px;
+}
+
+#dialog{
+	height: 450px !important;
+}
+.control-group {
+	margin-bottom: 0px !important;
+}
+.candyValidation{
+white-space: nowrap;
+z-index: 1000;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+background-color: #AA0707;
+color: #FFF;
+font-size: 10px;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+padding: 0px 5px;
+position: absolute;
+margin-left: 0.2%;
+}
+.candyValidation:before{
+border-top: 3px solid rgba(0, 0, 0, 0);
+border-bottom: 3px solid rgba(0, 0, 0, 0);
+border-right: 3px solid #AA0707;
+content: "";
+position: absolute;
+left: -3px;
+top: 6px;
+display: block;
+}
+
+</style>
+
+<title>Candies Creation</title>
+</head>
+<body>
+
+<div id="dialog" title="Crop Image" style="display: none;">
+
+</div>
+
+	<div id="loading1" style='position:fixed;
+    						top:50%;
+    						left:50%;
+    						z-index:2000;
+    						display: none;'>
+    	<img alt="loading1" src='@routes.Assets.at("images/loading.gif")'>
+    </div>
+    
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4>Edit Candy Program</h4>
+	</div>
+
+	<div class="modal-body">
+	<form id="candyForm" enctype="multipart/form-data" method="POST" action="/editCandy">	
+		<fieldset id="registerHere">
+		<!-- Send ID of candy as hidden for update candy -->
+	
+		<input type="hidden" name="id" value="@candy.id">
+		<input type="hidden" id="loyaltyType"  value="@candy.loyaltyType">
+		
+		<div style="float: left;margin-right: 10px;">
+		<div class="control-group" style="float: left;margin-right: 30px;">
+			<div class="controls">
+				<input type="text" style="width: 70%;" class="inputTextBox" id="candy_edit_code" readonly="readonly" placeholder="Code" name="code" value="@candy.code">
+			</div>
+		</div>
+		
+		<div class="control-group" style="float: left;margin-right: 100px;">
+			<div class="controls">
+				<input type="text" style="width: 90%;" id="candy_edit_description" class="inputTextBox" placeholder="Description" name="name" value="@candy.name" required="required">
+			</div>
+		</div>
+			<div class="control-group" style="float: left;margin-right: 30px;">
+				<div class="controls" id="candy_min_amt_visit" style="display: none;">
+					<input type="text" id="candy_edit_min_amt_visit" style="width: 70%;" class="inputTextBox" placeholder="Amount" required="required" class="large" name="visits.minimum_amount_for_visit" value="@candy.visits.minimum_amount_for_visit" rel="popover" data-content="Minimum Amount to Qualify a Visit" >
+				</div>
+				<div class="controls" id="candy_min_amt_point" style="display: none;">
+					<input type="text" style="width: 70%;" class="inputTextBox" id="candy_edit_min_amt_point" placeholder="Amount" value="@candy.points.minimum_amount_for_point" required="required" name="points.minimum_amount_for_point" rel="popover" data-content="Minimum Amount to Qualify a Point">
+				</div>
+			</div>
+		
+		</div>
+		
+		<div class="control-group">
+			<div class="controls">
+				<div id="candy_valid_date" data-provide="datepicker" class="input-append date datepicker" data-date="" data-date-format="dd-mm-yyyy">
+					<span class="add-on" style="height: 11px;"><i class="icon-calendar"></i></span>
+	    			<input class="add-on" size="16" style="height: 11px; width: 50%;" type="text" readonly="readonly" name="valid_till" value="@candy.valid_till.format("dd-MM-yyyy")" required="required" placeholder="Valid Till">
+				</div>
+			</div>
+		</div>
+			<script>
+			$('#candy_valid_date').datepicker({
+				format: 'dd-mm-yyyy',
+				calendarWeeks: false
+				
+			}).on('changeDate', function(ev){
+				$("#candyForm").valid();
+			});
+		</script>
+		@if(candy.visits.visit_details.size > 0) {
+		<div id="visitSection">
+			
+		<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			<div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_visit_description_0" placeholder="Description" required="required" class="input-medium" name="visits.visit_details[0].description" value="@candy.visits.visit_details(0).description">
+				</div>	
+				<div class="visitImage">	
+					<div class="visitDiv" >	
+						<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_visit_0" placeholder="Visit No" required="required" class="input-small" name="visits.visit_details[0].no_of_visit" value="@candy.visits.visit_details(0).no_of_visit">
+					</div>
+					<div id="upload-file-container">
+						<input type="file" class="file" id="candy_edit_visit_file_upload_0" name="visit_image[0]" multiple="multiple">
+					</div>				
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_visit_file_upload_0" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.visits.visit_details(0).visit_image');background-repeat: no-repeat;"></div>
+				</div>
+			</div>	
+				<!-- set hidden fields -->
+				<input type="hidden" id="prev_candy_edit_visit_file_upload_0_id" name="image_0_id" value="@candy.visits.visit_details(0).visit_image" />
+					
+				<br/>
+			</div>
+
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			   <div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_visit_description_1" placeholder="Description" name="visits.visit_details[1].description" value="@candy.visits.visit_details(1).description">
+				</div>
+				<div class="visitImage">	
+					<div class="visitDiv" >
+						<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_visit_1" placeholder="Visit No"  class="input-small" name="visits.visit_details[1].no_of_visit" value="@candy.visits.visit_details(1).no_of_visit">
+					</div>
+					<div id="upload-file-container">
+						<input type="file" class="file" id="candy_edit_visit_file_upload_1" name="visit_image[1]">
+					</div>	
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_visit_file_upload_1" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.visits.visit_details(1).visit_image');background-repeat: no-repeat;"></div>
+				</div><br/>
+				</div>
+				<!-- set hidden fields -->
+				
+				<input type="hidden" id="prev_candy_edit_visit_file_upload_1_id" name="image_1_id" value="@candy.visits.visit_details(1).visit_image" />
+			</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			   <div class="controlInput">
+			   	<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_visit_description_2" placeholder="Description" name="visits.visit_details[2].description" value="@candy.visits.visit_details(2).description">
+				</div>
+				<div class="visitImage">	
+					<div class="visitDiv" >
+						<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_visit_2" placeholder="Visit No"  class="input-small" name="visits.visit_details[2].no_of_visit" value="@candy.visits.visit_details(2).no_of_visit">
+					</div>
+					<div id="upload-file-container">
+						<input type="file" class="file" id="candy_edit_visit_file_upload_2" name="visit_image[2]">
+					</div>	
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_visit_file_upload_2" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.visits.visit_details(2).visit_image');background-repeat: no-repeat;"></div>
+				</div>
+				<br/>
+				</div>
+				<!-- set hidden fields -->
+				
+				<input type="hidden" id="prev_candy_edit_visit_file_upload_2_id" name="image_2_id" value="@candy.visits.visit_details(2).visit_image" />
+			</div>
+
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">			
+				 <div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_visit_description_3" placeholder="Description"  class="input-medium" name="visits.visit_details[3].description" value="@candy.visits.visit_details(3).description">
+				</div>	
+				<div class="visitImage">	
+					<div class="visitDiv" >	
+						<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_visit_3" placeholder="Visit No"  class="input-small" name="visits.visit_details[3].no_of_visit" value="@candy.visits.visit_details(3).no_of_visit">
+					</div>	
+					<div id="upload-file-container">
+						<input type="file" class="file" id="candy_edit_visit_file_upload_3" name="visit_image[3]">
+					</div>	
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_visit_file_upload_3" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.visits.visit_details(3).visit_image');background-repeat: no-repeat;"></div><br/>
+				</div>
+				</div>
+				<!-- set hidden fields -->
+				
+				<input type="hidden" id="prev_candy_edit_visit_file_upload_3_id" name="image_3_id" value="@candy.visits.visit_details(3).visit_image"/>
+			</div>			
+		</div>
+		}
+		@if(candy.points.point_details.size > 0) {
+		<div id="pointSection" style="display: none;">
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+				<div class="controlInput">
+					<div class="control-group">
+						<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_point_description_0" placeholder="Description"  class="input-medium" name="points.point_details[0].description" value="@candy.points.point_details(0).description">
+					</div>	
+					<div class="visitImage">	
+						<div class="visitDiv" >
+							<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_point_0" placeholder="No of Point"  class="input-small" name="points.point_details[0].no_of_point" value="@candy.points.point_details(0).no_of_point">
+						</div>
+					<div id="upload-file-container">
+						<input type="file" class="file" id="candy_edit_point_file_upload_0" name="points_image[0]">
+					</div>
+					</div>
+					<div class="candyImage">	
+						<div id="prev_candy_edit_point_file_upload_0" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.points.point_details(0).point_image');background-repeat: no-repeat;"></div>
+					</div>
+				</div>
+				<!-- set hidden fields -->
+				<input type="hidden" id="prev_candy_edit_point_file_upload_0_id" name="p_image_0_id" value="@candy.points.point_details(0).point_image" />
+				<br/>
+			</div>
+			
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+				<div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_point_description_1" placeholder="Description"  class="input-medium" name="points.point_details[1].description" value="@candy.points.point_details(1).description">
+				</div>
+				<div class="visitImage">	
+						<div class="visitDiv" >
+							<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_point_1" placeholder="No of Point"  class="input-small" name="points.point_details[1].no_of_point" value="@candy.points.point_details(1).no_of_point">
+						</div>
+				<div id="upload-file-container">
+					<input type="file" class="file" id="candy_edit_point_file_upload_1" name="points_image[1]">
+				</div>
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_point_file_upload_1" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.points.point_details(1).point_image');background-repeat: no-repeat;""></div>
+				</div>
+				</div>
+				
+				<!-- set hidden fields -->
+				<input type="hidden" id="prev_candy_edit_point_file_upload_1_id" name="p_image_1_id" value="@candy.points.point_details(1).point_image" />
+				<br/>
+			</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+				 <div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_point_description_2" placeholder="Description"  class="input-medium" name="points.point_details[2].description" value="@candy.points.point_details(2).description">
+				</div>
+				<div class="visitImage">	
+					<div class="visitDiv" >	
+						<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_point_2" placeholder="No of Point"  class="input-small" name="points.point_details[2].no_of_point" value="@candy.points.point_details(2).no_of_point">
+					</div>	
+				<div id="upload-file-container">
+					<input type="file" class="file" id="candy_edit_point_file_upload_2" name="points_image[2]">
+				</div>
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_point_file_upload_2" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.points.point_details(2).point_image');background-repeat: no-repeat;""></div>
+				</div>	
+				</div>
+				<!-- set hidden fields -->
+				<input type="hidden" id="prev_candy_edit_point_file_upload_2_id" name="p_image_2_id" value="@candy.points.point_details(3).point_image" />
+				<br/>
+			</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			 <div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_edit_point_description_3" placeholder="Description"  class="input-medium" name="points.point_details[3].description" value="@candy.points.point_details(3).description">
+				</div>
+				<div class="visitImage">	
+					<div class="visitDiv" >	
+						<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_edit_no_of_point_3" placeholder="No of Point"  class="input-small" name="points.point_details[3].no_of_point" value="@candy.points.point_details(3).no_of_point">
+					</div>
+				<div id="upload-file-container">
+					<input type="file" class="file" id="candy_edit_point_file_upload_3" name="points_image[3]">
+				</div>
+				</div>
+				<div class="candyImage">
+					<div id="prev_candy_edit_point_file_upload_3" style="height:100px;overflow:hidden;background-image: url('/getCandyImage/@candy.points.point_details(3).point_image');background-repeat: no-repeat;""></div>
+				</div>	
+				</div>
+				<!-- set hidden fields -->
+				<input type="hidden" id="prev_candy_edit_point_file_upload_3_id" name="p_image_3_id" value="@candy.points.point_details(3).point_image" />
+				<br/>
+			</div>
+			
+		</div>
+		}
+		</fieldset>
+	</form>
+	</div>
+	<div class="modal-footer">
+		<button id="editCandy" class="btn btn-success" value="Update Candy">Update Candy</button>
+		<button id="candyClose" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+</body>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	if($("#loyaltyType").val() == "POINT"){
+		$("#candy_min_amt_point").show();
+		$("#visitSection").css("display","none");
+		$("#pointSection").css("display","block");
+	}
+	else{
+		$("#candy_min_amt_visit").show();
+		$("#pointSection").css("display","none");
+		$("#visitSection").css("display","block");	
+	}
+	
+	$('.file').preimage();
+	
+	$('#editCandy').click(function(event) {
+		if($("#candyForm").valid()){
+			$("#candyForm").ajaxSubmit({
+				beforeSend: function() {
+			   		$("#loading").css('display','block');
+				},
+				success: function(resp) {
+					$("#loading").css('display','none');
+					$('#custom-modal-container').modal('hide');
+					
+		    	},
+		    	error: function(resp) {
+		    		
+		    	}
+			});
+		}
+		return false;
+	});
+	
+	$("#candyForm").validate({
+		rules : {
+			code : {
+				required:true,
+				remote : {
+					url:"/checkCandyCode",
+					type : "post",
+					data : {
+						q : function(){
+							return $("#candy_code").val(); 
+					        	}
+						    }
+			  			 }
+				   },		
+			valid_till:{
+				required:true,
+				checkExpired:true	
+			},
+			name:{
+				required:true
+			},
+			"visits.visit_details[0].description":{
+				required:true
+			},
+			
+			"points.point_details[0].description":{
+				required:true
+			},
+			"visits.minimum_amount_for_visit":{
+				required:true,
+				number:true
+			},	
+			"visits.visit_details[0].no_of_visit":{
+				number:true
+			},
+			"visits.visit_details[1].no_of_visit":{
+				number:true
+			},
+			"visits.visit_details[2].no_of_visit":{
+				number:true
+			},
+			"visits.visit_details[3].no_of_visit":{
+				number:true
+			},
+			
+			"points.minimum_amount_for_point":{
+				required:true,
+				number:true
+			},
+		
+			"points.point_details[0].no_of_point":{
+				number:true
+			},
+			"points.point_details[1].no_of_point":{
+				number:true
+			},
+			"points.point_details[2].no_of_point":{
+				number:true
+			},
+			"points.point_details[3].no_of_point":{
+				number:true
+			},
+		},
+		
+		messages : {
+			code : {
+				required:"Required",
+				remote : "Not Available"					
+			},
+			name:{
+				required:"Required"
+			},
+			valid_till:{
+				required:"Required",
+				checkExpired:"Not Valid"
+			},
+			"visits.minimum_amount_for_visit":{
+				required:"Required",
+				number:"Digits only"
+			},
+			"points.minimum_amount_for_point":{
+				required:"Required",
+				number:"Digits only"
+			},
+			"visits.visit_details[0].no_of_visit":{
+				required:"Required",
+				number:"Digits Only"
+			},
+			"visits.visit_details[0].description":{
+				required:"Required"
+			},
+			"visits.visit_details[1].no_of_visit":{
+				number:"Digits Only"
+			},
+			"visits.visit_details[2].no_of_visit":{
+				number:"Digits Only"
+			},
+			"visits.visit_details[3].no_of_visit":{
+				number:"Digits Only"
+			},
+			"points.point_details[0].no_of_point":{
+				required:"Required",
+				digits:"Digits Only"
+			},
+			"points.point_details[1].no_of_point":{
+				digits:"Digits Only"
+			},
+			"points.point_details[2].no_of_point":{
+				digits:"Digits Only"
+			},
+			"points.point_details[3].no_of_point":{
+				digits:"Digits Only"
+			},
+			"points.point_details[0].description":{
+				required:"Required"
+			},
+		},
+		
+		errorClass : "candyValidation",
+		errorElement : "em",
+		highlight: function (element) {
+		    $(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		     element
+		        .addClass('valid')
+		         .removeClass('candyValidation')
+		        .closest('.control-group').removeClass('error').addClass('success');
+		}
+	});
+	
+	// Popover  show
+	$('#registerHere input').on('mouseenter',function() {
+		$(this).popover('show')
+	});
+	//Popover hide
+	$('#registerHere input').on('mouseleave',function() {
+		$(this).popover('hide')
+	});
+	
+	//Check Expired Date
+	 jQuery.validator.addMethod("checkExpired", function(values, element) {
+		var date = new Date();	
+		var from = values; 
+		var numbers = from.match(/\d+/g); 
+		var expired_date = new Date(numbers[2], numbers[1]-1, numbers[0]); //Date("yyyy/mm/dd")
+	 	if(date.getTime() < expired_date.getTime())
+		{
+			return true;
+		}
+		else
+		{	 
+			return false;
+		} 		
+	},"");
+});
+
+function enter(elem){
+    elem.style.backgroundColor = '#00A5D5';
+}
+
+function leave(elem){
+    elem.style.backgroundColor = 'rgb(247, 247, 247)';
+}
+</script>

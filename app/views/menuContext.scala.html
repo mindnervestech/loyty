@@ -1,0 +1,72 @@
+@(menuContext: com.mnt.core.menu.MenuBar,user: models.merchant.Merchant)
+<div class="tabbable container">
+<ul class="nav nav-tabs" style="background:#5c5c5c;">
+	@for(items<-menuContext.items){
+		
+		@if(items.name == "Action Item"){
+		 			@if(controllers.Application.pendingCount != 0){
+		 				
+		 				<div class="noti_bubble">@controllers.Application.pendingCount</div>
+		 			}
+		 		}
+		
+		 @if(items.isSubMenu()){
+		  	
+		  		@if(items.name == "Logout"){
+		  		<li style="float:right;">
+		 			<!--  <p style="padding-top: 8px; float:left;"> @user.firstName |</p> -->
+		 			<a style="float:left;" href='@routes.Application.profilePage'>@user.firstName</a>
+		 			 <a style="float:left;" href='@items.url'>@items.name</a>
+		 		</li>
+		 		}else{
+		 		<li>
+		 			<a href='@items.url'>@items.name</a>
+		 		</li>
+		 		}
+		 	
+		 }else{
+		 	<li class="dropdown">
+		 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">@items.name <b class="caret"></b></a>
+		 		<ul class="dropdown-menu">
+                  @for(subMenu<-items.subMenu){
+                  <li><a href='@subMenu.url' >@subMenu.name</a></li>
+                  }
+                  
+                </ul>
+		 	</li>
+		 }
+		 
+	}
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="tab-panel-holder-contents">
+		
+	</div>
+</div>
+</div>
+
+<style>
+.noti_bubble {
+	position: absolute;
+	top: 18px;
+	padding: 4px 8px 2px 8px;
+	background-color: #FFA500;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 14px;
+	border-radius: 30px;
+	box-shadow: 1px 1px 1px #808080;
+	margin: 0% 11%;
+}
+</style>
+</style>
+
+<script>
+	function loadTabContent(_url){
+		$.post(_url,'',function(data){
+			$('#tab-panel-holder-contents').empty();
+			$('#tab-panel-holder-contents').html(data);			
+		});
+	}
+
+</script>

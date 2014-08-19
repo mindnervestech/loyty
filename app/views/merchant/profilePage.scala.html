@@ -1,0 +1,243 @@
+@(_menuContext: com.mnt.core.menu.MenuBar,user : models.merchant.Merchant)
+@main("Welcome to Loyalty Management") {
+@menuContext(_menuContext,user)
+
+<h2 align="center"><i>Welcome @user.firstName</i></h2>
+
+<style>
+.textResponse
+{
+width:38% !important;
+font-weight: bold;
+float:left;
+}
+.dataResponse
+{
+margin-left:3%;
+}
+
+.image{
+	width: 30%;
+	float: left;
+	margin-left: 3%;
+}
+img{
+	margin: 0% !important;
+}
+
+.profile{
+	margin: 0% 37%;
+}
+
+.well{
+	float: left;
+}
+.form-inline{
+	float: left;
+	width: 100%;
+}
+</style>
+
+<div class="container">
+	<div class="well" style="width: 40%;margin: 0% 30%;">
+	
+			<form id="changeImage" enctype="multipart/form-data" method="POST" action="/upload">
+				<div class="image">
+						@if(user.image != null){
+							<img id="userimage" src="/getMerchantImage/@user.image">
+						}else{
+							<img id="userimage" src="#" alt="">
+						}
+				</div>			
+				<div class="profile">
+					 <h5>Business Image</h5>
+					 <input type="file" id="merchantImage" name="merchantImage">
+					 <div class="uploadBtn">
+					 	<button type="submit" class="btn btn-success">Upload</button>
+					 </div>
+			   	</div>		
+			</form>
+	</div>	
+			<div class="well" style="width: 40%;margin: 0% 30%;">	
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">First Name</span></h5><input class="dataResponse" type="text" id="firstName" name="firstName" value="@user.firstName.toUpperCase" readonly="readonly"></div>
+				@if(user.lastName != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Last Name</span></h5><input class="dataResponse" type="text" id="lastName" name="lastName" value="@user.lastName.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.businessName != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Business Name</span></h5><input class="dataResponse" type="text" id="businessName" name="businessName" value="@user.businessName.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.category != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Category</span></h5><input class="dataResponse" type="text" id="city" name="category" value="@user.category.getName.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.email != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Email</span></h5><input class="dataResponse" type="text" id="email" name="email" value="@user.email.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.locality != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Locality</span></h5><input class="dataResponse" type="text" id="locality" name="locality" value="@user.locality.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.street != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Street</span></h5><input class="dataResponse" type="text" id="address" name="street" value="@user.street.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.city != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">City</span></h5><input class="dataResponse" type="text" id="city" name="city" value="@user.city.name.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.pin != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Pin</span></h5><input class="dataResponse" type="text" id="pin" name="pin" value="@user.pin.toUpperCase" readonly="readonly"></div>
+				}
+				@if(user.phoneNo != null){
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Phone No</span></h5><input class="dataResponse" type="text" id="phoneNo" name="phoneNo" value="@user.phoneNo.toUpperCase" readonly="readonly"></div>
+				}
+			</div>
+			
+			<div class="well" style="width: 40%;margin: 0% 30%;">	
+			<form id="changePassword"  method="POST" action="/changePassword">
+		
+				<div class="control-group">
+					<div class="controls">
+						<div class="form-inline">
+							<h5 align="left" class="textResponse">
+								<span class="text-info">New Password</span>
+							</h5>
+								<input maxlength="8" class="dataResponse" type="password" id="password" name="password" placeholder="New Password" required  value="">
+						</div>
+				    </div>
+			    </div>	
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Confirm New Password</span></h5><input class="dataResponse" type="password" id="cpassword" name="cpassword" placeholder="Confirm New Password" required  value=""></div>
+				
+				<button type="submit" class="btn btn-success" style="margin-left:38%;margin-top:2%;">Change</button>
+			</form>
+			</div>
+			<div class="well" style="width: 40%;margin: 0% 30%;">
+			<form id="changeMerchantCode"  method="POST" action="/changeMerchantCode">
+		
+				<div class="control-group">
+						<div class="controls">
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">New Code</span></h5><input class="dataResponse" type="password" id="code" name="code" placeholder="New Code" required  value=""></div>
+				          </div>
+			         </div>	
+				<div class="form-inline"><h5 align="left" class="textResponse"><span class="text-info">Confirm New Code</span></h5><input class="dataResponse" type="password" id="ccode" name="ccode" placeholder="Confirm New Code" required  value=""></div>
+				
+				<button type="submit" class="btn btn-success" style="margin-left:38%;margin-top:2%;">Change</button>
+			</form>
+			</div>
+	</div>
+</div>
+
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+	<script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/select2.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/select2_locale_en.js.template")"></script>
+	
+	
+	
+		
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#changePassword").validate({
+			rules : {
+				password : {
+					required : true,
+					passwordCheck : true,
+					minlength : 8
+				},
+				cpassword : {
+					required : true,
+					equalTo : "#password"
+				},
+		},
+		messages : {
+			password : {
+				required : "Enter your password",
+				passwordCheck : "Does't contain any special characters",
+				minlength : "Password must contains 8 characters"
+			},
+			cpassword : {
+				required : "Enter confirm password",
+				equalTo : "Password and Confirm Password must match"
+			},
+		},
+
+		errorClass : "help-inline",
+		errorElement : "span",
+		highlight: function (element) {
+		    $(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		     element
+		        .addClass('valid')
+		        .closest('.control-group').removeClass('error').addClass('success');
+		}
+		});
+		
+		$("#changeMerchantCode").validate({
+			rules : {
+				code : {
+					required : true,
+					passwordCheck : true,
+					minlength : 6
+				},
+				ccode : {
+					required : true,
+					equalTo : "#code"
+				},
+		},
+		messages : {
+			code : {
+				required : "Enter your code",
+				passwordCheck : "Code must contain atleast one A-Z and 0-9",
+				minlength : "Code must be minimum 6 characters"
+			},
+			ccode : {
+				required : "Enter confirm code",
+				equalTo : "Code and Confirm Code must match"
+			},
+		},
+
+		errorClass : "help-inline",
+		errorElement : "span",
+		highlight: function (element) {
+		    $(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		     element
+		        .addClass('valid')
+		        .closest('.control-group').removeClass('error').addClass('success');
+		}
+		});
+		
+	});
+	
+
+	
+$(document).ready(function(){
+	function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#userimage').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#merchantImage").change(function(){
+        readURL(this);
+    });
+    
+		jQuery.validator.addMethod("passwordCheck", function(value, element) {
+			var pattern = /^[a-zA-Z0-9]{4,10}$/;
+			var pwd = value;
+			 if (pattern.test(pwd)) {
+				 return true;
+			 }
+			 else
+			 {	 
+				 return false;
+			 } 
+		},"");
+		
+});	
+</script>	
+}

@@ -1,0 +1,113 @@
+@(_menuContext: com.mnt.core.menu.MenuBar,merchant : models.merchant.Merchant)
+@menuContext(_menuContext,merchant)
+<style>
+.textResponse
+{
+width:38% !important;
+font-weight: bold;
+float:left;
+}
+.candyProgram{
+	width: 170px;
+	height: 190px;
+	margin: 3%;	
+	float: left;
+	border:1px solid #0FF;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+.candyProgramBtn{
+	margin: 20% 6%;
+}
+.candyProgramCustomer{
+	margin: 0% 10%;
+}
+.candyProgramReports{
+	margin: 90% 28%;
+}
+
+.img{
+	width: 88%;
+
+}
+.imgCustomer{
+	width: 78%;
+	margin: 0% 6%;
+}
+.homeBody{
+	background-color: rgba(0, 174, 239, 0.1);
+	padding: 30px 0;
+	width: 100%;
+	height: 220px;
+	margin: 11% 0%;
+}
+body{
+	background: url("@routes.Assets.at("images/body_image.png")");
+}
+
+.container{
+	background: url("@routes.Assets.at("images/background.jpg")");
+}
+.containerLightUp{
+	-moz-transform: scaleY(-1);
+	-webkit-transform: scaleY(-1);
+	-o-transform: scaleY(-1);
+	transform: scaleY(-1);
+	-ms-filter: flipv;
+	filter: flipv;
+}
+
+.homeBodyCenter{
+	margin: 0% 27%;
+}
+</style>
+<div class="containerLightUp"></div>
+<div class="homeBody" id="homeBody">
+<input type="hidden" id="designationType"  value="@merchant.designation">
+<div class="homeBodyCenter">
+	<div class="candyProgram" id="candyProgramCandy" onclick="window.location = '/candy';" onmouseover="enter(this)" onmouseout="leave(this)">
+		<div class="img"><img alt="" src="@routes.Assets.at("images/candy1.png")"></div>
+		<div class="candyProgramBtn">
+			<a href="/candy" class="btn btn-warning"> My Candy Program</a>
+		</div>
+	</div>
+
+	<div class="candyProgram" id="candyProgramCustomer" onclick="window.location = '/customer';" onmouseover="enter(this)" onmouseout="leave(this)">
+		<div class="imgCustomer"><img alt="" src="@routes.Assets.at("images/customerCenter.png")"></div>
+			<div class="candyProgramCustomer">
+				<a href="/customer" class="btn btn-warning">Customer Center</a>
+			</div>
+	</div>
+	<!-- <div class="candyProgram" onmouseover="enter(this)" onmouseout="leave(this)">	
+		<div class="candyProgramReports">
+			<a href="@routes.Application.index" class="btn btn-warning">Reports</a>
+		</div>
+	</div> -->
+</div>
+</div>
+
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+	<script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/select2.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/select2_locale_en.js.template")"></script>
+	
+	
+	
+		
+<script type="text/javascript">
+function enter(elem){
+    elem.style.backgroundColor = '#00A5D5';
+}
+
+function leave(elem){
+    elem.style.backgroundColor = 'rgba(0, 174, 239, 0.1)';
+}
+
+$(document).ready(function(){
+	if($("#designationType").val() == "Super Admin"){
+		$("#candyProgramCandy").css("display","none");
+		$("#candyProgramCustomer").css("display","none");
+	}
+});
+
+</script>	

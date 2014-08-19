@@ -1,0 +1,9 @@
+<li class="dropdown">
+ 	 <a href="#"  class="dropdown-toggle" data-toggle="dropdown"><label id="selectedCity">Select City</label> <b class="caret" style="float: left;"></b></a>
+ 	 <ul  id="city-panel" class="dropdown-menu">
+		<%	_.each(rc,function(item, key, list) { %>
+			<li><a class="city-item" data-value="<%=item.attributes.value%>"><%=item.attributes.text%></a></li>
+		<%	}); %>
+ 	 </ul>
+</li>
+ 

@@ -1,0 +1,168 @@
+@(_pageContext:com.mnt.core.helper.UIModel,isModal:Boolean)
+
+@if(isModal){
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	
+		<h2>@_pageContext.pageTitle</h2>
+	</div>
+	<div class="modal-body">	
+}
+<form  id='@(_pageContext.pageName + "_form")' action="">
+ 	<div class="container">	   
+	@for(rlist<-_pageContext.getFieldLayout.iterator){
+	     <div class="row-fluid">
+	     	@for(fieldType<-rlist.iterator){
+		     	@rlist.size match{
+		     		case 1 =>{
+		     			<div class="span12">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     		case 2 =>{
+		     			<div class="span6">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     		case 3 =>{
+		     			<div class="span4">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     		case 4 =>{
+		     			<div class="span3">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     		case 6 =>{
+		     			<div class="span2">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     		case 7 =>{
+		     			<div class="span1">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     		case 8 =>{
+		     			<div class="span1">
+		     			@UIField(fieldType,_pageContext.pageName,"span12")
+		     		}
+		     	}
+		     			</div>
+	     	}
+	     </div>
+	}   			
+		
+    
+ 	</div>
+ 	
+		     
+		 
+</form>
+@if(isModal){
+	</div><!-- /modal-body -->
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+}	
+	@for(button <- _pageContext.getButtonActions){
+  		@if(button.visibility){
+		  			<button type="button" id='@(_pageContext.pageName  +   button.id)' class="btn btn-warning" >@button.label</button>
+  		}
+  	}
+ @if(isModal){ 		    
+  	</div>
+  }
+<script>
+
+$(document).ready(function(){
+	
+	var @(_pageContext.pageName  + "_jsObject") = {
+		initialise: function (){
+			this.bindButtons();
+		},
+		bindButtons: function(){
+			@(_pageContext.pageName +"_this") = @(_pageContext.pageName + "_jsObject");
+			@for(button <- _pageContext.getButtonActions){
+				@if(button.visibility){
+			  		@button.target.name match{
+						case "SUBMIT" => {
+							$('#@(_pageContext.pageName  +   button.id)').click(function(){
+								@(_pageContext.pageName + "_this").doSubmitAction("@button.url");	
+				  			});
+				  		}
+						case "MODAL" => {
+							$('#@(_pageContext.pageName  +   button.id)').click(function(){
+								
+				  			});
+						}
+						case "ACTION" => {
+							$('#@(_pageContext.pageName  +   button.id)').click(function(){
+								@(_pageContext.pageName + "_this").doCustomAction("@button.url");
+				  			});
+						}
+			  		}
+		  		}
+			}
+		},
+		doCustomAction: function(_url){
+			
+			$.ajax({
+				url:_url,
+				data: {
+					query: function(){
+						
+					}
+				},
+				success: function(data) {
+						
+				},
+				error: function(data) {
+					
+				}
+			})
+		},
+		doSubmitAction: function(_url){
+			
+			$('#@(_pageContext.pageName + "_form")').attr('action' ,_url);
+			$('#@(_pageContext.pageName + "_form")').submit();
+		}
+	}
+	@(_pageContext.pageName + "_jsObject").initialise();
+	$('#@(_pageContext.pageName + "_modal")').modal('show');
+	$('#@(_pageContext.pageName + "_form")').validate({
+	//errorElement:"", 
+	rules: {
+	    		 @for(fieldType<-_pageContext.getFields.iterator){
+	    			 @if(fieldType.validation !=null ){
+		    			 	 @(fieldType.name) :{
+			    				 minlength: @fieldType.validation.minlength,
+			    				 required : @fieldType.validation.required,
+			    				 email: @fieldType.validation.email,
+			    				 maxlength: @fieldType.validation.maxlength,
+			    				 date: @fieldType.validation.date,
+			    				 digits: @fieldType.validation.digits,
+								 number: @fieldType.validation.number			    				 
+			    			 },
+		    			 
+		    			 
+	    		 	}
+	    		 }
+    	 },
+    	 messages: {
+    		 @for(fieldType<-_pageContext.getFields.iterator){
+    			 @if(fieldType.validation !=null ){
+    				 @if(!fieldType.validation.messages.equals("")){
+	    				 @fieldType.name :  @fieldType.validation.messages,
+    				 }
+	    		 }
+    		  }
+    	 },
+    			 
+        
+    
+    highlight: function (element) {
+        $(element).closest('.control-group').removeClass('success').addClass('error');
+    },
+    success: function(element) {
+        element
+        .addClass('valid')
+        .closest('.control-group').removeClass('error').addClass('success');
+      }
+});
+});
+</script>

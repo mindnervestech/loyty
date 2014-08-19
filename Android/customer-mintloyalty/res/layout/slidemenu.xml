@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+			<RelativeLayout
+        		android:id="@+id/rLayout1"
+        		android:layout_width="fill_parent"
+        		android:layout_height="60dp"
+         		android:background="@drawable/header_bar"
+     		>
+     		<ImageView
+		      android:id="@+id/candy"
+		      android:layout_width="125dp"
+		      android:layout_height="60dp"
+		      android:layout_alignParentLeft="true"
+		      android:layout_centerVertical="true"
+		      android:src="@drawable/header_logo"
+		      />
+           		 
+       </RelativeLayout> 
+            
+            <TextView
+		        android:id="@+id/nearmint"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Near Mints"
+		        android:textColor="@android:color/white"
+		        android:paddingTop="10dp"
+		        android:paddingBottom="10dp"
+		        android:paddingLeft="5dp"
+		        android:background="@drawable/menu_selector"
+		        />
+            <View
+			    android:layout_width="fill_parent"
+			    android:layout_height="2dp"
+			    android:background="@android:color/white"/>		
+
+		 	<TextView
+		      android:id="@+id/mycandy"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:text="My Mints"
+		      android:textColor="@android:color/white"
+		      android:paddingTop="10dp"
+		      android:paddingBottom="10dp"
+		      android:paddingLeft="5dp"
+		     />
+		 	<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="2dp"
+			    android:background="@android:color/white"/>
+		 	
+		 	<TextView
+		      android:id="@+id/citycandy"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:text="City Mints"
+		      android:textColor="@android:color/white"
+		      android:paddingTop="10dp"
+		        android:paddingBottom="10dp"
+		        android:paddingLeft="5dp"
+		     />
+		 	<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="2dp"
+			    android:background="@android:color/white"/>
+		 	
+		 	<TextView
+		      android:id="@+id/setting"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:text="Settings"
+		      android:textColor="@android:color/white"
+		      android:paddingTop="10dp"
+		        android:paddingBottom="10dp"
+		        android:paddingLeft="5dp"
+		     />
+		 	<View
+			    android:layout_width="fill_parent"
+			    android:layout_height="2dp"
+			    android:background="@android:color/white"/>
+            
+		 	<TextView
+		      android:id="@+id/logout"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:text="Logout"
+		      android:textColor="@android:color/white"
+		      android:paddingTop="10dp"
+		      android:paddingBottom="10dp"
+		      android:paddingLeft="5dp"
+		     />
+		 	
+    	</LinearLayout>
+
+    
+

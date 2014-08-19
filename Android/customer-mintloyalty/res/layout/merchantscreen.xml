@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.agimind.widget.SlideHolder xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slideHolder"
+    android:layout_width="fill_parent"
+    android:background="@drawable/background"
+    android:layout_height="fill_parent"
+    tools:context=".MerchantProgramActivity" >
+    <ScrollView
+        android:layout_width="125dp"
+        android:id="@+id/slideMenu"
+        android:layout_height="fill_parent"
+        android:background="#4A6075" >
+    </ScrollView> 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:background="@drawable/background"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+     <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+         android:background="@drawable/header_bar"
+         >		
+		 <ImageView
+		      android:id="@+id/candy"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_alignParentLeft="true"
+		      android:layout_centerVertical="true"
+		      android:layout_marginLeft="5dp"
+		      android:scaleType="centerCrop"
+              android:cropToPadding="true"
+		      android:src="@drawable/header_logo"
+		     />		
+		 <ImageView
+              android:id="@+id/menuicon"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:layout_marginRight="14dp"
+              android:cropToPadding="true"
+              android:scaleType="centerCrop"
+              android:src="@drawable/menu_icon"
+              android:textStyle="bold" />		
+       </RelativeLayout> 
+
+  <GridView
+    android:id="@+id/candyview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:horizontalSpacing="0dp"
+    android:numColumns="3"
+    android:gravity="center"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbars="vertical"
+    android:verticalSpacing="10dp" >
+  </GridView>
+</LinearLayout>
+</com.agimind.widget.SlideHolder>

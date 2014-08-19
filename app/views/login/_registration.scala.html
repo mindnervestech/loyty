@@ -1,0 +1,199 @@
+<form role="form" id="createUserForm" enctype="multipart/form-data" method="POST" action="/registration">
+
+	@if(flash.contains("registered")){
+		<p class="registered" class="serif" style="color:red;">
+     		<b>@flash.get("registered")</b>
+		</p>
+	}
+
+	<div class="form-group custom_form-group">
+		<label>First Name</label> 
+		<input required type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name">
+	</div>
+
+	<div class="form-group custom_form-group custom_form-group_second">
+		<label>Last Name</label> 
+		<input required type="text" id="lastName" name="lastName" class="form-control" placeholder="Last Name">
+	</div>
+	
+	<div class="form-group custom_form-group">
+		<label>Business Name</label> 
+		<input required type="text" id="businessName" name="businessName" class="form-control" placeholder="Business Name">
+	</div>
+	
+	<div class="form-group custom_form-group custom_form-group_second">
+		<label>Category</label> 
+		<select required id="category" name="category" class="form-control">
+			<option value="resturants">Resturants/Lounge</option>
+			<option value="service">Services/Maintenance</option>
+			<option value="cafe">Cafe/Ice-Creams</option>
+			<option value="bakes">Bakes/Confectionery</option>
+			<option value="apparel">Apparel/Accesories</option>
+			<option value="departmental">Ice Cream Palour</option>
+			<option value="care">Personal Care</option>
+		</select>
+	</div>
+	
+	<div class="form-group custom_form-group">
+		<label>Email</label> 
+		<input required type="text" id="email" name="email" class="form-control" placeholder="Email">
+	</div>
+	
+	<div class="form-group custom_form-group custom_form-group_second">
+		<label>Locality</label> 
+		<input required type="text" id="locality" name="locality" class="form-control" placeholder="Locality">
+	</div>
+	
+	<div class="form-group custom_form-group">
+		<label>Street</label> 
+		<input required type="text" id="street" name="street" class="form-control" placeholder="Street">
+	</div>
+	
+	<div class="form-group custom_form-group custom_form-group_second">
+		<label>City</label> 
+		<select required id="city" name="city" class="form-control">
+			<option value="Delhi">Delhi/NCR</option>
+			<option value="Pune">Pune</option>
+			<option value="Mumbai">Mumbai</option>
+			<option value="Bangalore">Bangalore</option>
+			<option value="Chandigar">Chandigar</option>
+			<option value="Other">Other</option>
+		</select>
+	</div>
+	
+	<div class="form-group custom_form-group">
+		<label>PIN</label> 
+		<input required type="text" id="pin" name="pin" class="form-control" placeholder="PIN">
+	</div>
+	
+	<div class="form-group custom_form-group custom_form-group_second">
+		<label>Phone Number</label> 
+		<input required type="text" id="phoneNo" name="phoneNo" class="form-control" placeholder="Phone Number">
+	</div>
+	
+	<div class="form-group custom_form-group_textarea">
+		<label>Additional Comments</label>
+		<textarea id="comments" name="comments" class="form-control" rows="3"></textarea>
+	</div>
+	
+	<button id="submitBtn" type="button" class="btn btn-primary">Register</button>
+	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+</form>
+
+<script src="@routes.Assets.at("javascripts/jquery.form.js")"></script>
+<script src="@routes.Assets.at("javascripts/jqBootstrapValidation.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+	
+<script type="text/javascript">
+$(document).ready(function() {
+
+	$('#submitBtn').click(function(event) {
+		
+		if($("#createUserForm").valid()){ 
+			
+			$("#createUserForm").ajaxSubmit({
+				success: function(resp) {
+					$('#submitBtn').attr("disabled","disabled");
+					alert("Registration done successfully!");
+					window.location.reload();
+					history.go(0);
+				},
+				error: function(resp) {
+					alert("Registration has some error. \nPlease try after some time.");
+					window.location.reload();
+					history.go(0);
+				}
+			});
+		}
+	});
+
+
+	// Validation
+	$("#createUserForm").validate({
+		rules : {
+			password : {
+				required : true,
+				passwordCheck : true,
+				minlength : 6
+			},
+			pin : {
+				required : true,
+				digits : true,
+				minlength : 6,
+				maxlength : 6
+			},
+			phoneNo : {
+				required : true,
+				digits : true,
+				minlength : 10,
+				maxlength : 10
+			},
+			email : {
+				remote : {
+					url:"/checkUserEmail",
+					type : "post",
+					data : {
+						q : function(){
+							//console.log("in email...");
+							return $("#email").val(); 
+						}
+					}
+				}
+			}
+		},
+
+		messages : {
+			password : {
+				required : "Enter your password",
+				passwordCheck : "Password must contain atleast one A-Z and 0-9",
+				minlength : "Password must be minimum 6 characters"
+
+			},
+			pin : {
+				required : "Please Enter Your Pin",
+				minlength : "Pin must be of 6 digits",
+				maxlength : "Pin must be of 6 digits"
+			},
+			phoneNo : {
+				required : "Please Enter Your Phone No",
+				minlength : "Phone No must be of 10 digits",
+				maxlength : "Phone No must be of 10 digits"
+			},
+			email : {
+				remote : "Not Available or Wrong Domain"					
+			}
+		},
+
+		errorClass : "regValidation",
+		errorElement : "em",
+		highlight: function (element) {
+			$(element).closest('.form-group input').removeClass('success').addClass('error').addClass('customError');
+		},
+		success: function(element) {
+			element
+			.addClass('valid')
+			.removeClass('regValidation')
+			.closest('.form-group input').removeClass('error').addClass('success').removeClass('customError');
+		}
+	});
+
+
+});
+
+
+</script>
+
+
+<style>
+
+.customError{
+	border-color: red;
+}
+
+.regValidation{
+	font-size: 12px;
+	color: red;
+}
+
+
+</style>

@@ -1,0 +1,518 @@
+@(_searchContext: com.mnt.core.helper.SearchContext,_parentSearchCtx:String,mode:String)
+
+<input type="hidden" name="selectedRow" id="selectedRow" value="">
+<div id='@(_searchContext.entityName + mode + "_search")' class="well form-inline" >  
+		
+		@if(_searchContext.getFilter != null){
+				
+				@for(fieldType <- _searchContext.getFilter.iterator){
+					@fieldType.ctype.name match{
+						case "INPUT" => {
+								  <input id="@(_searchContext.entityName + mode + fieldType.name)" name="@fieldType.name" placeholder="@fieldType.label" class="input-medium search-query" type="text">
+								    
+						}
+						case "SELECT_OPTION" => {
+							  <label class="control-label" for="selectbasic">@fieldType.label</label>
+							    <select id="@(_searchContext.entityName  + mode +  fieldType.name)" name="@fieldType.name" class="input-medium search-on-select">
+								    @for(option<-fieldType.options){
+								    	<option value='@option'>@option.getName</option>
+								    }	
+							
+							    </select>
+						}
+						case "DATE" => {
+									  	<label class="control-label" for="selectbasic">@fieldType.label</label>
+										<div data-provide="datepicker" class="input-append date datepicker" data-date="" data-date-format="dd-mm-yyyy">
+	    									<input id="@(_searchContext.entityName + mode + fieldType.name)" size="16" type="text" value="" readonly name="@(fieldType.name)"><span class="add-on"><i class="icon-calendar"></i></span>
+										</div>
+								}
+					
+			}
+		}
+			<label class="control-label" for="singlebutton">&nbsp;</label>
+			<button id='@(_searchContext.entityName  + mode +  "_searchButton")' onclick="return false;" name="searchButton" class="btn">Search</button>
+		}							
+				
+</div>
+
+<fieldset>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="row-fluid">
+					<div class="control-group">
+					  <table id='@(_searchContext.entityName  + mode +  "_jqGrid_list")'><tr><td/></tr></table> 
+						<div id='@(_searchContext.entityName  + mode +  "_jqGrid_pager")' ></div> 
+
+					</div>
+					<div class="control-group">
+					  <label class="control-label" for="button1id">&nbsp;</label>
+					  <div class="controls">
+						@if(_parentSearchCtx == null && _searchContext.showAddButton.visibility){
+					  	 	<button type="button" id='@(_searchContext.entityName  + mode +  "_addButton")' data-toggle="modal" class="btn btn-warning" data-target='#@(_searchContext.entityName + "_addModal")'>Create New</button>
+					  	}	
+					  	@if(_parentSearchCtx == null && _searchContext.showEditButton.visibility){
+					  		@_searchContext.showEditButton.target.name match{
+								case "MODAL" => {
+						  			<button type="button" id='@(_searchContext.entityName  + mode +  "_editButton")' data-toggle="modal" class="btn btn-warning" data-target='#@(_searchContext.entityName + "_editModal")'>@_searchContext.showEditButton.label</button>
+						  		}
+						  		case "IMODAL" => {
+						  			<button type="button" id='@(_searchContext.entityName  + mode +  "_editButton")' data-toggle="modal" class="btn btn-warning" data-target='#@(_searchContext.entityName + "_editModal")'>@_searchContext.showEditButton.label</button>
+						  		}
+						  		case "NEW" => {
+						  			<button type="button" id='@(_searchContext.entityName  + mode +  "_editButton")' class="btn btn-warning" >@_searchContext.showEditButton.label</button>
+						  		}
+					  		}
+					  	}
+					  	@if(_parentSearchCtx != null){
+					  		<button type="button" id='@(_searchContext.entityName  + mode +  "_addToButton")'  class="btn" >Add To Board...</button>
+					  	}
+					  	@for(button <- _searchContext.getButtonActions){
+					  		@if(_parentSearchCtx == null && button.visibility){
+						  		@button.target.name match{
+									case "MODAL" => {
+							  			<button type="button" id='@(_searchContext.entityName  + mode +  button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+							  		case "IMODAL" => {
+							  			<button type="button" id='@(_searchContext.entityName  + mode +  button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+							  		case "NEW" => {
+							  			<button type="button" id='@(_searchContext.entityName  + mode +  button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+							  		case "ACTION" => {
+							  			<button type="button" id='@(_searchContext.entityName  + mode +  button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+						  		}
+					  		}
+					  	}
+					  </div>
+					</div>
+					<div class="control-group">
+					  <div class="fuelux controls">
+					  	<div id='@(_searchContext.entityName  + mode +  "_Pillbox")' class="pillbox">
+					  		<ul>
+					  		</ul>
+					  	</div>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+</fieldset>
+@if(_parentSearchCtx == null && mode == "add" && _searchContext.showAddButton.visibility){
+		@wizard(_searchContext)			  	 
+}
+ 
+ 
+ 
+ 
+<div id="wizard-core-container"></div>
+<div id="custom-modal-container" class="modal hide fade">
+	
+</div>
+ 
+ <script type="text/javascript">
+ 		
+	var @(_searchContext.entityName  + mode +  "_SearchGrid") = {
+			_searchURL: "@_searchContext.searchUrl",
+			initialise: function (){
+				$('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid({
+			
+			   	url:'@_searchContext.searchUrl',
+			   	height:122,
+			   	width: $('#@(_searchContext.entityName + mode + "_search")').width() + 20,
+			   	datatype: 'json',
+			   	mtype: 'GET',
+			   	colNames:[
+			             @for((col,index)<-_searchContext.getColumn.zipWithIndex){
+			            	 @if(index == 0){
+			            	 '@col.colName'
+			            	 }else{
+			            		,'@col.colName'
+			            	 }
+			             }
+			             @if(_searchContext.getGridActions !=null && _searchContext.getGridActions.size!=0){
+				             	,'Action'
+							 }	
+			             ],
+			   	colModel :[
+						@for((col,index)<-_searchContext.getColumn.zipWithIndex){
+							@if(index == 0){
+								{name:'@col.name', index:'@index', width:'@col.width' ,align:'center'}
+							}else{
+								,{name:'@col.name', index:'@index', width:'@col.width',align:'center'}
+							}
+						}
+						@if(_searchContext.getGridActions !=null && _searchContext.getGridActions.size!=0){
+							,{name:'action', index:'action', width:35,align:'center',formatter:this.actionFormatter, search:false, title:false}
+						}
+			     //{name:'action', index:'action', width:40,formatter:this.actionFormatter, search:false, title:false}
+			   	],
+			   	pagination : true,
+			   	pager: '#@(_searchContext.entityName  + mode +  "_jqGrid_pager")',
+			   	rowNum:5,
+			   	rowList:[5,10,15,20],
+			   	viewrecords: true,
+			   	gridview: true,
+			   	multiselect: @_searchContext.isMultiSelectSearch,
+			   	caption:  '@(_searchContext.displayName)',
+			   
+			   	onSelectRow: function(id){
+			   		$("#selectedRow").val(id);
+			   	},
+			   	ondblClickRow: function(rowid) {
+			   		@if(_searchContext.showEditButton.visibility){
+			   			@(_searchContext.entityName + mode+"_SearchGrid").doEdit();
+			   		}
+			   		
+			   		@if( _searchContext.onDoubleRowClickCallID != null){
+			   			$('#@(_searchContext.entityName  + mode +  _searchContext.onDoubleRowClickCallID)').click();
+			   		}
+			   		
+			   	},
+			   	loadComplete:function (data){
+			   		$('a[id^="@(_searchContext.entityName + mode)_gridAction"'+']').each(function() {
+			   			if(typeof(@(_searchContext.entityName + mode)_gridAction_isToBeHidden) == "function"){
+			   				@(_searchContext.entityName + mode)_gridAction_isToBeHidden($(this).attr('type')) ? $(this).hide(): $(this).show();
+			   			}
+				   		$(this).click(function(e){
+				   			var id = $(this).attr('cell');
+				   			var _url = $(this).attr('url');
+				   			$.ajax({
+								type: "GET",
+								url: _url,
+								data: {query: id},
+								success: function(data){
+									$.pnotify({
+										history:false,
+								        title: 'Regular Notice',
+								        text: data
+								    });
+									@(_searchContext.entityName +"_this").doSearch();
+								},
+								complete: function(jqXHR,status){
+									
+								}
+							});
+				   		});
+				   	 });
+			   		@(_searchContext.entityName + mode+"_SearchGrid").resizeGrid();
+			   	}	   
+			});
+			jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid('bindKeys');
+			jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid('navGrid','#@(_searchContext.entityName  + mode +  "_jqGrid_pager")',{del:false,add:false,edit:false,search:false,refresh:false});
+			jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').on('reloadGrid',function (){
+				//TODO
+			});	
+			this.bindButtons();
+						
+		},
+		actionFormatter:function(cellvalue, options, rowObject){
+			
+			var show ="";
+			_actionSize  = @_searchContext.getGridActions.size;
+			@for(gridAction<-_searchContext.getGridActions.iterator){
+				_image = '@routes.Assets.at("images/"+gridAction.icon.name +".png")';
+				
+				show = show + "<a id='@(_searchContext.entityName + mode)_gridAction' href='#' type='@gridAction.icon.name' url='@gridAction.url' cell="+cellvalue+" ><img style='max-width:50%;'src='"+_image+"'></a>"
+			}
+			return show;
+		},
+		
+		doSearch: function(){
+			$('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').setGridWidth($('#@(_searchContext.entityName + mode + "_search")').width() + 20);
+			@(_searchContext.entityName + "_squrl")='';
+			@if(_searchContext.getFilter != null){
+				@for(fieldType<-_searchContext.getFilter){
+					@(_searchContext.entityName + "_squrl") = @(_searchContext.entityName + "_squrl") + '@fieldType.name' +'='+ $('#@(_searchContext.entityName  + mode +  fieldType.name)').val() +'&'
+				}
+			}
+			@(_searchContext.entityName + "_squrl") = @(_searchContext.entityName + "_squrl") + '1=1';
+			
+			jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').setGridParam({
+				mtype:'GET',
+				url:'@_searchContext.searchUrl' +"?"+@(_searchContext.entityName + "_squrl")
+			}).trigger('reloadGrid');
+			
+			return false;
+			
+		},
+		doCustomAction:function(_url){
+			s = this.selectedItem();
+			
+			
+			if(s.length == 0 ){
+				s = "1";
+				
+				bootbox.confirm("Please mark selection from Grid", function(result) {
+				});
+				
+				//alert("Please mark selection from Grid");
+				return;
+			}
+			
+			
+			
+			$.ajax({
+				url:_url,
+				data: {query: s.toString()},
+				success: function(data) {
+					
+					$.pnotify({
+						history:false,
+				        title: 'Regular Notice',
+				        text: data
+				    });
+					@(_searchContext.entityName +"_this").doSearch();	
+				},
+				error: function(data) {
+					
+				}
+			})
+		},
+		selectedItem: function(){
+			var s=[];
+			@if(_searchContext.isMultiSelectSearch){
+				s = jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid('getGridParam','selarrrow');
+					
+			}else{
+				_s = jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid('getGridParam','selrow');
+				if(_s!=null)
+					s[0] = _s;
+				
+			}
+			return s;
+		},
+		doEdit:function(){
+			
+			s = this.selectedItem();	
+			if('@(_searchContext.showEditButton.target)' == 'NEW'){
+				if(s.length != 0 ){
+					var rowData = jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').getRowData(s[0]);
+					window.location.href = "/timesheetEdit/"+rowData['weekOfYear'];
+				}	
+				
+			}else{
+				console.log(jQuery('#@(_searchContext.entityName  +   "_edit-wizard")'));
+				
+				if(s.length == 0 ){
+					s = "";
+					bootbox.confirm("Please mark selection from Grid", function(result) {
+					});
+					
+					//alert("Please mark selection from Grid");
+					return;
+				}
+				$.ajax({
+					url:'@(_searchContext.showEditUrl())',
+					data: {query: s[0]},
+					success: function(data) {
+						//console.log(jQuery('#@(_searchContext.entityName  +   "_edit-wizard")'));
+								
+						if(jQuery('#@(_searchContext.entityName  +   "_edit-wizard")')){
+							jQuery('#@(_searchContext.entityName  +   "_edit-wizard")').remove();
+						}
+						
+			        	$('#wizard-core-container').html(data);
+			        	var options = {
+			        			width:window.innerWidth * 0.8,
+			        			increaseHeight:100,
+			        			leftPanelWidthPercent:20,
+			        			submitUrl:'@_searchContext.editUrl',
+			        			id:'@(_searchContext.entityName + "_edit-wizard")',
+			        			onCardReady: function(_currentCard){
+			        					
+			        					if(typeof(@(_searchContext.entityName + "edit")_onCardReady)=='function'){
+			        						@(_searchContext.entityName + "edit")_onCardReady(_currentCard);
+			        					}
+			        					
+			        				}
+			        			};
+			        	var  @(_searchContext.entityName + "_wizard") = $('#@(_searchContext.entityName + "_edit-wizard")').wizard(options);
+			        	$('.wizard-title').html('Edit @(_searchContext.entityName)');
+			        	@(_searchContext.entityName + "_wizard").show();
+			        	$('#wizard-core-container').empty();
+					}
+				});
+			}
+			
+		},
+		doCreate: function(){
+			var _qurl='';
+			@for(fieldType<-_searchContext.getFilter){
+				_qurl = _qurl + '@fieldType.name' +'='+ $('#@fieldType.name').val() +'&'
+			}
+			_qurl = _qurl + '1=1';
+			jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').setGridParam({
+				mtype:'GET',
+				url:this._searchURL +"?"+_qurl
+			}).trigger("reloadGrid");
+			
+		},
+		resizeGrid:function(){
+			$('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').setGridWidth($('#@(_searchContext.entityName + mode + "_search")').width() + 20);
+		},
+		addToBucket: function(){
+			s = this.selectedItem();
+			//$('#@(_searchContext.entityName + "_Pillbox ul")').empty();
+			jQuery.each(s,function(i,e){
+				val_1 = jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid ('getCell', e, 1);
+				val_2 = jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid ('getCell', e, 2);
+				val_3 = jQuery('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').jqGrid ('getCell', e, 3);
+				$('#@(_searchContext.entityName  + mode +  "_Pillbox ul")').append("<li data-id='"+e+"' class='status-info'>"+val_1+"-"+val_2+"("+val_3+")</li>");
+			});
+			$('.OneToMany').each(function(){
+				if($(this).attr('entity') == '@(_parentSearchCtx)'){
+					_this = this;
+					ids = [];
+					jQuery.each($('#@(_searchContext.entityName  + mode +  "_Pillbox ul")').pillbox('items'),function(i,e){
+						ids.push(e.id);	
+					});
+					$(_this).val(ids)
+					
+					
+				};
+			});
+			
+		},
+		
+		bindButtons: function(){
+			@(_searchContext.entityName +"_this") = @(_searchContext.entityName + mode+"_SearchGrid");
+			$('#@(_searchContext.entityName  + mode +  "_searchButton")').click(function(){
+				@(_searchContext.entityName +"_this").doSearch();
+			});
+			$('#@(_searchContext.entityName  + mode +  "_addToButton")').click(function(){
+				@(_searchContext.entityName +"_this").addToBucket();
+			});
+			$('#@(_searchContext.entityName  + mode +  "_addButton")').click(function(){
+				$('.wizard-title').html('Create @(_searchContext.entityName)');
+				$('#@(_searchContext.entityName + "_add-wizard")').find('input[type=text],input[type=hidden], textarea').val('');
+				@("form_"+_searchContext.entityName + "_add_wizard_reset")();
+				
+				@(_searchContext.entityName + "_wizard").show();
+				@(_searchContext.entityName + "_wizard").reset();
+			    
+			});
+			$('#@(_searchContext.entityName  + mode +  "_editButton")').click(function(){
+				@(_searchContext.entityName + "_this").doEdit();
+			});
+			
+			@for(button <- _searchContext.getButtonActions){
+				@if(_parentSearchCtx == null && button.visibility){
+			  		@button.target.name match{
+						case "ACTION" => {
+							$('#@(_searchContext.entityName  + mode +  button.id)').click(function(){
+								@(_searchContext.entityName + "_this").doCustomAction("@button.url");	
+				  			});
+				  		}
+						
+						case "IMODAL" => {
+							$('#@(_searchContext.entityName  + mode +  button.id)').click(function(){
+								$.ajax({
+									url:'@button.url',
+									success: function(data) {
+										$('#custom-modal-container').empty();
+										$('#custom-modal-container').html(data);
+										$('#custom-modal-container').modal('show').css({
+											width: window.innerWidth * 0.9,
+											position: 'absolute',
+											left:'25%'});
+							        }
+								});
+							});
+						}
+						case "MODAL" => {
+							$('#@(_searchContext.entityName  + mode +  button.id)').click(function(){
+								// 	
+								s =  @(_searchContext.entityName + "_this").selectedItem();
+								if(s.length == 0 ){
+									s[0] = "1";
+									bootbox.confirm("Please mark selection from Grid", function(result) {
+									});
+									return;
+								}
+								$.ajax({
+									url:'@button.url',
+									data: {query: s[0]},
+									success: function(data) {
+										$('#custom-modal-container').empty();
+										$('#custom-modal-container').html(data);
+										$('#custom-modal-container').modal('show').css({
+											width: window.innerWidth * 0.9,
+											position: 'absolute',
+											left:'25%'});
+							        }
+								});
+				  			});
+						}
+						case "NEW" => {
+							
+						}
+			  		}
+		  		}
+			}
+			
+			$(".search-query").keypress(function(event){
+				if(event.which == "13"){
+					@(_searchContext.entityName +"_this").doSearch();
+				}
+			});
+			$(".search-on-select").change(function(event){
+				@(_searchContext.entityName +"_this").doSearch();
+			});
+		}
+	}
+	
+	@(_searchContext.entityName + mode +"_SearchGrid").initialise();
+	@if(_parentSearchCtx == null){
+		var options = {width:window.innerWidth * 0.8 ,
+				increaseHeight:100,leftPanelWidthPercent:20,
+				submitUrl:'@_searchContext.createUrl',
+				id:'@(_searchContext.entityName + "_add-wizard")',
+				onCardReady: function(_currentCard){
+					
+					if(typeof(@(_searchContext.entityName + mode)_onCardReady)=='function'){
+						@(_searchContext.entityName + mode)_onCardReady(_currentCard);
+					}
+					
+				},
+				onSuccess: function(){
+					@(_searchContext.entityName + mode+"_SearchGrid").doSearch();
+				}
+				};
+		var  @(_searchContext.entityName + "_wizard") = $('#@(_searchContext.entityName + "_some-wizard")').wizard(options);
+	}
+	
+	$(window).bind('resize', function() {
+ 		$('#@(_searchContext.entityName  + mode +  "_jqGrid_list")').setGridWidth($('#@(_searchContext.entityName + mode + "_search")').width() + 20);
+ 	}).trigger('resize');
+	
+	$('#custom-modal-container').on('hidden', function(){
+		 $(this).removeData('modal');
+		 $(this).empty();
+	});
+	
+	
+	$(document).ready(function(){
+		$('#MerchantaddresetPassword').click(function(){
+			 var cell = $("#selectedRow").val();
+			 if(cell == "") {
+				 alert("Please make selection from grid");
+			 } else {
+				$.ajax({
+					url:'/resetPwd',
+					data: {query: cell},
+					datatype:'json',
+					type:'POST',
+					success: function(data) {
+						alert(data);
+			        }
+				});
+			 }	
+			});
+	});
+	
+	</script>
+ 
+ 
+ 

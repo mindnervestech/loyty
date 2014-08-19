@@ -1,0 +1,259 @@
+@(_searchContext: com.mnt.core.helper.SearchUI)
+
+
+<div class="well form-inline" style=" width: 1172px; margin-left: 20px;">  
+				
+				@for(fieldType <- _searchContext.getFilter.iterator){
+					@fieldType.ctype.name match{
+						case "INPUT" => {
+								  <input id="@(_searchContext.entityName +  fieldType.name)" name="@fieldType.name" placeholder="@fieldType.label" class="input-medium search-query" type="text">
+								    
+						}
+						case "SELECT_OPTION" => {
+							  <label class="control-label" for="selectbasic">@fieldType.label</label>
+							    <select id="@(_searchContext.entityName  +   fieldType.name)" name="@fieldType.name" class="input-xlarge search-on-select">
+								    @for(option<-fieldType.options){
+								    	<option>@option</option>
+								    }	
+							      
+							    </select>
+						}
+						case "DATE" => {
+									  	<label class="control-label" for="selectbasic">@fieldType.label</label>
+										<div data-provide="datepicker" class="input-append date datepicker" data-date="" data-date-format="dd-mm-yyyy">
+	    									<input id="@(_searchContext.entityName +  fieldType.name)" size="16" type="text" value="" readonly name="@(fieldType.name)"><span class="add-on"><i class="icon-calendar"></i></span>
+										</div>
+						}
+					
+					}
+					
+					
+				}			
+					  <label class="control-label" for="singlebutton">&nbsp;</label>
+					  <button id='@(_searchContext.entityName  +   "_searchButton")' onclick="return false;" name="searchButton" class="btn">Search</button>
+</div>
+<fieldset>
+
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="row-fluid">
+					<div class="control-group">
+					  <table id='@(_searchContext.entityName  +   "_jqGrid_list")'><tr><td/></tr></table> 
+						<div id='@(_searchContext.entityName  +   "_jqGrid_pager")' ></div> 
+
+					</div>
+					<div class="control-group">
+					  <label class="control-label" for="button1id">&nbsp;</label>
+					  <div class="controls">
+						@for(button <- _searchContext.getButtonActions.iterator){
+						
+					  		@if(button.visibility){
+						  		@button.target.name match{
+									case "MODAL" => {
+							  			<button type="button" id='@(_searchContext.entityName  +   button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+							  		case "NEW" => {
+							  			<button type="button" id='@(_searchContext.entityName  +   button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+							  		case "ACTION" => {
+							  			<button type="button" id='@(_searchContext.entityName  +   button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+							  		case "POPUP" => {
+							  			<button type="button" id='@(_searchContext.entityName  +   button.id)' class="btn btn-warning" >@button.label</button>
+							  		}
+						  		}
+					  		}
+					  	}
+					  </div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</fieldset>
+
+ 
+ 
+ 
+ 	<script type="text/javascript">
+	var @(_searchContext.entityName  +   "_SearchGrid") = {
+			_searchURL: "@_searchContext.searchUrl",
+			initialise: function (){
+				$('#@(_searchContext.entityName  +   "_jqGrid_list")').jqGrid({
+			
+			   	url:'@_searchContext.searchUrl',
+			   	height:121,
+			   	width: window.innerWidth*0.8,
+			   	datatype: 'json',
+			   	mtype: '',
+			   	colNames:[
+			             @for(col<-_searchContext.getColumn){
+			            	 '@col.colName' ,
+			             }
+			             @if(_searchContext.getGridActions !=null && _searchContext.getGridActions.size!=0){
+			             	'Action'
+						 }	
+			             ],
+			   	colModel :[
+						@for((col,index)<-_searchContext.getColumn.zipWithIndex){
+							{name:'@col.name', index:'@index', width:200},
+						}
+						@if(_searchContext.getGridActions !=null && _searchContext.getGridActions.size!=0){
+							{name:'action', index:'action', width:40,formatter:this.actionFormatter1, search:false, title:false}
+						}
+			     //{name:'action', index:'action', width:40,formatter:this.actionFormatter, search:false, title:false}
+			   	],
+			   	pagination : true,
+			   	pager: '#@(_searchContext.entityName  +   "_jqGrid_pager")',
+			   	rowNum:5,
+			   	rowList:[5,10,15],
+			   	viewrecords: true,
+			   	gridview: true,
+			   	multiselect: @_searchContext.isMultiSelectSearch,
+			   	caption:  '@("Search " +  _searchContext.entityName)',
+			   
+			   	onSelectRow: function(id){
+			   	},
+			   	ondblClickRow: function(rowid) {
+			   	},
+			   	loadComplete:function (data){
+				   	 $('a[id^="@(_searchContext.entityName)"'+'_gridAction'+']').each(function() {
+				   		$(this).click(function(e){
+				   			var id = $(this).attr('cell');
+				   			var _url = $(this).attr('url');
+				   			$.ajax({
+								type: "POST",
+								url: _url,
+								data: {query: id},
+								success: function(data){
+									
+								},
+								complete: function(jqXHR,status){
+									
+								}
+							});
+				   		}
+				   	 }
+			   	}	   
+			});
+			jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').jqGrid('bindKeys');
+			jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').jqGrid('navGrid','#@(_searchContext.entityName  +   "_jqGrid_pager")',{del:false,add:false,edit:false,search:false,refresh:false});
+			jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').on('reloadGrid',function (){
+				//TODO
+			});	
+			this.bindButtons();
+						
+		},
+		
+		actionformater:function(cellvalue, options, rowObject){
+			alert(cellvalue);
+			var show ="";
+			@for(gridAction<-_searchContext.getGridActions.iterator){
+				show = show + "<a id='@(_searchContext.entityName)' + '_gridAction' href='#' url='@gridAction.url' cell="+cellvalue+" ><img src='@gridAction.label'></a>"
+			}
+			return show;
+		},
+		doSearch: function(){
+			@(_searchContext.entityName + "_squrl")='';
+			@for(fieldType<-_searchContext.getFilter){
+				@(_searchContext.entityName + "_squrl") = @(_searchContext.entityName + "_squrl") + '@fieldType.name' +'='+ $('#@(_searchContext.entityName  +   fieldType.name)').val() +'&'
+			}
+			@(_searchContext.entityName + "_squrl") = @(_searchContext.entityName + "_squrl") + '1=1';
+			
+			jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').setGridParam({
+				mtype:'GET',
+				url:'@_searchContext.searchUrl' +"?"+@(_searchContext.entityName + "_squrl")
+			}).trigger('reloadGrid');
+			return false;
+			
+		},
+		selectedItem: function(){
+			var s=[];
+			@if(_searchContext.isMultiSelectSearch){
+				s = jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').jqGrid('getGridParam','selarrrow');
+					
+			}else{
+				s[0] = jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').jqGrid('getGridParam','selrow')
+			}
+			return s;
+		},
+		doCustomAction:function(_url){
+			s = this.selectedItem();
+			if(s.length == 0 ){
+				alert("Please mark selection from Grid");
+				return;
+			}
+			
+			$.ajax({
+				url:_url,
+				data: {query: s.toString()},
+				success: function(data) {
+					jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').setGridParam({
+						mtype:'GET',
+						url:'@_searchContext.searchUrl' +"?"+@(_searchContext.entityName + "_squrl")
+					}).trigger('reloadGrid');	
+				},
+				error: function(data) {
+					
+				}
+			})
+		},
+		
+		getParameterByName: function(name) {
+		    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+		    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+		},
+		
+		bindButtons: function(){
+			@(_searchContext.entityName +"_this") = @(_searchContext.entityName + "_SearchGrid");
+			$('#@(_searchContext.entityName  +   "_searchButton")').click(function(){
+				@(_searchContext.entityName +"_this").doSearch();
+			});
+			
+			
+			@for(button <- _searchContext.getButtonActions){
+				@if(button.visibility){
+			  		@button.target.name match{
+						case "ACTION" => {
+							$('#@(_searchContext.entityName  +   button.id)').click(function(){
+								@(_searchContext.entityName + "_this").doCustomAction("@button.url");	
+				  			});
+				  		}
+						case "POPUP" => {
+							
+							$('#@(_searchContext.entityName  +   button.id)').click(function(){
+								s = this.selectedItem();
+								if(s.length == 0 ){
+									alert("Please mark selection from Grid");
+									return;
+								}
+								_val = jQuery('#@(_searchContext.entityName  +   "_jqGrid_list")').jqGrid('getCell',s[0],1);
+								_id = @(_searchContext.entityName + "_this").getParameterByName("id");
+								_nameId = @(_searchContext.entityName + "_this").getParameterByName("name");
+								window.opener.$("#"+_id).val(s[0]);
+								window.opener.$("#"+_nameId).val(_val);
+								window.close();
+				  			});
+				  		}
+			  		}
+		  		}
+			}
+			
+			$(".search-query").keypress(function(event){
+				if(event.which == "13"){
+					@(_searchContext.entityName +"_this").doSearch();
+				}
+			});
+			$(".search-on-select").change(function(event){
+				@(_searchContext.entityName +"_this").doSearch();
+			});
+		}
+	}
+	
+	@(_searchContext.entityName + "_SearchGrid").initialise();
+	
+	
+	</script>
+ 

@@ -1,0 +1,115 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+GET     /set                        controllers.Application.setPassword()
+
+#Admin Status
+GET     /status						com.mnt.custom.module.admin.controllers.Admins.index()
+GET		/searchAdminMerchant		com.mnt.custom.module.admin.controllers.Admins.search()
+GET     /approve					com.mnt.custom.module.admin.controllers.Admins.approved()
+GET     /disapprove 				com.mnt.custom.module.admin.controllers.Admins.disapproved()
+
+#Registration
+POST	/registration				controllers.Application.createAccount()
+POST	/checkUserEmail				controllers.Application.checkUserEmailAvailability()
+POST	/changePassword				controllers.Application.changePassword()
+POST	/checkOldPassword			controllers.Application.checkOldPassword()
+POST    /resetPassword				controllers.Application.resetPassword()
+POST    /resetPwd					controllers.Application._resetPassword()
+POST	/changeMerchantCode			controllers.Application.resetMerchantCode()
+
+#Login Module
+GET     /login                  	controllers.Application.login()
+POST    /login                      controllers.Application.authenticate()
+GET		/profilePage				controllers.Application.profilePage()
+POST 	/upload						controllers.Application.upload()	
+
+#Logout
+GET     /logout                     controllers.Application.logout()
+
+#Forgot Password
+POST   /finduserid					controllers.Application.finduser()
+GET	   /forgot					    controllers.Application.forgotpassword()
+
+#Candy
+GET		/candy						com.mnt.custom.module.candy.controllers.Candies.index()
+POST	/createcandy				com.mnt.custom.module.candy.controllers.Candies.create()
+GET		/add-candy					com.mnt.custom.module.candy.controllers.Candies.createCandy()
+POST	/saveCandy					com.mnt.custom.module.candy.controllers.Candies.saveCandy()
+POST	/checkCandyCode				com.mnt.custom.module.candy.controllers.Candies.checkCandyCode()
+POST  	/checkExpiredDate			com.mnt.custom.module.candy.controllers.Candies.checkExpiredDate()
+GET		/showEditCandy				com.mnt.custom.module.candy.controllers.Candies.editCandyPopup()
+POST	/editCandy					com.mnt.custom.module.candy.controllers.Candies.editCandy()
+POST	/redeemCoupon				com.mnt.custom.module.candy.controllers.Candies.redeemYourCoupon()
+GET		/getCandyImage/:image		com.mnt.custom.module.candy.controllers.Candies.getCandyImage(image:String)
+GET		/getCandyGrayImage/:image	com.mnt.custom.module.candy.controllers.Candies.getCandyGrayImage(image:String)
+
+#Customer
+GET		/customer		 			com.mnt.custom.module.customer.controllers.Customers.index()
+POST	/createCustomer				com.mnt.custom.module.customer.controllers.Customers.create()
+GET		/searchCustomer				com.mnt.custom.module.customer.controllers.Customers.search()
+GET 	/showEditCustomer			com.mnt.custom.module.customer.controllers.Customers.showEdit()
+POST	/editUrlCustomer			com.mnt.custom.module.customer.controllers.Customers.edit()
+
+#Merchant
+GET		/merchant		 			com.mnt.custom.module.merchant.controllers.Merchants.index()
+POST	/createMerchant				com.mnt.custom.module.merchant.controllers.Merchants.create()
+GET		/searchMerchant				com.mnt.custom.module.merchant.controllers.Merchants.search()
+GET 	/showEditMerchant			com.mnt.custom.module.merchant.controllers.Merchants.showEdit()
+POST	/editUrlMerchant			com.mnt.custom.module.merchant.controllers.Merchants.edit()
+GET		/registration				controllers.Application.registration()
+POST	/emailAvailability      	com.mnt.custom.module.merchant.controllers.Merchants.emailAvailability()
+GET		/getMerchantImage/:image	com.mnt.custom.module.merchant.controllers.Merchants.getMerchantImage(image:String)
+POST	/checkuniquephone			com.mnt.custom.module.merchant.controllers.Merchants.checkUniquePhone()							
+
+GET		/stampit					com.mnt.custom.module.stamp.controllers.Stamps.index()
+GET		/getVisitCandies			com.mnt.custom.module.stamp.controllers.Stamps.getVisitCandies()
+GET		/getPointCandies			com.mnt.custom.module.stamp.controllers.Stamps.getPointCandies()
+POST    /stampOn					com.mnt.custom.module.stamp.controllers.Stamps.stampVisit()
+POST    /givePoints					com.mnt.custom.module.stamp.controllers.Stamps.stampPoint()
+POST    /redeemPoints				com.mnt.custom.module.stamp.controllers.Stamps.redeemPoints()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /landing					controllers.Application.landing()
+GET		/searchCandies				com.mnt.custom.module.candy.controllers.Candies.search()
+
+# Audit Report
+GET		/indexReport				com.mnt.custom.module.audit.controllers.Audits.index()
+POST	/getVisitData				com.mnt.custom.module.audit.controllers.Audits.showVisitReport()
+POST	/getPointData				com.mnt.custom.module.audit.controllers.Audits.showPointsReport()
+POST	/getStampsData				com.mnt.custom.module.audit.controllers.Audits.showStampsReport()
+POST	/visitProgramHealth			com.mnt.custom.module.audit.controllers.Audits.showVisitProgramHealth()
+POST	/pointProgramHealth			com.mnt.custom.module.audit.controllers.Audits.showPointProgramHealth()
+POST	/stampProgramHealth			com.mnt.custom.module.audit.controllers.Audits.showStampsProgramHealth()
+POST	/getRedeemData				com.mnt.custom.module.audit.controllers.Audits.showRedeemGraph()
+POST	/getCustomerData			com.mnt.custom.module.audit.controllers.Audits.showCustomerGraph()
+POST	/analyzeCustomerData		com.mnt.custom.module.audit.controllers.Audits.analyzeCustomer()
+POST	/avgExpenditure				com.mnt.custom.module.audit.controllers.Audits.averageExpenditure()
+
+GET	 	/getTime													    com.mnt.custom.mobile.Application.getTime()
+
+#Mobile APIs
+GET		/mobile/cities													com.mnt.custom.mobile.Application.cities(country:String, state:String)
+GET		/mobile/categories												com.mnt.custom.mobile.Application.categories(city:String)
+GET		/mobile/merchants												com.mnt.custom.mobile.Application.merchants()
+GET		/get-candy-icon/:image											com.mnt.custom.mobile.Application.getCandyImage(image:String)
+GET		/get-merchant-icon/:image										com.mnt.custom.mobile.Application.getMerchantImage(image:String)
+GET		/mobile/candiez													com.mnt.custom.mobile.Application.candiez()
+GET		/mobile/get-customer-registered-merchants/:phone  				com.mnt.custom.mobile.Application.getCustomerRegisteredMerchants(phone: String)
+GET		/mobile/get-merchant-program-for-customer/:merchantID/:phone 	com.mnt.custom.mobile.Application.getMerchantProgramForCustomer(merchantID:String, phone: String)
+POST	/mobile/stamp-on												com.mnt.custom.mobile.Application.stampOn()
+POST	/mobile/redeem-coupon											com.mnt.custom.mobile.Application.redeemCoupon()
+GET		/mobile/get-candiez-information-for-customer/:programID/:phone	com.mnt.custom.mobile.Application.getCandiezInformationForCustomer(programID:String, phone: String)
+GET		/mobile/register/:phone											com.mnt.custom.mobile.Application.register(phone: String)
+POST	/mobile/authenticate											com.mnt.custom.mobile.Application.authenticate
+POST	/mobile/merchant-password										com.mnt.custom.mobile.Application.merchantPassword
+GET		/mobile/all-city-candiez										com.mnt.custom.mobile.Application.candiezByCityAndCategory()
+POST	/mobile/merchant-position										com.mnt.custom.mobile.Application.updateMerchantPostion()
+POST	/mobile/merchant-code											com.mnt.custom.mobile.Application.updateMerchantCode()
+GET		/mobile/merchants-in-proximity/:lon/:lat/:meters				com.mnt.custom.mobile.Application.merchantsInProximity(lon: Double, lat:Double, meters: Double)
+POST	/mobile/customer-registration									com.mnt.custom.mobile.Application.customerRegistration
+GET		/mobile/myStamps/:phone											com.mnt.custom.mobile.Application.myStamps(phone: String)

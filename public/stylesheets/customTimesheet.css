@@ -1,0 +1,274 @@
+.clearfix {
+	float: left;
+}
+
+.well {
+  	float: left;	
+  	padding: 0 5px 5px;
+  	margin-bottom: 0px;
+  	background: none;
+	border: 0;
+	box-shadow: none;
+}
+
+.btn{
+	margin: 5px 0;
+}
+
+.tsMainDiv{
+	margin: 0 auto;
+}
+
+.timesheetInfoDiv{
+	color: #fff;
+	width: 95%;
+	float: left;
+	padding: 2px 30px;
+	border: 1px solid #fa9f61;
+	background-color: rgb(250, 167, 50);
+	background-image: linear-gradient(to bottom, rgb(251, 180, 80), rgb(248, 148, 6));
+}
+
+#empInfo{
+	float: left;
+	width: 600px;
+}
+
+#empInfo h5{
+	width: 270px;
+	float: left;
+	margin: 1%;
+}
+
+#empInfo h6{
+	float: left;
+	margin: 1% 1% 1% 18%;
+}
+
+#empInfo #employeeID{
+	width: 40px;
+	padding: 2px 4px;
+	margin: 0;
+}
+
+.goButton{
+	margin: 0px 0 0 5px;
+}
+
+#weekInfo{
+	float: right;
+	width: 400px;	
+	margin:4px 100px 0 0;
+	height: 30px;
+}
+
+#weekInfo h6{
+	float: left;
+	margin: 2px 8px 1px 0;
+}
+
+.weekInput{
+	width: 0px;
+	border: 0 !important;
+	padding: 0 !important;
+}
+
+#weekRange{
+	color: #333;
+	height: 18px;
+	float: left;
+	margin: 0px 0 0;
+	width: 215px;
+	border-radius: 4px;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition: border linear .2s, box-shadow linear .2s;
+	-moz-transition: border linear .2s, box-shadow linear .2s;
+	-o-transition: border linear .2s, box-shadow linear .2s;
+	transition: border linear .2s, box-shadow linear .2s;
+	padding: 2px 9px 4px;
+}
+
+.add-on{
+	border-radius: 5px !important;
+}
+
+.datepicker .cw{
+	cursor: pointer;
+}
+
+.datepicker table tr td.day:hover{
+	background: none;
+	cursor: no-drop;
+}
+
+#statusInfo{
+	float: right;
+	width: 40%;
+}
+
+#statusInfo h6{
+	float: left;
+	margin: 8px;
+}
+
+#statusInfo p{
+	float: left;
+	font-size: 12px;
+	margin: 1%;
+}
+
+.statusInput{
+	width: 50px;
+}
+
+.worksheetDiv{
+	width:95%;
+	float: left;
+	padding: 15px 30px;
+	background: url("images/ui-bg_glass_85_dfeffc_1x400.png1") repeat-x scroll 50% 50% rgb(255, 237, 203);
+}
+
+.worksheetHeader{
+	border-bottom: 1px solid;
+	padding-bottom: 10px;
+	float: left;
+	width: 100%;
+}
+
+.worksheetHeader h5{
+	float: left;
+}
+
+.worksheetHeader a{
+	float: right;
+	margin-right: 160px;
+}
+
+.reportingTable{
+	float: left;
+}
+
+.tableCss{
+	width: 100%;
+	float: left;
+	padding: 0 5px;
+	text-align: center;
+	margin: 10px 0 0;
+}
+
+.innerLabelDiv{
+	width: 510px;
+	float: left;
+}
+
+.innerInputDiv{
+	width: 515px;
+	float: left;
+}
+
+.innerHrsDiv{
+	float: left; 
+}
+
+.iconInput{
+	width: 25px;
+	float: left;
+	margin: 0;
+}
+
+.largeInput{
+	width: 190px;
+	float: left;
+	margin: 0;
+	padding: 4px !important;
+}
+
+.mediumInput{
+	width: 150px;
+	float: left;
+	margin: 0;
+	padding: 4px !important;
+}
+
+.mediumLabel{
+	width: 135px;
+	float: left;
+	margin: 0 5px;
+	padding: 4px !important;
+}
+.midLabel
+{
+	width: 90px;
+	float: left;
+	margin: 0 5px;
+	padding: 4px !important;
+}
+.checkBox
+{
+	margin-top: 8px;
+	margin-left: 38px;
+	margin-right: 52px;
+}	
+	
+.smallInput{
+	width: 50px;
+	float: left;
+	padding: 4px !important;
+	margin: 0;
+}
+
+.smallLabel{
+	width: 57px;
+	float: left;
+	padding: 4px !important;
+	margin: 0;
+}
+
+.totalHrs{
+	margin-top: 5px;
+}
+
+.actions{
+	float: left;
+	margin-left: 10px;
+}
+
+.timesheetRow_template{
+	display: none;
+}
+
+#addMore{
+	float: left;
+	margin: 2px 0 0 5px;
+}
+
+.addClassOnRow{
+	background-color: #3366FF;
+}
+
+.datepicker thead tr:first-child th.cw{
+	color: #fff;
+}
+
+.datepicker .cw{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.datepicker td, .datepicker th.dow{
+	font-size: 12px;
+}
+
+.input-append .add-on, .input-prepend .add-on{
+	padding: 4px 2px 0px 5px !important;
+}
+
+
+.searchDiv{
+	float:left;
+	width: 100%;
+}

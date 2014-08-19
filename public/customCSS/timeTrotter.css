@@ -1,0 +1,10 @@
+.nav>li>a,.nav>li>p{
+	color: #FFFFFF;
+}
+
+.show-link{background:url("../images/custom/show.png") no-repeat; padding:14px; padding-top:1px; margin-left:70px;}
+
+.customTextArea{
+	width: 500px !important;
+	height: 120px !important;
+}

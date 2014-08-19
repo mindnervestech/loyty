@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-responsive.css")">
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/fuelux.css")">
+<link rel="stylesheet"  href="@routes.Assets.at("stylesheets/fuelux-responsive.min.css")" />
+<link rel="stylesheet"  href="@routes.Assets.at("stylesheets/datepicker.css")" />
+<link rel="stylesheet"  href="@routes.Assets.at("stylesheets/jquery.Jcrop.css")" />
+
+<script src="@routes.Assets.at("javascripts/jquery.form.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/jquery.validate.min.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery.preimage.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery.Jcrop.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery.color.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery-ui-1.10.3.js")"></script>
+
+<style>
+.prev_container{
+	overflow: auto;
+	width: 200px;
+	height: 115px;
+	margin: 10%;
+}
+
+.candyImage{
+	margin-left: 12%;
+}
+.add-on{
+	cursor: pointer !important;;
+}
+
+.submitBtn{
+	width: 18%;
+	margin: 0% 80%;
+}
+
+</style>
+
+</head>
+<body>
+
+<div id="dialog" title="Crop Image" style="display: none;">
+
+</div>
+
+<div class="formClass">
+
+	<div id="loading1" style='position:fixed;
+    						top:50%;
+    						left:50%;
+    						z-index:2000;
+    						display: none;'>
+    	<img alt="loading1" src='@routes.Assets.at("images/loading.gif")'>
+    </div>
+    	
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4>Create Candy Program</h4>
+	</div>
+
+	<div class="modal-body">
+	<form id="candyForm" enctype="multipart/form-data" method="POST" action="/saveCandy">	
+		<div style="float: left;margin-right: 10px;">
+		<div class="control-group" style="float: left;margin-right: 10px;">
+			<div class="controls">
+				<input type="text" id="candy_code" placeholder="Code" name="code" required="required">
+			</div>
+		</div>
+		
+		<div class="control-group" style="float: left;margin-right: 10px;">
+			<div class="controls">
+				<input type="text" id="candy_description" placeholder="Description" name="name" required="required">
+			</div>
+		</div>
+		</div>
+		
+		<div class="control-group">
+			<div class="controls">
+				<div>
+	    			<input id="datepicker" class="add-on" size="16" type="text" value=""  name="valid_till" required placeholder="Valid Till" >
+				</div>
+			</div>
+		</div>
+		<div class="selectLoyalty">
+				<h5 class="h2div">Select Your Loyalty Type:</h5>
+			<div class="loyalty">	
+				<div class="loyaltyVisit"><input type="radio" id="candy_select_visit"  name="loyaltyType" value="VISIT" checked="checked"><b>Visit</b ></div>
+				<div class="loyaltyPoint"><input type="radio" id="candy_select_point" name="loyaltyType" value="POINT" label="Point"><b>Point</b></div>
+			</div>	
+		</div>
+		
+		<div id="visitSection">
+			<p><input type="text" id="candy_min_amt_visit" placeholder="Minimum Amount to Qualify a Visit" required="required" class="large" name="visits.minimum_amount_for_visit" ></p>
+			<div class="divBorder" style="float : left;">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_visit_0" placeholder="Visit No" required="required"  class="input-small" name="visits.visit_details[0].no_of_visit">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_visit_description_0" placeholder="Description" required="required" class="input-medium" name="visits.visit_details[0].description">
+				<p><input type="file" class="file" id="candy_visit_file_upload_0" name="visit_image[0]"></p>
+				<div class="candyImage">
+					<div id="prev_candy_visit_file_upload_0" style="width:100px;height:100px;overflow:hidden;"></div>
+				</div>
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_visit_file_upload_0_x" name="x0" />
+					<input type="hidden" id="prev_candy_visit_file_upload_0_y" name="y0" />
+					<input type="hidden" id="prev_candy_visit_file_upload_0_w" name="w0" />
+					<input type="hidden" id="prev_candy_visit_file_upload_0_h" name="h0" />
+				<br/>
+			</div>
+
+			<div class="divBorder" style="float:left;">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_visit_1" placeholder="Visit No"  class="input-small" name="visits.visit_details[1].no_of_visit">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_visit_description_1" placeholder="Description"  class="input-medium" name="visits.visit_details[1].description">
+				<p><input type="file" class="file" id="candy_visit_file_upload_1" name="visit_image[1]"></p>
+				<div class="candyImage">
+					<div id="prev_candy_visit_file_upload_1" style="width:100px;height:100px;overflow:hidden;"></div>
+				</div>	
+				<br/>
+				
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_visit_file_upload_1_x" name="x1" />
+					<input type="hidden" id="prev_candy_visit_file_upload_1_y" name="y1" />
+					<input type="hidden" id="prev_candy_visit_file_upload_1_w" name="w1" />
+					<input type="hidden" id="prev_candy_visit_file_upload_1_h" name="h1" />
+			</div>
+			
+			<div class="divBorder" style="float:left;">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_visit_2" placeholder="Visit No"  class="input-small" name="visits.visit_details[2].no_of_visit">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_visit_description_2" placeholder="Description"  class="input-medium" name="visits.visit_details[2].description">
+				<p><input type="file" class="file" id="candy_visit_file_upload_2" name="visit_image[2]"></p>
+				<div class="candyImage">	
+					<div id="prev_candy_visit_file_upload_2" style="width:100px;height:100px;overflow:hidden;"></div>
+				</div>
+				
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_visit_file_upload_2_x" name="x2" />
+					<input type="hidden" id="prev_candy_visit_file_upload_2_y" name="y2" />
+					<input type="hidden" id="prev_candy_visit_file_upload_2_w" name="w2" />
+					<input type="hidden" id="prev_candy_visit_file_upload_2_h" name="h2" />
+			</div>
+
+			<div class="divBorder" style="float:left;">			
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_visit_3" placeholder="Visit No"  class="input-small" name="visits.visit_details[3].no_of_visit">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_visit_description_3" placeholder="Description"  class="input-medium" name="visits.visit_details[3].description">
+				<p><input type="file" class="file" id="candy_visit_file_upload_3" name="visit_image[3]"></p>	
+				<div class="candyImage">
+					<div id="prev_candy_visit_file_upload_3" style="width:100px;height:100px;overflow:hidden;"></div><br/>
+				</div>
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_visit_file_upload_3_x" name="x3" />
+					<input type="hidden" id="prev_candy_visit_file_upload_3_y" name="y3" />
+					<input type="hidden" id="prev_candy_visit_file_upload_3_w" name="w3" />
+					<input type="hidden" id="prev_candy_visit_file_upload_3_h" name="h3" />
+			</div>			
+		</div>
+		
+		<div id="pointSection" style="display: none;">
+		
+		<p><input type="text" id="candy_min_amt_point" required rel="popover" placeholder="Minimum Amount to Qualify a Point"  class="large" name="points.minimum_amount_for_point" required="required"></p>
+			
+			<div class="divBorder">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_point_0" placeholder="No of Point"  class="input-small" name="points.point_details[0].no_of_point">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_point_description_0" placeholder="Description"  class="input-medium" name="points.point_details[0].description">
+				<p><input type="file" class="file" id="candy_point_file_upload_0" name="points_image[0]"></p>
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_0" style="width:100px;height:100px; overflow:hidden;"></div>
+				</div>				
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_point_file_upload_0_x" name="px0" />
+					<input type="hidden" id="prev_candy_point_file_upload_0_y" name="py0" />
+					<input type="hidden" id="prev_candy_point_file_upload_0_w" name="pw0" />
+					<input type="hidden" id="prev_candy_point_file_upload_0_h" name="ph0" />
+				<br/>
+			</div>
+			
+			
+			<div class="divBorder">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_point_1" placeholder="No of Point"  class="input-small" name="points.point_details[1].no_of_point">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_point_description_1" placeholder="Description"  class="input-medium" name="points.point_details[1].description">
+				<p><input type="file" class="file" id="candy_point_file_upload_1" name="points_image[1]"></p>
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_1" style="width:100px;height:100px; overflow:hidden;"></div>
+				</div>
+			
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_point_file_upload_1_x" name="px1" />
+					<input type="hidden" id="prev_candy_point_file_upload_1_y" name="py1" />
+					<input type="hidden" id="prev_candy_point_file_upload_1_w" name="pw1" />
+					<input type="hidden" id="prev_candy_point_file_upload_1_h" name="ph1" />
+				<br/>
+			</div>
+			
+			<div class="divBorder">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_point_2" placeholder="No of Point"  class="input-small" name="points.point_details[2].no_of_point">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_point_description_2" placeholder="Description"  class="input-medium" name="points.point_details[2].description">
+				<p><input type="file" class="file" id="candy_point_file_upload_2" name="points_image[2]"></p>
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_2" style="width:100px;height:100px; overflow:hidden;"></div>
+				</div>
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_point_file_upload_2_x" name="px2" />
+					<input type="hidden" id="prev_candy_point_file_upload_2_y" name="py2" />
+					<input type="hidden" id="prev_candy_point_file_upload_2_w" name="pw2" />
+					<input type="hidden" id="prev_candy_point_file_upload_2_h" name="ph2" />
+				<br/>
+			</div>
+			
+			<div class="divBorder">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_no_of_point_3" placeholder="No of Point"  class="input-small" name="points.point_details[3].no_of_point">
+				<input type="text" style="margin : 0% 0% 2%; id="candy_point_description_3" placeholder="Description"  class="input-medium" name="points.point_details[3].description">
+				<p><input type="file" class="file" id="candy_point_file_upload_3" name="points_image[3]"></p>
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_3" style="width:100px;height:100px; overflow:hidden;"></div>
+				</div>
+				<!-- set hidden fields -->
+					<input type="hidden" id="prev_candy_point_file_upload_3_x" name="px3" />
+					<input type="hidden" id="prev_candy_point_file_upload_3_y" name="py3" />
+					<input type="hidden" id="prev_candy_point_file_upload_3_w" name="pw3" />
+					<input type="hidden" id="prev_candy_point_file_upload_3_h" name="ph3" />
+				<br/>
+			</div>
+			
+		</div>
+
+	<div class="submitBtn">
+		<input type="submit" id="addToCandy" class="btn btn-success" value="Add Candy">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+	</form>
+	</div>
+</div>
+</body>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	function checkValue()
+	{
+		alert("in check values...");
+		
+	}
+	
+	
+	$('input[id=candy_select_visit]').change(function(){
+		$("#pointSection").css("display","none");
+		$("#visitSection").css("display","block");
+	});
+	
+	$('input[id=candy_select_point]').change(function(){
+		$("#visitSection").css("display","none");
+		$("#pointSection").css("display","block");
+	});
+	
+	$('.file').preimage();
+	
+	$('#candyForm').submit(function(event) {
+		if($(this).valid()){
+			$(this).ajaxSubmit({
+				beforeSend: function(){
+			   		$("#loading1").css('display','block');
+				 },
+				success: function(resp) {
+					$("#loading1").css('display','none');
+		    	},
+		    	error: function(resp) {
+		    		
+		    	}
+			});
+		}
+	});
+	
+	$(function() {
+		$("#datepicker").datepicker({
+			dateFormat: "dd-mm-yy",
+			onSelect: function(dateText, inst) {
+				var date = $.datepicker.parseDate(inst.settings.dateFormat || $.datepicker._defaults.dateFormat, dateText, inst.settings);
+				var dateText1 = $.datepicker.formatDate("D, d M yy", date, inst.settings);
+				date.setDate(date.getDate() + 7);
+				var dateText2 = $.datepicker.formatDate("D, d M yy", date, inst.settings);
+				$("#dateoutput").html("Chosen date is <b>" + dateText1 + "</b>; chosen date + 7 days yields <b>" + dateText2 + "</b>");
+			}
+		});
+	});
+	
+	$("#candyForm").validate({
+		rules : {
+			code : {
+				required:true,
+				remote : {
+					url:"/checkCandyCode",
+					type : "post",
+					data : {
+						q : function(){
+							return $("#candy_code").val(); 
+					        	}
+						    }
+			  			 }
+				   },		
+			valid_till:{
+				required:true,
+				checkExpired:true	
+			},
+			name:{
+				required:true
+			},
+			"visits.minimum_amount_for_visit":{
+				digits:true
+			},	
+			"visits.visit_details[0].no_of_visit":{
+				digits:true
+			},
+			"visits.visit_details[1].no_of_visit":{
+				digits:true
+			},
+			"visits.visit_details[2].no_of_visit":{
+				digits:true
+			},
+			"visits.visit_details[3].no_of_visit":{
+				digits:true
+			},
+			
+			"points.minimum_amount_for_point":{
+				digits:true
+			},
+		
+			"points.point_details[0].no_of_point":{
+				digits:true
+			},
+			"points.point_details[1].no_of_point":{
+				digits:true
+			},
+			"points.point_details[2].no_of_point":{
+				digits:true
+			},
+			"points.point_details[3].no_of_point":{
+				digits:true
+			},
+		},
+		
+		messages : {
+			code : {
+				required:"Please Enter The Code",
+				remote : "Not Available"					
+			},
+			name:{
+				required:"Please Enter The Description"
+			},
+			valid_till:{
+				required:"Please Enter Valid Till Date",
+				checkExpired:"Please Enter Valid Date"
+			},
+		},
+		
+		errorClass : "help-block",
+		//errorElement : "span",
+		highlight: function (element) {
+		    $(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		     element
+		        .addClass('valid')
+		        .closest('.control-group').removeClass('error').addClass('success');
+		}
+	});
+	//Check Expired Date
+	 jQuery.validator.addMethod("checkExpired", function(values, element) {
+		var date = new Date();
+		console.log(date.getTime());	
+		var from = values; 
+		var numbers = from.match(/\d+/g); 
+		var expired_date = new Date(numbers[2], numbers[1]-1, numbers[0]); //Date("yyyy/mm/dd")
+		console.log(expired_date.getTime());
+	 	if(date.getTime() < expired_date.getTime())
+		{
+			return true;
+		}
+		else
+		{	 
+			return false;
+		} 		
+	},"");
+	
+});
+</script>
+</html>

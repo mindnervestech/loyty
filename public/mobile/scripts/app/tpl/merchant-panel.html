@@ -1,0 +1,60 @@
+<div class="span12">
+<h2>merchants</h2>
+	<div style="padding-top: 12px;">
+			    <%	_.each(rc,function(item, key, list) { %>
+			    
+			    	
+			    
+			    	<a style="background-color: <%=color[key+0 % colorCount]%>" data-merchantId="<%=item.cid%>" 
+			    		class="merchantSquare tile custompeek">
+			    		<div class="tile custom image" style="background-color: <%=color[key+0 % colorCount]%>">
+		         		<img  src="/get-merchant-icon/<%=item.attributes.merchantImage%>" style="width: 225px;height: 110px;">
+			      		</div>
+			      		<div class="tile wide text" style="margin-top: -120px;position: relative;width: inherit !important;background-color: <%=color[key+0 % colorCount]%>">
+			      			<img src="/assets/mobile/images/post-it.png" style="width: inherit;height: 110px;left: 0px;position: absolute;margin-top: -20px;"/>
+			         				<div style="position:absolute;left:0px;top:18px;width: 225px;" >
+			         						<ul style="color: #680A9C !important;font-family;">
+			         						<%if(item.attributes.featured.length > 0) {%>
+			         							<li>
+			         							<font style="font-size: small;color: #680A9C !important;font-family: cursive!important;text-decoration:underline; font-style:oblique; opacity: 1;" >
+			         								<%=item.attributes.featured[0].candiez[0].candyDescription%> 
+			         								
+			         								<% if(item.attributes.featured[0].programType == 'VISIT') { %>
+			         									at <%=item.attributes.featured[0].candiez[0].number%> visit
+			         								<% } %>
+			         								
+			         								<% if(item.attributes.featured[0].programType == 'POINT' ) { %>
+			         									on <%=item.attributes.featured[0].candiez[0].number%> points
+			         								<% } %>	
+			         							</font>
+			         							 </li>
+			         						<%}%>	
+			         						<%if(item.attributes.featured.length > 1) {%> 
+			         							 <li>
+			         							<font style="font-size: small;color: #680A9C !important;font-family: cursive!important;text-decoration:underline; font-style:oblique; opacity: 1;" >
+			         								<%=item.attributes.featured[1].candiez[0].candyDescription%> 
+			         								
+			         								<% if(item.attributes.featured[1].programType == 'VISIT') { %>
+			         									at <%=item.attributes.featured[1].candiez[0].number%> visit
+			         								<% } %>
+			         								
+			         								<% if(item.attributes.featured[1].programType == 'POINT' ) { %>
+			         									on <%=item.attributes.featured[1].candiez[0].number%> points
+			         								<% } %>	
+			         							</font>
+			         							 </li>
+			         						<%}%>		 
+			         						</ul>
+			         						
+			         					<font style="position: absolute;left: 10px;top: 70px;font-size: smaller;color: #680A9C !important;font-family: cursive!important;text-decoration:underline;" >
+			         							Click for details
+			         						</font>
+			         				</div>
+			         	</div>
+					</a>
+			    <%	}); %>
+	<div>	
+</div>	
+        
+
+	  

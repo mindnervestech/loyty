@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header" />
+
+    
+    
+    <ScrollView
+        android:id="@+id/my_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="center" >
+
+            <LinearLayout
+                android:id="@+id/loginwindow"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/grid_brick_bg"
+                android:descendantFocusability="beforeDescendants"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/mobile"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:hint="Enter Mobile No."
+                    android:inputType="number"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:text="9028022291"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+                <!-- <View
+                    android:id="@+id/linearLay6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/darker_gray" /> -->
+
+                <TextView
+                    android:id="@+id/abc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="00"
+                    android:textSize="20dp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/mycity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginwindow"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="-15dp"
+                android:src="@drawable/activatebtn" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

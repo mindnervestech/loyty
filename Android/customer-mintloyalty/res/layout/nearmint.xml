@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.agimind.widget.SlideHolder xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slideHolder"
+    android:layout_width="fill_parent"
+    android:background="@drawable/background"
+    android:layout_height="fill_parent"
+    tools:context=".NearMintActivity" >
+    <ScrollView
+        android:layout_width="125dp"
+        android:id="@+id/slideMenu"
+        android:layout_height="fill_parent"
+        android:background="#4A6075" >
+    </ScrollView> 
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+         android:background="@drawable/header_bar"
+         >		
+         
+         
+         <ImageView
+		      android:id="@+id/candy"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_alignParentLeft="true"
+		      android:layout_centerVertical="true"
+		      android:layout_marginLeft="5dp"
+		      android:scaleType="centerCrop"
+              android:cropToPadding="true"
+		      android:src="@drawable/header_logo"
+		      android:textStyle="bold" />		
+         <ImageView
+              android:id="@+id/menuicon"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:layout_marginRight="14dp"
+              android:cropToPadding="true"
+              android:scaleType="centerCrop"
+              android:src="@drawable/menu_icon"
+              android:textStyle="bold" />		  		 		
+       </RelativeLayout> 
+    <LinearLayout
+        android:id="@+id/refresh_match_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:visibility="visible" >
+   <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="Distance- "
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+         <TextView
+            android:id="@+id/distancemeter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="2500 meter"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+        
+        </LinearLayout>
+ 
+        <SeekBar
+            android:id="@+id/seekbar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:progress="2000"
+            android:max="3800"
+            android:progressDrawable="@drawable/progressbar"
+            android:secondaryProgress="2000" />
+ 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="6" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingLeft="@dimen/padding_small"
+                android:text="200m"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+ 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:text="2000m"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:paddingRight="@dimen/padding_small"
+                android:text="4000m"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+          
+        </LinearLayout>
+    </LinearLayout>
+     <ListView
+     android:id="@+id/merchantview"
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent"  
+     android:dividerHeight="8.0sp"
+     android:layout_marginLeft="5dp"
+     android:layout_marginRight="5dp"
+     android:layout_marginTop="10dp"
+     android:horizontalSpacing="8dp" />
+ 
+</LinearLayout>
+</com.agimind.widget.SlideHolder>

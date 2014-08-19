@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="155dp"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical" >
+     
+<LinearLayout
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="155dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal" >
+    		  
+   <ImageView android:id="@+id/image"               
+                android:layout_width="180dp"                     
+                android:layout_marginLeft="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" 
+                android:layout_marginRight="5dp"  
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"          
+                android:layout_height="100dp"/>      
+    
+        <LinearLayout        
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            
+			    <TextView
+			        android:id="@+id/name"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:singleLine="true"
+			        android:textSize="16dp"
+			        android:textStyle="bold"
+			        android:textColor="#666362" />
+			   			    
+			    <TextView
+			        android:id="@+id/adress"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="14dp"
+			        android:layout_centerInParent="true"
+			        android:textColor="@android:color/darker_gray" />
+			    <TextView
+			        android:id="@+id/city"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="14dp"
+			        android:layout_centerInParent="true"
+			        android:textColor="@android:color/darker_gray" />
+			
+			     <TextView
+			        android:id="@+id/pin"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="13dp"
+			        android:maxLength="120"
+			        android:maxLines= "2"
+			        android:textColor="@android:color/darker_gray" />
+
+	    </LinearLayout>
+ 
+ </LinearLayout>    
+
+</LinearLayout>

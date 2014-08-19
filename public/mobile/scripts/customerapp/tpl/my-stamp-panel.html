@@ -1,0 +1,59 @@
+<div data-role="header">
+    <h1>My Stamps</h1>
+</div><!-- /http://view.jquerymobile.com/1.3.2/dist/demos/widgets/listviews/ -->
+	  
+<div data-role="content" >
+    <% var  count = 0;%>
+					
+	<%	_.each(rc,function(item, key, list) { %>
+		<% if((key) % 3 == 0) {%>
+			<div class="row">
+		<% close = 0; }%>
+		
+		
+		<div class="col-xs-4" style="position: relative;">
+			<% if(item.isMileStone && item.stampURL != '') {%>
+				<% if(item.canBeStamped) {%>
+					<a data-index="<%=item.index %>" class="redeemable"> <img id="stamp_<%=item.index %>" data-index="<%=item.index %>" class="redeemable img-circle img-responsive" src="/get-candy-icon/<%=item.stampURL%>"/><br/></a>
+					<img style="position:absolute;left:0px;top:0px" class="smiley img-responsive" src="images/smiley.png"/>
+				<% } else {%>
+					<img id="stamp_<%=item.index %>" class="img-circle img-responsive" src="/get-candy-icon/<%=item.stampURL%>"/><br/>
+					<img style="position:absolute;left:0px;top:0px;display:none;" class="stamp_<%=item.index %>_smiley img-responsive" src="images/smiley.png"/>
+				<% } %>	
+					
+			<% } else if(item.isSealed) {%>
+				<span class="badge"><%=item.index %></span>
+				<img id="stamp_<%=item.index %>" class="img-circle img-responsive" src="images/seal_stamp.png"/><br/>
+			<% } else if(item.canBeStamped){%>
+				<span class="badge"><%=item.index %></span>
+				<a data-index="<%=item.index %>" class="stampable"><img id="stamp_<%=item.index%>" data-index="<%=item.index %>" class="stampable img-circle img-responsive" src="images/empty_stamp.png"/></a><br/>
+			<% } else {%>
+				<span class="badge"><%=item.index %></span>
+				<img id="stamp_<%=item.index %>" class="img-circle img-responsive" src="images/empty_stamp.png"/><br/>
+			<% } %>
+			 		
+		</div>	
+		
+		<% if((key + 1) % 3 == 0 ) {%>
+			</div>
+			<% close = 1;%>
+		<% }%> 
+		
+         
+   <% count++;}); %>
+   <% if(close == 0 ) {%>
+		</div>
+	<% }%>
+</div><!-- /content -->
+
+	<div class="modal-body" >
+		  <p>Enter Merchant Code<p>
+		  
+		  <input id="merchantCode" type="password" name="merchantCode"/>
+		  <input id="stampButton" type="button" value="Stamp"/>
+		  <input type="hidden" id="programID" name="programID">
+		  <input type="hidden" id="index" name="index">
+		  <input type="hidden" id="type" name="type">
+		  <p id="message-area"><p>
+	</div>
+   

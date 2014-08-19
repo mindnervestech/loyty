@@ -1,0 +1,89 @@
+@CHARSET "ISO-8859-1";
+
+body{
+	color: #fff !important;
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, Sans-Serif !important;
+}
+
+.row{
+	margin-left: 2% !important;
+}
+
+
+.carousel.flipview .carousel-control{
+	top: 50%;
+}
+
+.section1{
+	width: 25%;
+	float: left;
+	height: 100%;
+}
+
+.panorama-section h2{
+	margin-left: 3%;
+	font-size: 20px;
+}	
+
+.bg-color-blue{
+	background: url(../images/background_bg.jpg) no-repeat center !important;
+}
+
+.respCandiesDiv{
+	margin-left: 0px !important;
+}
+
+.respCandyA{
+	background: url(../images/background_bg.jpg) no-repeat center !important;
+}
+
+.respCandyA2{
+	background: url(../images/background_bg.jpg) no-repeat center !important;
+	color: #fff;
+}
+
+.respCandyA:HOVER,.respCandyA2:HOVER{
+	border-color: #fff !important;	
+}
+
+.respCandyImgL{
+	width: 156px;
+}
+
+.respCandyImgDiv{
+	float: left;
+	width: 72%;
+	background: transparent !important;
+}
+.respCandyImgDiv2{
+	float: left;
+	width: 72%;
+	background: transparent !important;
+}
+
+.respCandyImgInnerDiv{
+	float: right;
+}
+
+.imgInnerDiv{
+ 	float: left;
+ 	width: 75px;
+}
+
+.imgInnerDiv span{
+	position: absolute;
+}
+
+.respCandyImg{
+	width: 100%;
+}
+
+.candyDesc{
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.respCandyDesc h5{
+	font-size: 95% !important;
+	font-weight: bold;
+}

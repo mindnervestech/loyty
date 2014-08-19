@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout2"
+    android:background="@drawable/grid_brick_bg"
+    android:orientation="vertical" >
+    
+   <LinearLayout        
+            android:id="@+id/layout" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+    
+     <ImageView android:id="@+id/image"               
+                android:layout_width="140dp"                     
+                android:layout_marginLeft="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY" 
+                android:layout_marginRight="5dp"  
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"          
+                android:layout_height="100dp"/>      
+    
+        <RelativeLayout        
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/inside_brick"
+            android:orientation="vertical" >
+             <RelativeLayout
+                 android:id="@+id/namelaout"
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
+                 android:layout_marginTop="10dp"
+                
+             >
+            
+			    <TextView
+			        android:id="@+id/name"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="18dp"
+			        android:textStyle="bold"
+			        android:layout_centerHorizontal="true"
+			        android:paddingLeft="2dp"
+			        android:gravity="center_horizontal"
+			        android:paddingRight="2dp"
+			        android:textColor="#d35400" />
+			   			    
+			    </RelativeLayout>
+			      <RelativeLayout
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
+                 android:layout_below="@+id/namelaout"
+                 android:layout_alignParentBottom="true"
+             >
+			    
+			    <TextView
+			        android:id="@+id/adress"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="14dp"
+			        android:textColor="#d35400"
+			        android:paddingLeft="2dp"
+			        android:paddingBottom="2dp"
+			        android:text="Location"
+			        android:layout_alignParentLeft="true"
+		            android:layout_alignParentBottom="true"
+			      />
+			     </RelativeLayout> 
+			    	    </RelativeLayout>
+	    </LinearLayout> 
+</LinearLayout>

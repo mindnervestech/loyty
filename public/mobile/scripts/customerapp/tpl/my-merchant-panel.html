@@ -1,0 +1,25 @@
+<div data-role="header">
+    <h1>My Merchants</h1>
+</div><!-- /http://view.jquerymobile.com/1.3.2/dist/demos/widgets/listviews/ -->
+	  
+<div data-role="content" >
+    <ul  data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+    	<%	_.each(rc,function(item, key, list) { %>
+			<li  data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-thumb ui-first-child ui-btn-up-c">
+				<div  class="ui-btn-inner ui-li">
+					<div class="ui-btn-text">
+						<a  data-value="<%=item.attributes.merchantId%>" href="#mycandiez" class="my-merchant ui-link-inherit">
+							<img src="/get-merchant-icon/<%=item.attributes.merchantImage%>" class="ui-li-thumb">
+							<h2 class="ui-li-heading"><%=item.attributes.merchantName%></h2>
+							<p class="ui-li-desc"><%=item.attributes.merchantAddress%></p>
+			 			</a>
+					</div>
+					<span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span>
+				</div>
+			</li>
+		<% })%>
+    
+    </ul>
+      
+</div><!-- /content -->
+

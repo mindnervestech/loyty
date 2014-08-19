@@ -1,0 +1,585 @@
+@(customer_id:String)
+
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/anything/anythingslider.css")" />
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/anything/colorbox.css")" />
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/anything/custom.css")" />
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/anything/page1.css")" />
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/anything/prettify.css")" />
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/anything/theme-metallic.css")" />
+<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootmetro/bootmetro.css")"/>
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-responsive.css")">
+<link rel="stylesheet" href="@routes.Assets.at("stylesheets/jquery.sBubble-0.1.1.css")">
+             
+<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/bootbox.min.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/anything/jquery.anythingslider.fx.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/anything/jquery.anythingslider.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/anything/jquery.colorbox-min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/anything/prettify.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.sBubble-0.1.1.js")"></script>
+
+<style>
+.listview-item {
+	width: 41%;
+	cursor: auto;
+}
+
+.cursor-pointer {
+	cursor: pointer !important;
+}
+
+.listview.grid-layout{
+	width: 100%;
+}
+.listview-item {
+margin-right: 4% !important;
+}
+
+.listview-item:hover {
+cursor: auto;
+border: solid 3px #225a68;
+}
+
+.listview-item.selected:before {
+position: absolute;
+top: 0;
+right: 0px;
+z-index: 1002;
+font-family: 'icomoon';
+color: #E9F11F;
+content: "\263B";
+font-size: 31px;
+margin-top: -1px;
+margin-right: -5px;
+
+}
+</style>
+
+
+<div id="milestone-confirm-dialog" title="Want to Redeem Your Coupon?" style="display: none;">
+	<input type="hidden" id="milestone">
+	<input type="hidden" id="candyId">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0; zoom:3;"></span>
+		Do You Want to Redeem Your Coupon?
+	</p>
+</div>
+
+<div id="candy-confirm-dialog" class="candy-confirm-dialog" title="Want to Continue?" style="display: none;">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0; zoom:3;"></span>
+		Do You Want to Continue?
+	</p>
+</div>
+
+<div id="point-confirm-dialog" title="Want to Continue?" style="display: none;">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0; zoom:3;"></span>
+		Do You Want to Continue?
+	</p>
+</div>
+<script id="templatePoint"  type="text/x-handlebars-template">
+		
+		{{#candies}}
+					<form class="form-container2">
+					<h2 style="text-align:left;float:left;display: inline;">{{customerData.candy.name}}</h2>
+					<h2 style="text-align:right;float:right; display: inline;">Valid Till: {{dateFormat customerData.candy.valid_till format="DD-MM-YYYY"}}</h2>
+					
+					<div id="pointGauge" style="width:200px; height:160px;margin: 0% 5%;float: left;"></div>
+					<div style="padding: 12% 0%;">
+						<input type='text' id='amount_add'  placeholder='Enter Amount Here'>
+						<input type='button' id='submit_amount' candyId="{{customerData.candy.id}}" class='btn btn-success gobtn' value='GO'>
+					
+						<div><i>( 1 point = {{ customerData.candy.points.minimum_amount_for_point}} )</i></div>
+					</div>
+					
+					{{#ifCond customerData.candy.loyaltyType "POINT"}}
+						<div class="listview grid-layout">
+							{{#pointlist customerData}}{{/pointlist}}
+						</div>
+					{{/ifCond}}
+					</form>
+		{{/candies}}	
+		
+</script>
+<script id="templateHB" type="text/x-handlebars-template">
+		<ul id="slider3">
+				{{#candies}}
+					{{#ifCond customerData.candy.loyaltyType "VISIT"}}
+						<li>
+							<div class="candies" >
+								<div class="candiesImG"></div>
+									<form class="form-container2">
+										<h2 style="text-align:left;float:left;display: inline;">{{customerData.candy.name}}</h2>
+					 					<h2 style="text-align:right;float:right; display: inline;">Valid Till: {{dateFormat customerData.candy.valid_till format="DD-MM-YYYY"}}</h2>
+					 					{{#list customerData}}{{/list}}
+					 				</form>
+								</div>
+						</li>	
+					{{/ifCond}}
+				{{/candies}}	
+		</ul>
+		<script> $('#slider3').anythingSlider({expand:true,theme : 'metallic',});</script>
+		
+</script>
+<button type="button" class="close" data-dismiss="modal">&times;</button>
+<div class="modal-header">
+	<div class="radiodiv form-container1 no-border">
+		<div>
+			<h5 class = "h2div">Loyalty Type </h5>
+		</div>
+	<div class="btn-group" data-toggle="buttons-radio">	
+		<div class="loyalty">			
+			<button type="button" id="stamp_select_visit" data-toggle="button" name="stamp_select_visit" value="VISIT" class="btn btn-primary" checked="checked">Visit</button>
+		</div>
+		<div class="loyalty">
+			<button type="button" id="stamp_select_point" name="stamp_select_point" value="POINT" class="btn btn-primary">Point</button>
+		</div>
+	</div>		
+	</div>
+
+
+<div class="modal-body">
+	<div id="visitSection">
+		<div id="stampBody"></div>
+	</div>
+	<div id="pointSection" style="display: none;">
+		<div id="stampBody1"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+			Handlebars.registerHelper('list', function(customerData, options) {
+				
+				var out = "<ul class='stampImagesUL'>";
+				howmany = customerData.howMany;
+				howmanycount = customerData.howMany;
+				var visitPerLap;
+				var prevMilestoneAt=0,clickindex=0;
+				var milestoneAt;
+				var noOfTotalVisit = customerData.noOfVisitImage;
+				
+				for(var _visit=0; _visit < noOfTotalVisit ; _visit++){
+					
+					milestoneAt = customerData.candy.visits.visit_details[_visit].no_of_visit;
+					
+					if(_visit > 0) {
+						visitPerLap = customerData.candy.visits.visit_details[_visit].no_of_visit - customerData.candy.visits.visit_details[_visit-1].no_of_visit;
+					} else {
+						visitPerLap = customerData.candy.visits.visit_details[_visit].no_of_visit;
+						milestoneAt = customerData.candy.visits.visit_details[_visit].no_of_visit;
+					}
+					
+					if(_visit != 0){
+						prevMilestoneAt = customerData.candy.visits.visit_details[_visit - 1].no_of_visit;  
+					}
+					
+					
+		  			for(var i=0 ; i < visitPerLap ; i++) {
+		  				clickindex = prevMilestoneAt + i;
+		  				if(howmany > 0){
+		  					out = out + "<li class='stampImagesLI1'><img id='"+customerData.candy.id+"' src='assets/images/seal_stamp.png' /></li>";
+		  					howmany--;
+		  					continue;
+		  				}else{
+		  					if(howmanycount == clickindex){
+		  						out = out + "<li class='stampImagesLI'><img class='stamps' clickindex='"+clickindex+"' id='"+customerData.candy.id+"' src='assets/images/empty_stamp.png'/></li>";
+		  					}
+		  					else{
+		  						out = out + "<li class='stampImagesLI1'><img id='"+customerData.candy.id+"' src='assets/images/empty_stamp.png'/></li>";
+		  					}
+		  				}
+		  			}
+		  			if(howmanycount >= milestoneAt){
+		  				out = out + "<li  milestone='"+ milestoneAt +"' candyId = '"+customerData.candy.id+"' class='stampImagesLICandy milestone disabled' ><img  src='/getCandyImage/"+customerData.candy.visits.visit_details[_visit].visit_image+"' style='width:auto/9;height:auto;margin: 0%;'/><img class='overlayImage elligibleCandy' src='assets/images/0056.gif' />"
+		  				out = out + "<div class='candyContent' style='display:none;' ><p>" + customerData.candy.visits.visit_details[_visit].description + "</p>" + "<p> at " + customerData.candy.visits.visit_details[_visit].no_of_visit + " visit</p> </div>" + "</li>";
+		  			}
+		  			else if(howmanycount < milestoneAt){
+	  					out = out + "<li  milestone='"+ milestoneAt +"' candyId = '"+customerData.candy.id+"' class='stampImagesLICandy' ><img  src='/getCandyImage/"+customerData.candy.visits.visit_details[_visit].visit_image+"' style='width:auto/9;height:auto;margin: 0%;'/><img class='overlayImage elligibleCandy' src='assets/images/stamp_candy.png' />"
+	  					out = out + "<div class='candyContent' style='display:none;' ><p>" + customerData.candy.visits.visit_details[_visit].description + "</p>" + "<p> at " + customerData.candy.visits.visit_details[_visit].no_of_visit + " visit</p> </div>" + "</li>";
+		  			}
+				}
+	 	 		return out + "</ul>";
+			});
+			
+			Handlebars.registerHelper('dateFormat', function(context, block) {
+			  if (window.moment) {
+			    return moment(new Date(context)).format("DD-MMM-YYYY hh:mm");
+			  }else{
+			    return new Date(context);   //  moment plugin not available. return data as is.
+			  };
+			  
+			});
+			
+			Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+			  if(v1 === v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
+			
+			Handlebars.registerHelper('pointlist', function(customerData, options) {
+				howmany = customerData.howMany;
+				var count,maxsize=0;
+				var noofimages = 0;
+				
+				for(var i=0;i<customerData.noOfPointImage;i++){
+					if(customerData.candy.points.point_details[i].point_image !="")
+					{
+						maxsize = customerData.candy.points.point_details[i].no_of_point;
+						noofimages += 1;
+					}
+				}
+					
+				var milestone = 0;
+				var out="";
+				for(var h=0;h<customerData.noOfPointImage;h++){
+					var percent;
+					var progressbarClass = "";
+					if(h == 0 ){
+						percent = (howmany/customerData.candy.points.point_details[h].no_of_point) * 100;
+						if (percent > 100) {
+							percent = 100;
+						}
+						
+					} else {
+						if(howmany >= customerData.candy.points.point_details[h-1].no_of_point) {
+							demoninator  = customerData.candy.points.point_details[h].no_of_point - customerData.candy.points.point_details[h-1].no_of_point;
+							percent = ((howmany - customerData.candy.points.point_details[h-1].no_of_point)/(demoninator)) * 100;
+						} else {
+							percent = 0;
+						}
+						
+						if (percent > 100) {
+							percent = 100;
+						}
+					}
+					
+					if (percent < 100 && percent > 0) {
+						progressbarClass = "active"
+					}
+					
+					var classs;
+					switch (h) {
+						case 0:
+							classs = 'bg-color-blue';
+							break;
+						case 1:
+							classs = 'bg-color-yellow';
+							break;
+						case 2:
+							classs = 'bg-color-green';
+							break;
+						case 3:
+							classs = 'bg-color-grayLight';
+							break;
+						default:
+							classs = 'bg-color-blue';
+							break;
+					}
+					if (percent == 100) {
+						classs = classs + ' selected cursor-pointer';
+					}
+					out = out + 
+					"<div class='listview-item " + classs + "' points='" + -(customerData.candy.points.point_details[h].no_of_point * customerData.candy.points.minimum_amount_for_point) + "' candyId='" + customerData.candy.id + "'>" +
+					 	"<div class='pull-left'>" +
+					 		"<img class='listview-item-object' src='/getCandyImage/" + customerData.candy.points.point_details[h].point_image + "'/>" +
+					 	"</div>" +
+					 	"<div class='listview-item-body'>" +
+					 		"<h4 class='listview-item-heading'>"+customerData.candy.points.point_details[h].description+"</h4>" +
+					 		"<p class='two-lines'style='float: left;height: 0%;'>" + customerData.candy.points.point_details[h].no_of_point + "</p>" + ". Points" +
+					 		"<div class='progress progress-striped "+progressbarClass+"'>" +
+					 		  "<div class='bar' style='width: " + percent +"%;'></div>" +
+					 		"</div>" +
+					 	"</div>" +
+					 "</div>"
+					 
+				}
+				
+				return out;
+			})
+</script>
+
+<script type="text/javascript">
+
+	var slider;
+	var source   = $("#templateHB").html();
+	var template = Handlebars.compile(source);
+	$.ajax({
+		url:"/getVisitCandies",
+		datatype:"json",
+		data:{
+			'customer.id' : "@customer_id" 
+		},
+		success: function(data){
+			var parsed = jQuery.parseJSON(data);
+			$("#stampBody").empty();
+			$("#stampBody").html(template(parsed));
+					
+		}
+	});
+	
+	var sourceTemp   = $("#templatePoint").html();
+	var templateBar = Handlebars.compile(sourceTemp);
+	
+	function refreshAll(data){
+		var parsed = jQuery.parseJSON(data);
+		$("#stampBody1").html(templateBar(parsed));
+		var _len = parsed.candies[0].customerData.candy.points.point_details.length;
+		var g = new JustGage({
+				id: "pointGauge", 
+			value: parsed.candies[0].customerData.howMany, 
+			min: 0,
+			max: parsed.candies[0].customerData.candy.points.point_details[_len-1].no_of_point,
+			title: "Points"
+			});
+	}
+	
+	$.ajax({
+		url:"/getPointCandies",
+		datatype:"json",
+		data:{
+			'customer.id' : "@customer_id" 
+		},
+		success: function(data){
+			refreshAll(data);
+		}
+	});
+	
+
+	$('#stamp_select_visit').click(function() {
+		console.log(" in visit ....");
+		$("#pointSection").css("display", "none");
+		$("#visitSection").css("display", "block");
+	});
+
+	$('#stamp_select_point').click(function() {
+		console.log(" in point ....");
+		$("#stamp_select_point").show();
+		$("#visitSection").css("display", "none");
+		$("#pointSection").css("display", "block");
+	});
+	
+	$('body').off('click','.cursor-pointer');
+	$('body').on('click','.cursor-pointer', function(){
+		_this = this;
+		bootbox.confirm("Do You Want to Reedeem Points?", function(result) {
+			if(result == true)
+			{
+				$.ajax({
+					type : "POST",
+					url : "/redeemPoints",
+					datatype : "json",
+					data : {
+						'amount' : $(_this).attr('points'),
+						'candy.id' : $(_this).attr('candyId'),
+						'customer.id' : "@customer_id"
+					},
+					beforeSend : function(data) {
+					},
+					success : function(data) {
+						refreshAll(data);
+					},
+					error: function(data) {
+						console.log(data);
+						$.pnotify({
+							history : false,
+							title: 'On No',
+							text : data.responseText,
+							type: 'error'
+						});
+					}
+				});
+			}
+		});
+	});
+	
+	$('body').off('click','[id=submit_amount]');
+	$('body').on('click','[id=submit_amount]',function() {
+		if($('#amount_add').val() != ""){		
+			
+			bootbox.confirm("Do You Want to Continue?", function(result) {
+				if(result == true)
+				{
+					$.ajax({
+						type : "POST",
+						url : "/givePoints",
+						datatype : "json",
+						data : {
+							'amount' : $('#amount_add').val(),
+							'candy.id' : $("#submit_amount").attr('candyId'),
+							'customer.id' : "@customer_id"
+						},
+						beforeSend : function(data) {
+						},
+						success : function(data) {
+							refreshAll(data);
+							
+						},
+						error: function(data) {
+							console.log(data);
+							$.pnotify({
+								history : false,
+								title: 'On No',
+								text : data.responseText,
+								type: 'error'
+							});
+						}
+					});
+				}
+			});
+		}
+		else{
+			bootbox.alert("Please Fill Amount", function(result) {});
+		}
+	});
+	
+	
+	$('body').off('click','.stamps');
+	$('body').on("click",".stamps",function() {
+			var _this = $(this);
+			
+				bootbox.confirm("Do You Want to Continue?", function(result) {
+					if(result == true)
+						{
+						$.ajax({
+							type : "POST",
+							url : "/stampOn?candy.id="+ _this.attr('id')+ "&customer.id=@customer_id",
+							datatype : "json",
+							beforeSend : function(data) {
+							},
+							success : function(data) {
+								_this.attr('src','assets/images/seal_stamp.png');
+								var elem = $(_this).parent().next();
+								var clickindex = $(_this).attr('clickindex');
+								var milestone = elem.attr('milestone');
+								milestone = milestone-1;
+								if (clickindex == milestone) {
+									elem.addClass('milestone').addClass('disabled');
+									$(elem).find('.elligibleCandy').attr('src','assets/images/0056.gif');
+								}
+								$.pnotify({
+										history : false,
+										title: 'Congrats',
+										text : data
+								});
+								$(_this).removeClass('stamps');
+								$(_this).parent().removeClass('stampImagesLI').addClass('stampImagesLI1');
+						},
+						error: function(data) {
+							console.log(data);
+							$.pnotify({
+								history : false,
+								title: 'Ohh No',
+								text : data.responseText,
+								type: 'error'
+							});
+						}
+	     			});
+					return;
+					}	
+				});
+			});	
+	
+	$('body').off('click','.milestone');
+	$('body').on("click", ".milestone", function() {
+		$('#milestone').val($(this).attr('milestone'));
+		$('#candyId').val($(this).attr('candyId'));
+
+		bootbox.confirm("Do You Want to Redeem Your Coupon?", function(result) {
+				if(result == true){
+					$.ajax({
+						type : "POST",
+						url : "/redeemCoupon",
+						datatype : "json",
+						data : {
+							'milestone' : $('#milestone').val(),
+							'candyId' : $('#candyId').val(),
+							'customerId' : '@customer_id'
+						},
+						beforeSend : function(data) {
+						},
+						success : function(data) {
+							$.pnotify({
+								history : false,
+								title : 'Regular Notice',
+								text : data
+							});
+							$("#custom-modal-container").modal('hide');
+						},
+						error: function(data) {
+							console.log(data);
+							$.pnotify({
+								history : false,
+								title: 'On No',
+								text : data.responseText,
+								type: 'error'
+							});
+						}
+					});
+				}
+		});
+	});	
+		
+
+	$("#loading").hide();
+	$(document).bind("ajaxSend", function() {
+		$("#loading").show();
+	}).bind("ajaxComplete", function() {
+		$("#loading").hide();
+	});
+	
+	$('body').off('mouseover','.stampImagesLI');
+	$('body').on('mouseover','.stampImagesLI', function(){
+		$(this).css({'background-color':'#00A5D5'});
+	});
+
+	$('body').off('mouseout','.stampImagesLI');
+	$('body').on('mouseout','.stampImagesLI', function(){
+		$(this).css({'background-color':'#FFFFFF'});
+	});
+	
+	var tooltip;
+	$('body').off('mouseover','.stampImagesLICandy');
+	$('body').on('mouseover','.stampImagesLICandy',function(){
+		_text = $(this).find('.candyContent').html();
+		tooltip = $.pnotify({
+			text: _text,
+			hide: false,
+	        closer: false,
+	        sticker: false,
+	        history: false,
+	        animate_speed: 100,
+	        opacity: .9,
+	        stack: false,
+	        type: 'info',
+	        after_init: function(pnotify) {
+	            // Remove the notice if the user mouses over it.
+	            pnotify.mouseout(function() {
+	                pnotify.pnotify_remove();
+	            });
+	        },
+	        before_open: function(pnotify) {
+	            // This prevents the notice from displaying when it's created.
+	            pnotify.pnotify({
+	                before_open: null
+	            });
+	            return false;
+	        }
+		});
+		tooltip.pnotify_display();
+	});
+	
+	$('body').off('mouseout','.stampImagesLICandy');
+	$('body').on('mouseout','.stampImagesLICandy',function(){
+		tooltip.pnotify_remove();
+		tooltip='';
+	});
+	$('body').off('mousemove','.stampImagesLICandy');
+	$('body').on('mousemove','.stampImagesLICandy',function(event){
+		tooltip.css({
+		    'top': event.clientY + 12,
+		    'left': event.clientX + 12
+		});
+	})
+	
+	
+</script>

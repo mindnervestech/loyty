@@ -1,0 +1,454 @@
+@(customer_id:String)
+
+<div id="milestone-confirm-dialog" title="Want to Redeem Your Coupon?" style="display: none;">
+	<input type="hidden" id="milestone">
+	<input type="hidden" id="candyId">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0; zoom:3;"></span>
+		Do You Want to Redeem Your Coupon?
+	</p>
+</div>
+
+<div id="candy-confirm-dialog" title="Want to Continue?" style="display: none;">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0; zoom:3;"></span>
+		Do You Want to Continue?
+	</p>
+</div>
+
+<div id="point-confirm-dialog" title="Want to Continue?" style="display: none;">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 5px 0; zoom:3;"></span>
+		Do You Want to Continue?
+	</p>
+</div>
+<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+</div>
+
+<div class="radiodiv form-container">
+	<div>
+		<h5 class = "h2div">Loyalty Type </h5>
+	</div>
+	<div class="loyalty">
+		<input type="radio" id="stamp_select_visit"  name="loyaltyType" value="VISIT" checked="checked">Visit
+	</div>
+	
+	<div class="loyalty">
+		<input type="radio" id="stamp_select_point" class="loyalty" name="loyaltyType" value="POINT">Point
+	</div>
+	
+</div>
+
+<div id="visitSection">
+
+<div class="modal-body">
+<div id="templateHB" style="display: none ">
+		{{#candies}}
+			
+				{{#ifCond customerData.candy.loyaltyType "VISIT"}}
+					<div class="candies" style="float: left;">
+					<div class="candiesImG">
+					</div>
+					<form class="form-container">
+						<h2 style="text-align:left;float:left;display: inline;">{{customerData.candy.name}}</h2>
+					 	<h2 style="text-align:right;float:right; display: inline;">Valid Till: {{dateFormat customerData.candy.valid_till format="DD-MM-YYYY"}}</h2>
+					 	{{#list customerData}}{{/list}}
+					 </form>
+					 </div>
+				{{/ifCond}}
+		{{/candies}}	
+		
+</div>
+
+<div id="stampBody">
+</div>
+</div>
+
+<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+</div>		
+</div>
+
+<div id="pointSection"  style="display: none;">
+	<div id="templatePoint"  style="display: none ">
+		{{#candies}}
+				{{#ifCond customerData.candy.loyaltyType "POINT"}}
+					<form class="form-container" style="width: 90%; margin-left: 50px; margin-right: 50px;">
+						{{#pointlist customerData}}{{/pointlist}}
+						<!-- <p class="vertical"></p> -->
+					</form>
+					<hr></hr>
+				{{/ifCond}}
+		{{/candies}}	
+	</div>
+	<div id="stampBody1">
+	</div>
+</div>
+
+<script type="text/javascript">
+			Handlebars.registerHelper('list', function(customerData, options) {
+				
+				var out = "<ul class='stampImagesUL'>";
+				howmany = customerData.howMany;
+				howmanycount = customerData.howMany;
+				var count;
+				var clickcount=0,clickindex=0;
+				var milestone;
+				var noofvisitimages = 0;
+				
+				for(var i=0;i<customerData.noOfVisitImage;i++){
+					if(customerData.candy.visits.visit_details[i].visit_image !="")
+					{
+						maxsize = customerData.candy.visits.visit_details[i].no_of_visit;
+						noofvisitimages += 1;
+					}
+				}
+				
+				for(var h=0;h<noofvisitimages;h++){
+					
+					milestone = customerData.candy.visits.visit_details[h].no_of_visit;
+					
+					if(h > 0){
+						count = customerData.candy.visits.visit_details[h].no_of_visit - customerData.candy.visits.visit_details[h-1].no_of_visit;
+					}else{
+						count = customerData.candy.visits.visit_details[h].no_of_visit;
+						milestone = customerData.candy.visits.visit_details[h].no_of_visit;
+					}
+					
+					if(h < noofvisitimages && h!=0){
+						clickcount = customerData.candy.visits.visit_details[h-1].no_of_visit;  
+					}
+					
+					
+		  			for(var i=0, l=count; i<l; i++) {
+		  				clickindex = clickcount + i;
+		  				if(howmany > 0){
+		  					out = out + "<li class='stampImagesLI1'><img id='"+customerData.candy.id+"' src='assets/images/seal_stamp.png' /></li>";
+		  					howmany--;
+		  					continue;
+		  				}else{
+		  					if(howmanycount == clickindex){
+		  						out = out + "<li class='stampImagesLI'><img class='stamps' clickindex='"+clickindex+"' id='"+customerData.candy.id+"' src='assets/images/empty_stamp.png'/></li>";
+		  					}
+		  					else{
+		  						out = out + "<li class='stampImagesLI1'><img id='"+customerData.candy.id+"' src='assets/images/empty_stamp.png'/></li>";
+		  					}
+		  				}
+		  			}
+		  			if(howmanycount >= milestone){
+		  				out = out + "<li class='stampImagesLI1'><img class='milestone grayscale disabled' milestone='"+ milestone +"' candyId = '"+customerData.candy.id+"' src='/getCandyImage/"+customerData.candy.visits.visit_details[h].visit_image+"' style='width:auto/9;height:auto;margin: 8%;'/></li>"
+		  			}
+		  			else if(howmanycount < milestone){
+	  					out = out + "<li class='stampImagesLI1'><img class='grayscale' milestone='"+ milestone +"' candyId = '"+customerData.candy.id+"' src='/getCandyImage/"+customerData.candy.visits.visit_details[h].visit_image+"' style='width:auto/9;height:auto;margin: 8%;'/></li>"
+	  				}
+				}
+	 	 		return out + "</ul>";
+			});
+			
+			//  format an ISO date using Moment.js
+			//  http://momentjs.com/
+			//  moment syntax example: moment(Date("2011-07-18T15:50:52")).format("MMMM YYYY")
+			//  usage: {{dateFormat creation_date format="MMMM YYYY"}}
+			Handlebars.registerHelper('dateFormat', function(context, block) {
+			  if (window.moment) {
+			    var f = block.hash.format || "MMM Do, YYYY";
+			    return moment(Date(context)).format(f);
+			  }else{
+			    return context;   //  moment plugin not available. return data as is.
+			  };
+			  
+			});
+			
+			Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+			  if(v1 === v2) {
+			    return options.fn(this);
+			  }
+			  return options.inverse(this);
+			});
+			
+			Handlebars.registerHelper('pointlist', function(customerData, options) {
+				howmany = customerData.howMany;
+				howmanycount = customerData.howMany;
+				var count,maxsize=0;
+				var noofimages = 0;
+				
+				for(var i=0;i<customerData.noOfPointImage;i++){
+					if(customerData.candy.points.point_details[i].point_image !="")
+					{
+						maxsize = customerData.candy.points.point_details[i].no_of_point;
+						noofimages += 1;
+					}
+				}
+					
+				var clickcount=0,clickindex=0;
+				var milestone = 0;
+				var out;
+				out = "<input type='text' id='amount_add' class='sliderbar1' placeholder='Enter Amount Here'>";
+				out += "<input type='button' id='submit_amount' candyId="+customerData.candy.id+" class='sliderbar1 btn btn-success gobtn' value='GO'>";
+				out +="<div id='slider"+customerData.candy.id+"' howmany="+howmanycount+" max-size="+maxsize+" class='sliderBarDiv'></div>";
+				
+				out +="<div class='stamping'>";
+				for(var h=0;h<customerData.noOfPointImage;h++){
+					milestone = customerData.candy.points.point_details[h].no_of_point;
+					out = out + "<div class='stampline connector1' connectormilestone='"+ milestone +"' milenum='"+h+"'></div>";
+				}
+				out +="</div>";
+				
+				out +="<div class='stamping'>";
+				for(var h=0;h<noofimages;h++){
+					
+					milestone = customerData.candy.points.point_details[h].no_of_point;
+					if(h > 0){
+						count = customerData.candy.points.point_details[h].no_of_point - customerData.candy.points.point_details[h-1].no_of_point;
+					}else{
+						count = customerData.candy.points.point_details[h].no_of_point;
+						milestone = customerData.candy.points.point_details[h].no_of_point;
+					}
+					
+					if(h < noofimages && h!=0){
+						clickcount = customerData.candy.points.point_details[h-1].no_of_point;  
+					}
+					
+		  			if(howmanycount >= milestone){
+		  				out = out + "<div class='stampmilestone'><img class='milestone mileimg grayscale disabled' milestone='"+ milestone +"' candyId = '"+customerData.candy.id+"' milenum='"+h+"' src='/getCandyImage/"+customerData.candy.points.point_details[h].point_image+"' style='max-width:100%;float:right;height:10%;margin: 0%;'/></div>"
+		  			}
+		  			else if(howmanycount < milestone){
+		  				out = out + "<div class='stampmilestone'><img class='mileimg grayscale' milestone='"+ milestone +"' candyId = '"+customerData.candy.id+"' milenum='"+h+"' src='/getCandyImage/"+customerData.candy.points.point_details[h].point_image+"' style='max-width:100%;float:right;height:10%;margin: 0%;'/></div>"
+	  				}
+					//out = out + "<div class='stampImagesLI1'><img class='milestone' milestone='"+ milestone +"' candyId = '"+customerData.candy.id+"' src='/getCandyImage/"+customerData.candy.points.point_details[h].point_image+"' style='height:auto;margin: 8%;-webkit-filter: grayscale(0);'/></div>"
+				}
+				out += "</div>";
+				return out;
+			})
+</script>
+
+<script type="text/javascript">
+
+	var slider;
+	var source   = $("#templateHB").html();
+	var template = Handlebars.compile(source);
+	$.ajax({
+		url:"/getVisitCandies",
+		datatype:"json",
+		data:{
+			'customer.id' : "@customer_id" 
+		},
+		success: function(data){
+			var parsed = jQuery.parseJSON(data);
+			$("#stampBody").html(template(parsed));
+		}
+	});
+	
+	var sourceTemp   = $("#templatePoint").html();
+	var templateBar = Handlebars.compile(sourceTemp);
+	
+	$.ajax({
+		url:"/getPointCandies",
+		datatype:"json",
+		data:{
+			'customer.id' : "@customer_id" 
+		},
+		success: function(data){
+			console.log(data);
+			var parsed = jQuery.parseJSON(data);
+			$("#stampBody1").html(templateBar(parsed));
+			
+			$("div[id^=slider]").each(function(){
+				var size = $(this).attr('max-size');
+				var howmany = $(this).attr('howmany');
+				slider = $(this).slider({
+			        min: 0,
+			        range: "min",
+			        value: parsed.candies[0].customerData.howMany,
+			        max: size,
+			        disabled : true
+			     });
+				
+				var prevmilestone = 0;
+				$("img.mileimg").each(function(index,value) {
+						  // do stuff
+						  //alert($(this).parent().parent().find('sliderbar').width());
+						 // console.log(slider.width());
+						 
+						  var sliderseg = $('.sliderBarDiv').width() / size;
+						  
+						  var milestone = $(this).attr('milestone');
+						  var milestonediff = 0;
+						  var milestoneNo = $(this).attr('milenum');
+						  var width ;
+						  if(index == 0){
+							  width = sliderseg * milestone;
+							  width = width + 2.5;
+						  }
+						  else{
+							  milestonediff = milestone - prevmilestone;
+							  width = sliderseg * milestonediff;
+						  }
+						  console.log(width);
+						  $(this).parent().css('width',(width)+'%');
+						  prevmilestone = milestone;
+					})
+					
+				 $("div.connector1").each(function(index,value) {
+						  // do stuff
+						 
+						  var sliderseg = $('.sliderBarDiv').width() / size;
+						  
+						  var milestone = $(this).attr('connectormilestone');
+						  var milestonediff = 0;
+						  var milestoneNo = $(this).attr('milenum');
+						  var width ;
+						  if(index == 0){
+							  width = sliderseg * milestone - 0.4;
+						  }
+						  else{
+							  milestonediff = milestone - prevmilestone;
+							  width = sliderseg * milestonediff;
+						  }
+						  $(this).css('width',(width)+'%');
+						  prevmilestone = milestone;
+					})
+			}); 
+			 
+			$("#submit_amount").click(function() {
+				if($('#amount_add').val() != ""){
+					$("#point-confirm-dialog").dialog(
+							{
+								resizable : false,
+								height : 200,
+								width : 500,
+								modal : true,
+								buttons : {
+									Ok : function() {
+											$.ajax({
+												type : "POST",
+												url : "/calculatePoints",
+												datatype : "json",
+												data : {
+													'amount' : $('#amount_add').val(),
+													'candy.id' : $("#submit_amount").attr('candyId'),
+													'customer.id' : "@customer_id"
+												},
+												beforeSend : function(data) {
+													
+												},
+												success : function(data) {
+													slider.slider('value', data);
+													console.log(data);
+												}
+											});
+										$(this).dialog("destroy");
+									},
+									Cancel : function() {
+											$(this).dialog("destroy");
+										}
+									}
+								})
+				}
+				else{
+					alert("Please fill amount first");
+				}
+			});
+		}
+	});
+
+	$('input[id=stamp_select_visit]').change(function() {
+		$("#pointSection").css("display", "none");
+		$("#visitSection").css("display", "block");
+	});
+
+	$('input[id=stamp_select_point]').change(function() {
+		$("#visitSection").css("display", "none");
+		$("#pointSection").css("display", "block");
+	});
+
+	$('body').on("click",".stamps",function() {
+			var $this = $(this);
+
+			$("#candy-confirm-dialog").dialog(
+			{
+					resizable : false,
+					height : 200,
+					width : 500,
+					modal : true,
+					buttons : {
+						Ok : function() {
+							$.ajax({
+								type : "POST",
+								url : "/stampOn?candy.id="+ $this.attr('id')+ "&customer.id=@customer_id",
+								datatype : "json",
+								beforeSend : function(data) {
+								},
+								success : function(data) {
+									$this.attr('src','assets/images/seal_stamp.png');
+									var elem = $($this).parent().next().find('img');
+									var clickindex = ($this).attr('clickindex');
+									var milestone = elem.attr('milestone');
+									milestone = milestone-1;
+									if (clickindex == milestone) {
+										elem.addClass('milestone').addClass('disabled');
+									}
+									$.pnotify({
+											history : false,
+											title : 'Regular Notice',
+											text : data
+									});
+									$this.removeClass('stamps');
+							}
+		     		});
+					$(this).dialog("destroy");
+				},
+					Cancel : function() {
+						$(this).dialog("destroy");
+					}
+				}
+			})
+		});
+
+	$('body').on("click", ".milestone", function() {
+		$('#milestone').val($(this).attr('milestone'));
+		$('#candyId').val($(this).attr('candyId'));
+
+		$("#milestone-confirm-dialog").dialog({
+			resizable : false,
+			height : 200,
+			width : 500,
+			modal : true,
+			buttons : {
+				Ok : function() {
+					$.ajax({
+						type : "POST",
+						url : "/redeemCoupon",
+						datatype : "json",
+						data : {
+							'milestone' : $('#milestone').val(),
+							'candyId' : $('#candyId').val(),
+							'customerId' : '@customer_id'
+						},
+						beforeSend : function(data) {
+							console.log($('#milestone').val())
+						},
+						success : function(data) {
+							$.pnotify({
+								history : false,
+								title : 'Regular Notice',
+								text : data
+							});
+							$("#custom-modal-container").modal('hide');
+							console.log(data);
+						}
+					});
+					$(this).dialog("destroy");
+				},
+				Cancel : function() {
+					$(this).dialog("destroy");
+				}
+			}
+		});
+	});
+
+	$("#loading").hide();
+	$(document).bind("ajaxSend", function() {
+		$("#loading").show();
+	}).bind("ajaxComplete", function() {
+		$("#loading").hide();
+	});
+</script>

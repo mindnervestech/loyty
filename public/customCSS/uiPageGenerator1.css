@@ -1,0 +1,29 @@
+.modal{
+	width: 650px !important;
+	margin-left: -300px !important;
+}
+
+.modal-body{
+	max-height:  550px !important;
+}
+
+.largeInput{
+	width: 190px;
+	float: left;
+	margin: 0;
+	padding: 4px !important;
+}
+
+.smallInput{
+	width: 50px;
+	float: left;
+	padding: 4px !important;
+	margin: 0;
+}
+
+.smallLabel{
+	width: 57px;
+	float: left;
+	padding: 4px !important;
+	margin: 0;
+}

@@ -1,0 +1,32 @@
+<div id="candy-modal" class="modal fade bodyBG" style="width: 95%;left: 2%; margin-left: 0px;overflow-y: auto; ">
+	<div class="modal-header">
+    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="background: rgb(240, 214, 23);!important"></button>
+    	<h3><%=rc.merchantName%> - <%=rc.merchantAddress%></h3>
+	</div>
+	
+	<div class="modal-body" style="max-height: 100%;">
+		
+		<%	_.each(rc.featured,function(item, key, list) { %>
+		Rs. <%=item.amount%> / <%=item.programType%>
+		<div class="row" style="background-color: <%=color[key % colorCount]%>; margin-bottom: 10px;margin-right: 10px;" >
+			
+				<div class="listview grid-layout" style="float: left;padding: 13px; ">
+                     
+					
+					<%	_.each(item.candiez,function(candy, ckey, list) { %>
+						<div class="listview-item" style="margin: 0px; background-color: <%=color[ckey+14 % colorCount]%>">
+					      <div class="pull-left">
+					         <img class="listview-item-object" src="/get-candy-icon/<%=candy.imageUrl%>" style="width:60px ; height: 60px;">
+					      </div>
+					      <div class="listview-item-body">
+					         <h4 class="listview-item-heading">At <%=candy.number%> <%=item.programType%></h4>
+					         <p class="two-lines"><%=candy.candyDescription%></p>
+					     </div>
+					   </div>
+					<%	}); %>			
+				</div>
+		</div>
+	   	<%	}); %>
+		
+	</div>
+</div>

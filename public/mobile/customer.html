@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html  class="bg-color-blue bodyBG">
+<head>
+    <meta charset="utf-8">
+    <title>Candiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/mobile/lib/jqm/css/jquery.mobile-1.2.1.min.css" />
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/customer.css" rel="stylesheet" media="screen">
+    <link href="css/navBar.css" rel="stylesheet" media="screen">
+    	
+    <style type="text/css">
+	.listview-item-category {
+		padding: 2px;
+		margin-top: 0px;
+		margin-bottom: 2px;
+	 }
+	 
+	 .list-layout-category{
+	 	width: auto;
+	 }
+	 
+	 .city-panel{
+	 	margin-top: 8px;
+		font-size: 27px;
+	 }
+	 
+	 
+	 .bodyBG{
+	 	background: transparent url(images/bkg-win8.jpg) repeat 0 0;
+	 }
+	 .custom-navbar{
+	 	border: none;
+	 }
+	 
+	</style>	
+    	
+</head>
+
+<body class="bg-color-blue bodyBG container">
+	
+	<div class="container">
+		<nav class="navbar navbar-default navbar-fixed-top navBar" role="navigation">
+			<div class="navbar-header" style="margin: 4px 30px 0;">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand whiteColor" href="/login">CANDIEZ</a>
+			</div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+	          	<ul id="city-panel" class="nav navbar-nav" role="navigation"  style="margin-top: 8px;">
+		    				 
+	    		</ul>
+	    		<form class="navbar-form navbar-left" role="search">
+			      <div class="form-group">
+			        <input type="text" class="form-control" placeholder="Search">
+			        <input type="image" src="images/search-button.png" class="searchBtn">
+			      </div>
+			      
+			    </form>
+			    <ul class="nav navbar-nav navbar-right" role="navigation"  style="margin: 8px 15px 0 0;">
+		    		<li><a href="/login">Login</a></li>		 
+	    		</ul>
+	    	</div>	
+	    </nav>
+    </div>
+	
+	<div class="container" id="mymerchants" data-role="page" style="background: transparent !important; float: left; position: relative;">
+	      
+	</div>
+	<div class="container" id="mycandiez" data-role="page" style="background: transparent !important; float: left; position: relative;">
+	      
+	</div>
+	<div class="container" id="mystamps" data-role="page" style="background: transparent !important; float: left; position: relative;">
+	      
+	</div>
+	
+</body>
+	
+<script data-main="scripts/customer-app" src="scripts/require.js"></script>
+
+
+</html>

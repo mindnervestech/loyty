@@ -1,0 +1,212 @@
+@(isTempPassSet : Boolean)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+	<title>Mint Loyalty - A Simple Loyalty Solution.</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta content="Mint Loyalty - A Simple Loyalty Solution" property="og:title">
+	<meta name="description" content="Mint Loyalty is a simple yet effective and user friendly solution to get rewarded your loyalty.Forget plastic and cardboard loyalty cards. Start boosting revenue today! Loyalty app, loyalty solution and loyalty rewards for your iPhone and Android. Coffee Card. Customer retention solution.">
+	<meta name="keywords" content="Loyalty Card App, Loyalty Programs, Loyalty App, Reward Cards, Coffee Cards, Loyalty,loyalty app india,  customer retention solution">
+	<link rel="canonical" href="http://mintloyalty.com/">
+	<link rel="stylesheet" media="screen" href="@routes.Assets.at("customCSS/bootstrap.min.css")">
+	<link rel="stylesheet" href="@routes.Assets.at("customCSS/landing-screen.css")">
+	<link rel="stylesheet" href="@routes.Assets.at("customCSS/landing_responsive.css")">
+	<link rel="shortcut icon" href="@routes.Assets.at("favicon.ico")" type="image/x-icon">
+	<link rel="icon" href="@routes.Assets.at("favicon.ico")" type="image/x-icon">
+	
+	<script src="@routes.Assets.at("javascripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+	<script type="text/javascript" src="@routes.Assets.at("customJS/landing.screen.js")"></script>
+	
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top customNavbar" role="navigation">
+		<div class="header_container">
+			<div id="header">
+				<a href="#top" onclick="onTop()" data-test="fadeInUp"><img id="logo" src="/assets/images/landing/mint_loyalty_logo.png"></a>
+				<ul id="menu">
+					<li><a href="#what_is_meant" id="onWhat_is_meant">what is mint loyalty</a></li>
+					<li><a href="#how_it_works" id="onHow_it_works">how it works</a></li>
+					<li><a href="#own_a_business" id="onOwn_a_business">own a business</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>	
+	<div class="body_container">
+		<a id="top" class="hide"></a>
+		<div class="slider_container">
+			<div class="login_form">
+				<h1>Merchant Login</h1>
+				@helper.form(routes.Application.authenticate) {
+					@if(flash.contains("error")) {
+		                <p class="error" style="color:red;">
+		                    @flash.get("error")
+		                </p>
+		            }
+		            
+		            @if(flash.contains("success")) {
+		                <p class="success" style="color: #FFF;">
+		                    @flash.get("success")
+		                </p>
+		            }
+		            @if(flash.contains("registered")){
+							<p class="registered" class="serif" style="color:#00ff00;">
+							      <b>@flash.get("registered")</b>
+							</p>
+					}
+				
+					<div class="form-group">
+						<label style="font-weight: bold !important;font-size:24px;">Username</label>
+						<input type="email" name="email" class="form-control" placeholder="Username" rel="popover" data-content="What&#39;s your Email Address?">
+					</div>	
+					<div class="form-group">
+						<label style="font-weight: bold !important;font-size:24px;">Password</label>
+						<input type="password" name="password" class="form-control" placeholder="Password" data-content="What&#39;s your password?">
+					</div>	
+					<div class="login_action">
+						<button type="submit" class="btn btn-success">Login</button>
+						<a href="#">/</a>
+						<a id="forgotPassword" href="#">Forgot Password?</a>
+					</div> 
+				}
+			</div>
+		</div>
+		
+		<a id="what_is_meant" class="hideA hideA1"></a>
+		<div class="slogan1_container">
+			<div class="slogan slogan1">
+				<img class="width_16_left" src="/assets/images/landing/left_mark.png">
+				<img src="/assets/images/landing/what_is_mint_loyalty.png">
+				<img class="width_16_right" src="/assets/images/landing/right_mark.png">
+			</div>	
+		</div>
+		
+		<div class="info_box1_container">
+			<div class="info_box_1">
+				<div class="info_box_1_img">
+					<img class="width_16" src="/assets/images/landing/mobile.png">
+				</div>
+				<div class="info_box_1_text">
+					<p>Mint Loyalty is a simple yet effective and user friendly solution to get rewarded your loyalty. No more hassle of keeping physical cards in your wallet. Just install our app from the app store and enjoy the rewards.</p>
+					<p>Every time you spend with a merchant registered with us, we will make sure your loyalty mints are credited to your account. You can get that redeemed on a click!!</p>
+					<p>Download the Mint Loyalty free app and get rewarded for the loyalty.</p>
+					<p>Say no to plastic loyalty cards!</p>
+				</div>
+			</div>	
+		</div>
+		
+		<a id="how_it_works" class="hideA hideA2"></a>
+		<div class="slogan2_container">
+			<div class="slogan slogan2">
+				<img class="width_16_left" src="/assets/images/landing/left_mark.png">
+				<img src="/assets/images/landing/how_it_works.png">
+				<img class="width_16_right" src="/assets/images/landing/right_mark.png">
+			</div>	
+		</div>
+		
+		<div class="info_box2_container">
+			<div class="info_box_2">
+				<div class="info_box_2_1">
+					<img src="/assets/images/landing/info_box_2_1.png">
+					<p>Merchants Get Started<br><br>
+					Customize your own loyalty marketing plan based on specific business needs and preferences.</p>
+				</div>
+				
+				<div class="info_box_2_2">
+					<img src="/assets/images/landing/info_box_2_2.png">
+					<p>Come, Spend, Enjoy<br><br>AND YES,<br><br>Don't forget to get rewarded </p>
+				</div>
+				
+				<div class="info_box_2_3">
+					<img src="/assets/images/landing/info_box_2_3.png">
+					<p>
+					Get mints on single click !!<br><br><br><br>
+					Yes it is that simple.</p>
+				</div>
+			</div>	
+		</div>
+		
+		<a id="own_a_business" class="hideA hideA3"></a>
+		<div class="info_box_3">
+			<div class="info_box_3_container">
+				<div class="info_box_3_header">
+					<img src="/assets/images/landing/info_box_3_header_1.png">
+				</div>
+				<div class="info_box_3_1_container">
+					<div class="info_box_3_1">
+						<p>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Make your own loyalty program based on specific business needs.
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Know your customer purchase trend.
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Dump those punch cards and plastic loyalty cards.
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Get your customers rewarded online on a single click!!.
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Boost your revenue.
+						</p>
+						
+					</div>
+					<div class="info_box_3_buttons">
+						<p><a data-toggle="modal" href="#" id="registration">Register Business</a></p>
+					</div>
+				</div>	
+			</div>
+				
+			<div class="info_box_3_container">	
+				<div class="info_box_3_header">
+					<img src="/assets/images/landing/info_box_3_header_2.png">
+				</div>
+				<div class="info_box_3_2_container">
+					<div class="info_box_3_2">
+						<p>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png">Download Mint Loyalty on your smartphone
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>It's free and takes 30 seconds 
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Earn great rewards from your local merchants
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>We are sure..you will love it.
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Say goodbye to punch cards
+							<br>
+							<img class="check-mark" src="/assets/images/landing/features-checkmark.png"/>Keep track of your loyalty cards 
+						</p>
+						
+					</div>
+					<div class="info_box_3_buttons">
+						<p><a href="https://play.google.com/store/apps/details?id=com.mnt.candiez.activity">Download App</a></p>
+					</div>
+				</div>
+			</div>	
+		</div>	
+	</div>
+	
+	<div class="footer_container">
+		<img src="/assets/images/landing/footer_container_bg.png">
+	</div>
+	
+	<div class="modal custom-modal" style="display: none; " id="registerModal">
+		<div class="modal-dialog custom-modal-dialog">
+			<div class="modal-content custom-modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					<h1 class="register-header">
+						<span class="titleStar"></span>
+							Let's Get Started
+						<span class="titleStar"></span>
+					</h1>
+				</div>
+				<div class="modal-body custom_modal-body">
+					<div id="registrationHtml"></div>
+				</div>
+				<div class="modal-footer custom-modal-footer">
+					
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	
+</body>
+</html>

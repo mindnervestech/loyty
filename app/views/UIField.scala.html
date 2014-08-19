@@ -1,0 +1,81 @@
+@(fieldType:com.mnt.core.ui.component.FieldType,_namespace:String,_fieldClass:String)
+@fieldType.ctype.name match{
+		     		case "INPUT" => {
+		     			@if(!fieldType.hidden){
+		     			 <div class="control-group" >
+				     			<label class="control-label" for="selectbasic">@fieldType.label
+				     				@if(fieldType.validation !=null && fieldType.validation.required){
+										  	<sup style="color: red"> *</sup>
+									  }
+								</label>
+								<div class="controls">
+									  @if(fieldType.validation !=null && fieldType.validation.required){
+									  	<input id="@(_namespace + fieldType.name)" name="@fieldType.name" value='@(fieldType.value.o)' @fieldType.htmlAttrib class='@_fieldClass' required  type="text" rel="popover" >
+									  }else{
+									    <input id="@(_namespace + fieldType.name)" name="@fieldType.name" value='@(fieldType.value.o)' @fieldType.htmlAttrib class='@_fieldClass' type="text">
+									  }
+								</div>	  
+				     	}else{
+							<input id="@(_namespace + fieldType.name)" name='@(fieldType.name + "_hidden")' type="hidden">
+						}
+						</div>
+			     	}
+			     	case "SEARCH" => {
+			     		<div class="control-group" >
+			     			<label class="control-label" for="selectbasic">@fieldType.label
+				     				@if(fieldType.validation !=null && fieldType.validation.required){
+										  	<sup style="color: red"> *</sup>
+									  }
+									  <img id='@(_namespace + fieldType.name +"_browse")' alt="" src="@routes.Assets.at("images/browse.jpg")" >
+							</label>
+							<div class="controls">
+									  @if(fieldType.validation !=null && fieldType.validation.required){
+									  	<input id="@(_namespace + fieldType.name)" name="@fieldType.name" value='@(fieldType.value.o)' @fieldType.htmlAttrib readonly class='@_fieldClass' required  type="text" rel="popover" >
+									  }else{
+									    <input id="@(_namespace + fieldType.name)" name="@fieldType.name" value='@(fieldType.value.o)' @fieldType.htmlAttrib readonly class='@_fieldClass' type="text">
+									  }
+									  <input type="hidden" id='@(_namespace + fieldType.name +"_hidden")' name='@(fieldType.name + "_id")' value='@(fieldType.value.o)' >
+							</div>
+			     		</div>
+	
+			     		<script>
+			     			$('#@(_namespace + fieldType.name +"_browse")').click(function(){
+			     				var _url = '@((fieldType.value.o.asInstanceOf[com.mnt.core.helper.SearchUI]).triggerUrl)';
+			     				_url = _url + "?id=" + "@(_namespace + fieldType.name)" + "_hidden&name=" + "@(_namespace + fieldType.name)";
+			     				win = window.open(_url,'Search', 'width=940, height=600');
+			     				
+			     			});
+						</script>
+			     	}
+			     	case "SELECT_OPTION" => {
+		     			  <div class="control-group" >
+							  <label class="control-label" for="selectbasic">@fieldType.label</label>
+							  <div class="controls">
+							    <select id="@(_namespace + fieldType.name)" name="@fieldType.name" class='@_fieldClass'>
+								    @for(option<-fieldType.options){
+								    	<option value='@option'>@option.getName</option>
+								    }	
+							      
+							    </select>
+							  </div>
+						</div>
+						
+					}
+			
+					case "DATE" => {
+							<div class="control-group">
+						  	<label class="control-label" for="selectbasic">@fieldType.label
+						  	 @if(fieldType.validation !=null && fieldType.validation.required){
+									  	<sup style="color: red"> *</sup>
+							 }
+							</label>
+						  
+							<div id="@(fieldType.name)" data-provide="datepicker" class='input-append date datepicker' data-date="" data-date-format="dd-mm-yyyy">
+											<span class="add-on"><i class="icon-calendar"></i></span>
+											<input size="16" type="text" value="" readonly name="@(fieldType.name)" class='@_fieldClass'>
+							</div>
+						</div>
+					}
+			
+	     		}
+	     		

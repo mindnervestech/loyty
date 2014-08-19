@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">Mint Loyalty</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Mint Loyalty</string>
+    <string name="sample_string">Mint Loyalty</string>
+    <string name="app_id">403752899726883</string>
+
+</resources>

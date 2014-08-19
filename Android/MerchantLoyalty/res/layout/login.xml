@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/background"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/login1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imageViewLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/center_screen_logo" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/login1" >
+
+        <RelativeLayout
+            android:id="@+id/loginwindow"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" >
+
+            <LinearLayout
+                android:id="@+id/loginwindow"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/memberlogin"
+                android:layout_centerVertical="true"
+                android:background="@drawable/grid_brick_bg"
+                android:descendantFocusability="beforeDescendants"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:hint="Enter Email"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:text="chinagrill@gmail.com"
+                    android:textColor="@android:color/white"
+                    android:textSize="15dp" />
+
+                <View
+                    android:id="@+id/linearLay6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:hint="Enter Password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:text="abcd123"
+                    android:textColor="@android:color/white"
+                    android:textSize="15dp" />
+
+                <View
+                    android:id="@+id/linearLay7"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/abc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="00"
+                    android:textSize="20dp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ViewLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginwindow"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-20dp"
+                android:src="@drawable/settingsave" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,72 @@
+<form role="form" id="emailUserForm" enctype="multipart/form-data" method="POST">		
+	<fieldset id="registerHere">
+		<p>To reset your password, enter your register email address in the following block.</p>
+		<p id="display"></p>			
+		
+		<div class="form-group">
+			<label>Email Address</label>
+			<input type="email" id="inputemail" name="inputemail" class="form-control" placeholder="Email">
+		</div>	
+		<p>
+		    <button type="button" id="emailValidation" class="btn btn-success">Submit</button>
+		</p>
+	</fieldset>
+</form>					
+
+<script type="text/javascript">
+
+	$("h1.register-header").html("<span class='titleStar'></span> Reset your password <span class='titleStar'></span>");
+	$("#inputemail").keypress(function (e) {
+	    if(e.which == '13'){
+	    	callAjax();
+	    	return false;
+	    }
+	});
+	
+	$("#emailValidation").click(function(){
+		callAjax();
+			
+	});
+	
+	function callAjax(){
+		$.ajax({
+			type:"POST",
+			url:"/finduserid",
+			data:$("#emailUserForm").serialize(),
+			success: function(data){
+				$("#display").addClass('displayGreen');
+				$("#display").html("New password has been sent to you registered E-mail address");
+				$("#inputemail").attr("disabled","disabled");
+				$("#emailValidation").attr("disabled","disabled");
+			},
+			error: function(data){
+				$("#display").addClass('displayRed');
+				$("#display").html("WRONG USERNAME.... PLEASE TRY AGAIN");
+			}
+		});
+	}
+	
+</script>
+
+<style type="text/css">
+
+	p, label, button{
+		letter-spacing: 1px;
+		color: #666;
+	}
+	.custom-modal-dialog {
+		width: 635px !important;
+	}
+
+	.displayRed{
+		color: red;
+	}
+	.displayGreen{
+		color: green;
+	}
+	
+	#inputemail{
+		width: 60%;
+	}
+	
+</style>

@@ -1,0 +1,54 @@
+<div class="span12">
+<h2>merchants</h2>
+	<div style="padding-top: 12px;">
+			    <%	_.each(rc,function(item, key, list) { %>
+			    
+			    	
+			    
+			    	<a style="background-color: <%=color[key+0 % colorCount]%>" data-merchantId="<%=item.cid%>" 
+			    		class="merchantSquare tile widepeek">
+			    		<div class="tile wide image" style="background-color: <%=color[key+0 % colorCount]%>">
+		         		<img  src="/get-merchant-icon/<%=item.attributes.merchantImage%>" style="width: 310px; height: 150px; padding: 15px;">
+			      		</div>
+			      		<div class="tile wide text" style="margin-top: -10px;height: 160px;position: relative;width: inherit !important;background-color: <%=color[key+0 % colorCount]%>">
+			      			<img src="/assets/mobile/images/post-it.png" style="width: inherit;height: 163px;left: 10px;position: absolute;margin-top: -20px;"/>
+			         				<marquee style="position:absolute;left:20px;top:35px;" scrollamount="3" direction="up">
+			         				
+			         				<% _.each(item.attributes.featured, function(program, program_index, program_list) { %>
+			         					<ul class="nav metro-nav-list">
+			         					<li class="active">
+			         					<font style="color: #680A9C !important;font-family: cursive!important;text-decoration:underline; font-style:oblique; opacity: 1;" >
+			         						<%=program.programDescription%> 
+			         					</font>
+			         						<ul style="color: #680A9C !important;font-family;">
+			         						<% _.each(program.candiez, function(candy, candy_index, candy_list) { %>
+			         							
+			         							<li>
+			         							<font style="color: #680A9C !important;font-family: cursive!important;text-decoration:underline; font-style:oblique; opacity: 1;" >
+			         								<%=candy.candyDescription%> 
+			         								
+			         								<% if(program.programType == 'VISIT') { %>
+			         									at <%=candy.number%> visit
+			         								<% } %>
+			         								
+			         								<% if(program.programType == 'POINT' ) { %>
+			         									on <%=candy.number%> points
+			         								<% } %>	
+			         							</font>
+			         							 </li>
+			         						<% }); %>
+			         						</ul>
+			         						&nbsp;
+			         						</li>
+			         					</ul>	
+			         				<% }); %>
+			         				
+			         				</marquee>
+			         	</div>
+					</a>
+			    <%	}); %>
+	<div>	
+</div>	
+        
+
+	  

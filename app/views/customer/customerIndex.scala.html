@@ -1,0 +1,214 @@
+@(context:com.mnt.core.helper.SearchContext,_menuContext: com.mnt.core.menu.MenuBar,user : models.merchant.Merchant)
+@main("Loyalty Management") {
+    @menuContext(_menuContext,user)
+    <h4><b><i style="margin-left: 1%">Customer Center</i></b></h4>
+    @searchContext(context,null,"add")
+}
+
+<style>
+.modalForReport {
+    width: auto !important;
+}
+
+.flot-tick-label{
+	size: 11px,
+    lineHeight: 13,
+    style: "italic",
+    weight: "bold",
+    family: "sans-serif",
+    variant: "small-caps",
+    color: "#54545"
+}
+</style>
+
+<div id="reportAnalyzeModal" class="modal modalForReport hide fade" tabindex="-1" role="dialog" aria-labelledby="analyzeLabel" aria-hidden="true" style="margin-left:-650px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="analyzeLabel">Customer Report</h3>
+		</div>
+		<div class="modal-body">
+			
+			<div class="widget blue span8" ontablet="span7" ondesktop="span8" style="width:600px;height:350px;float: left;">
+				<div id="stats-chart2" style="width:600px;height:300px">
+					<div class="demo-container" style="width:600px;height:300px">
+						<div id="customerAnalysisplaceholder" class="demo-placeholder" style="width:500px;height:250px"></div>
+						<h3>Analysis Report</h3>
+					</div>
+				</div>
+			</div>
+			
+			<div class="widget blue span8" ontablet="span7" ondesktop="span8" style="width:600px;height:350px;float: right;">
+				<div id="stats-chart3" style="width:600px;height:300px">
+					<div class="demo-container" style="width:600px;height:300px">
+						<div id="customerExpenditureplaceholder" class="demo-placeholder" style="width:500px;height:250px"></div>
+						<h3>Average Expenditure</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+	var ticks = [];
+	
+	$('#CustomeraddanalyzeCustomer').click(function(){
+		 var cell = $("#selectedRow").val();
+		 if(cell == "") {
+			 alert("Please make selection from grid");
+		 } else {
+			$.ajax({
+				url:'/analyzeCustomerData',
+				data: {query: cell},
+				datatype:'json',
+				type:'POST',
+				success: function(data) {
+					console.log(data);
+					var d1 = [];
+					var object = $.parseJSON(data);
+					for(var i=0;i<object[0].data.length;i++){
+						ticks.push([i,object[0].data[i][0]]);
+						object[0].data[i][1] = parseInt(object[0].data[i][1]);
+						object[0].data[i][0] = i;
+					}
+					$("#reportAnalyzeModal").modal('show');
+					setTimeout(function(){
+						plotWithOptions("customerAnalysisplaceholder", object,"Quantity");
+					},500);
+					$('#analyzeLabel').html('Customer Analysis');
+		        }
+			});
+		 }	
+		});
+	
+	$('#CustomeraddanalyzeCustomer').click(function(){
+		 var cell = $("#selectedRow").val();
+		 if(cell == "") {
+			 alert("Please make selection from grid");
+		 } else {
+			 $.ajax({
+					url:'/avgExpenditure',
+					data: {query: cell},
+					datatype:'json',
+					type:'POST',
+					success: function(data) {
+						console.log(data);
+						var d1 = [];
+						var object = $.parseJSON(data);
+						console.log(object);
+						for(var i=0;i<object[0].data.length;i++){
+							ticks.push([i,object[0].data[i][0]]);
+							object[0].data[i][1] = parseInt(object[0].data[i][1]);
+							object[0].data[i][0] = i;
+						}
+						$("#reportAnalyzeModal").modal('show');
+						setTimeout(function(){
+							plotWithOptions("customerExpenditureplaceholder", object,"Average");
+						},500);
+						
+						$('#analyzeLabel').html('Customer Analysis');
+			        }
+				});
+		}	
+	 });
+	
+	function plotWithOptions(id, d, label) {
+		
+		$.plot("#"+id, d, {
+			series: {
+		        bars: {
+		            show: true
+		        }
+		    },
+		    bars: {
+		    	show : true,
+		    	align: "center",
+		        horizontal: false,
+		        fillColor: "#CCFFCC",
+		        barWidth:0.2
+		    },
+		    xaxis: {
+		    	mode: "categories",
+		        ticks: ticks,
+		        min:0,
+		        max:1,
+		        autoscaleMargin : 0.02,
+		        color:"black",
+		        axisLabel: 'Categories',
+		        font: {
+		            size: 11,
+		            lineHeight: 13,
+		            style: "italic",
+		            weight: "bold",
+		            family: "sans-serif",
+		            variant: "small-caps",
+		            color: "#545454"
+		        }
+		    },
+		    yaxis: {
+		    	mode: "number",
+		        autoscaleMargin : 0.02,
+		        color:"black",
+		        axisLabel: label,
+		        font: {
+		            size: 11,
+		            lineHeight: 13,
+		            style: "italic",
+		            weight: "bold",
+		            family: "sans-serif",
+		            variant: "small-caps",
+		            color: "#545454"
+		        }
+		    },
+		    grid: {
+		    	backgroundColor: "#62C462",
+		        hoverable: true,
+		        borderWidth: 2,        
+		    },
+		    canvas: true  
+		});
+		
+		$.fn.UseTooltip = function(){
+			$(this).bind("plothover", function (event, pos, item) {
+				
+				if (item) {
+		           $("#tooltip").remove();
+		           var color = item.series.color;
+			       var x =item.datapoint[1],
+		               y = ticks[item.datapoint[0]][1];
+			           showTooltip(item.pageX, item.pageY,color," " + y + " / " + x);
+				}
+			    else {
+		           $("#tooltip").remove();
+		        }
+			});
+		}
+		
+		$("#"+id).UseTooltip();
+	}
+	
+	
+	function showTooltip(x, y, color,contents) {
+	    $('<div id="tooltip">' + contents + '</div>').css( {
+	    	 position: 'absolute',
+             display: 'none',
+             top: y - 10,
+             left: x + 10,
+             border: '2px solid ' + color,
+             padding: '3px',
+             'font-size': '9px',
+             'border-radius': '5px',
+             'background-color': '#fff',
+             'font-family': 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
+             opacity: 0.9,
+			 'z-index' : '6000'
+	     }).appendTo("body").fadeIn(200);
+	}
+	
+	
+});
+</script>

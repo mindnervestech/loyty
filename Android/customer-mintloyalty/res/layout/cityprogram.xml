@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+   android:background="@drawable/background"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+     <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+         android:background="@drawable/header_bar"
+         >		
+         
+         
+         <ImageView
+		      android:id="@+id/candy"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_alignParentLeft="true"
+		      android:layout_centerVertical="true"
+		      android:layout_marginLeft="5dp"
+		      android:scaleType="centerCrop"
+              android:cropToPadding="true"
+		      android:src="@drawable/header_logo"
+		      android:textStyle="bold" />		
+         
+          <ImageView
+		        android:id="@+id/nearmint"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_toLeftOf="@+id/mycandy"
+		        android:layout_marginRight="2dp"
+		        android:layout_centerVertical="true"
+		        android:layout_marginLeft="3dp"
+		        android:cropToPadding="true"
+		        android:padding="2dp"
+		        android:src="@drawable/near_mints" />
+         
+		
+		  <ImageView
+		      android:id="@+id/mycandy"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_alignParentRight="true"
+		      android:layout_centerVertical="true"		     
+              android:cropToPadding="true"
+              android:padding="2dp"
+              android:layout_marginRight="-2dp"
+		      android:src="@drawable/my_mints"
+		      android:textStyle="bold" />		  		 		
+       </RelativeLayout> 
+<ListView
+    android:id="@+id/programview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:dividerHeight="10.0sp"
+     android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="15dp"
+    android:horizontalSpacing="10dp" />
+  
+</LinearLayout>

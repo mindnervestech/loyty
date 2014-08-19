@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html  class="no-js js canvas canvastext geolocation rgba hsla no-multiplebgs borderimage borderradius boxshadow opacity no-cssanimations csscolumns no-cssgradients no-cssreflections csstransforms no-csstransforms3d no-csstransitions  video audio cufon-active fontface cufon-ready bodyBG">
+<head>
+    <meta charset="utf-8">
+    <title>Candiz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="lib/animate/css/animate.min.css" rel="stylesheet" media="screen">
+    <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+    <link href="lib/bootmetro/css/bootmetro.css" rel="stylesheet" media="screen">
+    <link href="lib/bootmetro/css/bootmetro-responsive.min.css" rel="stylesheet" media="screen">
+    <script src="scripts/lib/modernizr.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/bootmetro/css/bootmetro-tiles.css">
+    <link rel="stylesheet" type="text/css" href="lib/bootmetro/css/bootmetro-charms.css">
+    <!-- link href="lib/bootmetro/css/bootmetro-ui-light.css" rel="stylesheet" media="screen" -->
+    <link href="lib/bootmetro/css/bootmetro-icons.min.css" rel="stylesheet" media="screen">
+    <link href="css/customCandy.css" rel="stylesheet" media="screen">
+    <link href="css/navBar.css" rel="stylesheet" media="screen">
+     
+    
+	<style type="text/css">
+	
+	 
+	 .city-panel{
+	 	margin-top: 8px;
+		font-size: 27px;
+	 }
+	 
+	 
+	 .bodyBG{
+	 	background: transparent url(images/bkg-win8.jpg) repeat 0 0 !important;
+	 }
+	 .custom-navbar{
+	 	border: none;
+	 }
+	 
+	</style>
+	
+</head>
+
+<body class="bg-color-blue bodyBG">
+
+	<div class="container">
+		<nav class="navbar navbar-default navbar-fixed-top navBar" role="navigation">
+			<div class="navbar-header" style="margin: 4px 30px 0;">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand whiteColor" href="/login">CANDIEZ</a>
+			</div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+	          	<ul id="city-panel" class="nav navbar-nav" role="navigation"  style="margin-top: 8px;">
+		    				 
+	    		</ul>
+	    		<form class="navbar-form navbar-left" role="search">
+			      <div class="form-group">
+			        <input type="text" class="form-control" placeholder="Search">
+			      </div>
+			      <input type="image" src="images/search-button.png" class="searchBtn">
+			    </form>
+			    <ul class="nav navbar-nav navbar-right" role="navigation"  style="margin: 8px 15px 0 0;">
+		    		<li><a href="/login">Login</a></li>		 
+	    		</ul>
+	    	</div>	
+	    </nav>
+    </div>
+	
+	    
+		<div id="merchant-panaroma" class="row1">
+		<div class="metro">
+			<div>
+				<div>
+					<div class="tile-column-span-2" style="width: 240px;">
+						<h2>categories</h2>
+						<div id="category-panel" ></div>
+					</div>
+					<div id="merchant-panel" class="tile-column-span-6">
+						
+						<div id="category-panel" ></div>
+		  			</div>	
+				</div>
+		  		
+	  		</div>
+	  	</div>
+  	</div>
+  	
+  	
+	<div id="candiez-panel" ></div>
+  	
+</body>
+
+<script data-main="scripts/app" src="scripts/require.js"></script>
+<script src="scripts/lib/app-global.js"></script>
+	
+
+</html>

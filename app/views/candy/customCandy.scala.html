@@ -1,0 +1,640 @@
+@(isPointPresent:Boolean)
+<style>
+.prev_container{
+	overflow: auto;
+	width: 200px;
+	height: 115px;
+}
+
+.visitDiv{
+	float: left;
+	width: 100%;
+	margin-top: 1%;
+}
+
+.candyImage{
+	
+	margin-top: 20%;
+}
+.prev_thumb{
+	height: 100px;
+}
+.add-on{
+	cursor: pointer !important;
+}
+
+.submitBtn{
+	width: 17%;
+    margin: 0% 80%;
+}
+.inputTextBox {
+	height: 11px !important;
+}
+.controlInput{
+	margin: 8% 11%;
+}
+.file{
+	width: 85% !important;
+}
+.control-group{
+	margin-bottom: 0px !important;
+}
+#candyClose{
+	color: #00A5D5 !important;
+}
+.btn.btn-success{
+	color: #FFF !important;
+}
+
+
+#upload-file-container {
+   background: url("@routes.Assets.at("images/image_button.png")") no-repeat;
+   width: 20%;
+   margin: -13% 87%;
+   float: left;
+}
+
+#upload-file-container input {
+   filter: alpha(opacity=0);
+   opacity: 0;
+}
+.visitImage{
+	margin-bottom: 0%;
+}
+
+.candyValidation{
+white-space: nowrap;
+z-index: 1000;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+background-color: #AA0707;
+color: #FFF;
+font-size: 10px;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+-ms-border-radius: 4px;
+-o-border-radius: 4px;
+border-radius: 4px;
+padding: 0px 5px;
+position: absolute;
+margin-left: 0.2%;
+}
+
+.candyValidation:before{
+border-top: 3px solid rgba(0, 0, 0, 0);
+border-bottom: 3px solid rgba(0, 0, 0, 0);
+border-right: 3px solid #AA0707;
+content: "";
+position: absolute;
+left: -3px;
+top: 6px;
+display: block;
+}
+
+#dialog{
+	height: 450px !important;
+}
+
+</style>
+
+	<div id="dialog" title="Crop Image" style="display: none;"></div>
+    	
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4>Create Candy Program</h4>
+	</div>
+
+	<div class="modal-body">
+	<form id="candyForm" enctype="multipart/form-data" method="POST" action="/saveCandy">
+	<fieldset id="registerHere">
+		<div class="selectLoyalty">
+				<font class="h2div">Select Your Loyalty Type:</font>
+			<div class="loyalty">	
+				<div class="loyaltyVisit"><input type="radio" id="candy_select_visit"  name="loyaltyType" value="VISIT" checked="checked">Visit</div>
+				@if(!isPointPresent) {
+					<div class="loyaltyPoint"><input type="radio" id="candy_select_point" name="loyaltyType" value="POINT" label="Point">Point</div>
+				} else {
+					<div class="loyaltyPoint"><input disabled="disabled" type="radio" id="candy_select_point" name="loyaltyType" value="POINT" label="Point">Point</div>
+				}
+			</div>	
+		</div>	
+		<div style="float: left;margin-right: 10px;">
+			<div class="control-group" style="float: left;margin-right: 30px;">
+				<div class="controls">
+					<input type="text" style="width: 70%;" class="inputTextBox" id="candy_code" placeholder="Code" name="code" required="required">
+				</div>
+			</div>
+			
+			<div class="control-group" style="float: left;margin-right: 100px;">
+				<div class="controls">
+					<input type="text" style="width: 90%;" class="inputTextBox" id="candy_description" placeholder="Description" name="name" required="required">
+				</div>
+			</div>
+			
+			
+			<div class="control-group" style="float: left;margin-right: 30px;">
+				<div class="controls" id="candy_min_amt_visit">
+					<input type="text" style="width: 70%;" class="inputTextBox"  placeholder="Amount" required="required" name="visits.minimum_amount_for_visit" rel="popover" data-content="Minimum Amount to Qualify a Visit" >
+				</div>
+				<div class="controls" id="candy_min_amt_point">
+					<input type="text" style="width: 70%;" class="inputTextBox"  placeholder="Amount" required="required" class="large" name="points.minimum_amount_for_point" rel="popover" data-content="Minimum Amount to Qualify a Point" >
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="control-group">
+			<div class="controls">
+				<div id="candy_valid_date" class="input-append date datepicker" data-date="" data-date-format="dd-mm-yyyy">
+	    			<span class="add-on" style="height: 11px;"><i class="icon-calendar"></i></span>
+	    			<input class="add-on" size="16" style="height: 11px; width: 50%;" type="text" value=""  name="valid_till" required placeholder="Valid Till" required="required">
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			$('#candy_valid_date').datepicker({
+				format: 'dd-mm-yyyy',
+				calendarWeeks: false
+				
+			}).on('changeDate', function(ev){
+				$("#candyForm").valid();
+			});
+		</script>
+		
+		
+		<div id="visitSection">
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+				<div class="controlInput">
+					<div class="control-group">
+						<input type="text" class="inputTextBox" style="width: 63%;"  id="candy_visit_description_0"  placeholder="Description" required="required" class="input-medium" name="visits.visit_details[0].description">
+					</div>
+					
+					<div class="visitImage">	
+						<div class="visitDiv" >
+							<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_no_of_visit_0" placeholder="Visit No" required="required"  class="input-small" name="visits.visit_details[0].no_of_visit"> 
+						</div>
+						<div id="upload-file-container">
+		   					<input type="file" class="file" id="candy_visit_file_upload_0" name="visit_image[0]" multiple="multiple"/>	
+		   			    </div> 
+					</div>
+						
+					<div class="candyImage">
+						<div id="prev_candy_visit_file_upload_0" style="height:100px;overflow:hidden;"></div>
+					</div>
+				</div>	
+				<br/>
+			</div>
+
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+				<div class="controlInput">
+					<div class="control-group">
+						<input type="text" class="inputTextBox" style="width: 63%;" id="candy_visit_description_1" placeholder="Description" class="input-medium" name="visits.visit_details[1].description">
+					</div>
+					
+					<div class="visitImage">	
+						<div class="visitDiv" >
+							<input type="text" class="inputTextBox"  style="width: 40%;" id="candy_no_of_visit_1" placeholder="Visit No" class="input-small" name="visits.visit_details[1].no_of_visit"> 
+						</div>
+						<div id="upload-file-container">
+		   					<input type="file" class="file" id="candy_visit_file_upload_1" name="visit_image[1]" multiple="multiple" />	
+		   			    </div>
+									
+					</div>		
+					
+					<div class="candyImage">
+						<div id="prev_candy_visit_file_upload_1" style="height:100px;overflow:hidden;"></div>
+					</div>
+					
+				</div>	
+				<br/>
+			</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			
+				<div class="controlInput">
+					<div class="control-group">
+						<input type="text" class="inputTextBox" style="width: 63%;" id="candy_visit_description_2" placeholder="Description" class="input-medium" name="visits.visit_details[2].description">
+					</div>
+					
+					<div class="visitImage">	
+						<div class="visitDiv" >
+							<input type="text" class="inputTextBox" style="width: 40%;" id="candy_no_of_visit_2" placeholder="Visit No" class="input-small" name="visits.visit_details[2].no_of_visit"> 
+						</div>
+						<div id="upload-file-container">
+		   					<input type="file" class="file" id="candy_visit_file_upload_2" name="visit_image[2]"/>	
+		   			    </div>
+									
+					</div>		
+					
+					<div class="candyImage">
+						<div id="prev_candy_visit_file_upload_2" style="height:100px;overflow:hidden;"></div>
+					</div>
+				</div>	
+				<br/>
+			</div>
+
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+				<div class="controlInput">
+					<div class="control-group">
+						<input type="text" class="inputTextBox" style="width: 63%;" id="candy_visit_description_3" placeholder="Description" class="input-medium" name="visits.visit_details[3].description">
+					</div>
+				<div class="visitImage">	
+					<div class="visitDiv" >
+						<input type="text" class="inputTextBox" style="width: 40%;" id="candy_no_of_visit_3" placeholder="Visit No"  class="input-small" name="visits.visit_details[3].no_of_visit"> 
+					</div>
+					<div id="upload-file-container">
+	   					<input type="file" class="file" id="candy_visit_file_upload_3" name="visit_image[3]"/>	
+	   			    </div>
+								
+				</div>		
+					<div class="candyImage">
+						<div id="prev_candy_visit_file_upload_3" style="height:100px;overflow:hidden;"></div>
+					</div>
+					
+				</div>	
+				<br/>
+			</div>		
+		</div><!-- End of Visit Section -->
+		@if(!isPointPresent) {
+		<div id="pointSection" style="display: none;" >		
+			
+		
+		<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			<div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_point_description_0" placeholder="Description" required="required" class="input-medium" name="points.point_details[0].description">
+				</div>
+				
+				<div class="visitImage">	
+					<div class="visitDiv" >
+						<input type="text" class="inputTextBox" style="width: 40%;" id="candy_no_of_point_0" placeholder="No of Point" required="required"  class="input-small" name="points.point_details[0].no_of_point"> 
+					</div>
+					<div id="upload-file-container">
+	   					<input type="file" class="file" id="candy_point_file_upload_0" name="points_image[0]"/>	
+	   			    </div>
+								
+				</div>		
+				
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_0" style="height:100px;overflow:hidden;"></div>
+				</div>
+			</div>	
+				<br/>
+		</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			<div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_point_description_1" placeholder="Description" class="input-medium" name="points.point_details[1].description">
+				</div>
+			<div class="visitImage">	
+				<div class="visitDiv" >
+					<input type="text" class="inputTextBox" style="width: 40%;" id="candy_no_of_point_1" placeholder="No of Point" class="input-small" name="points.point_details[1].no_of_point"> 
+				</div>
+				<div id="upload-file-container">
+   					<input type="file" class="file" id="candy_point_file_upload_1" name="points_image[1]"/>	
+   			    </div>
+							
+			</div>		
+			
+			<div class="candyImage">
+				<div id="prev_candy_point_file_upload_1" style="height:100px;overflow:hidden;"></div>
+			</div>
+				
+			</div>	
+				<br/>
+			</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			<div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_point_description_2" placeholder="Description" class="input-medium" name="points.point_details[2].description">
+				</div>
+			<div class="visitImage">	
+				<div class="visitDiv" >
+					<input type="text" class="inputTextBox" style="width: 40%;" id="candy_no_of_point_2" placeholder="No of Point" class="input-small" name="points.point_details[2].no_of_point"> 
+				</div>
+				<div id="upload-file-container">
+   					<input type="file" class="file" id="candy_point_file_upload_2" name="points_image[2]"/>	
+   			    </div>
+							
+			</div>		
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_2" style="height:100px;overflow:hidden;"></div>
+				</div>
+				
+			</div>	
+				<br/>
+			</div>
+			
+			<div class="divBorder" style="float : left;" onmouseover="enter(this)" onmouseout="leave(this)">
+			<div class="controlInput">
+				<div class="control-group">
+					<input type="text" class="inputTextBox" style="width: 63%;" id="candy_point_description_3" placeholder="Description" class="input-medium" name="points.point_details[3].description">
+				</div>
+			<div class="visitImage">	
+				<div class="visitDiv" >
+					<input type="text" class="inputTextBox" style="width: 40%;" id="candy_no_of_point_3" placeholder="No of Point" class="input-small" name="points.point_details[3].no_of_point"> 
+				</div>
+				<div id="upload-file-container">
+   					<input type="file" class="file" id="candy_point_file_upload_3" name="points_image[3]"/>	
+   			    </div>
+							
+			</div>		
+				<div class="candyImage">
+					<div id="prev_candy_point_file_upload_3" style="height:100px;overflow:hidden;"></div>
+				</div>
+				
+			</div>	
+				<br/>
+			</div>
+		</div>
+		}
+		</fieldset>
+	</form>
+	</div>
+	<div class="modal-footer">
+		<button id="addToCandy" class="btn btn-success" value="Add Candy">Submit</button>
+		<button id="candyClose" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	</div>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+	$('input[id=candy_select_visit]').change(function(){
+		$("#pointSection").css("display","none");
+		$("#visitSection").css("display","block");
+		$("#candy_min_amt_visit").show();
+		$("#candy_min_amt_point").hide();
+	});
+	
+	$('input[id=candy_select_point]').change(function(){
+		$("#visitSection").css("display","none");
+		$("#pointSection").css("display","block");
+		$("#candy_min_amt_point").show();
+		$("#candy_min_amt_visit").hide();
+	});
+	
+	// Popover  show
+	$('#registerHere input').on('mouseenter',function() {
+		$(this).popover('show')
+	});
+	//Popover hide
+	$('#registerHere input').on('mouseleave',function() {
+		$(this).popover('hide')
+	});
+
+	
+	$("#candy_min_amt_visit").show();
+	$("#candy_min_amt_point").hide();
+	
+	$('.file').preimage();
+	$('.candy_visit_file_upload_0').val(' ');
+	
+	$('#addToCandy').click(function(event) {
+		if($("#candyForm").valid()){
+			$("#candyForm").ajaxSubmit({
+				beforeSend: function() {
+			   		$("#loading").css('display','block');
+				},
+				success: function(resp) {
+					$("#loading").css('display','none');
+					$('#custom-modal-container').modal('hide');
+					
+		    	},
+		    	error: function(resp) {
+		    		
+		    	}
+			});
+		}
+		return false;
+	});
+	
+	$("#candyForm").validate({
+		rules : {
+			code : {
+				required:true,
+				remote : {
+					url:"/checkCandyCode",
+					type : "post",
+					data : {
+						q : function(){
+							return $("#candy_code").val(); 
+					        	}
+						    }
+			  			 }
+				   },		
+			valid_till:{
+				required:true,
+				checkExpired:true	
+			},
+			name:{
+				required:true
+			},
+			"visits.visit_details[0].description":{
+				required:true
+			},
+			
+			"points.point_details[0].description":{
+				required:true
+			},
+			"visits.minimum_amount_for_visit":{
+				required:true,
+				number:true
+			},	
+			"visits.visit_details[0].no_of_visit":{
+				number:true
+			},
+			"visits.visit_details[1].no_of_visit":{
+				number:true
+			},
+			"visits.visit_details[2].no_of_visit":{
+				number:true
+			},
+			"visits.visit_details[3].no_of_visit":{
+				number:true
+			},
+			
+			"points.minimum_amount_for_point":{
+				required:true,
+				number:true
+			},
+		
+			"points.point_details[0].no_of_point":{
+				number:true
+			},
+			"points.point_details[1].no_of_point":{
+				number:true
+			},
+			"points.point_details[2].no_of_point":{
+				number:true
+			},
+			"points.point_details[3].no_of_point":{
+				number:true
+			},
+		},
+		
+		messages : {
+			code : {
+				required:"Required",
+				remote : "Not Available"					
+			},
+			name:{
+				required:"Required"
+			},
+			valid_till:{
+				required:"Required",
+				checkExpired:"Not Valid"
+			},
+			"visits.minimum_amount_for_visit":{
+				required:"Required",
+				number:"Digits only"
+			},
+			"points.minimum_amount_for_point":{
+				required:"Required",
+				number:"Digits only"
+			},
+			"visits.visit_details[0].no_of_visit":{
+				required:"Required",
+				number:"Digits Only"
+			},
+			"visits.visit_details[0].description":{
+				required:"Required"
+			},
+			"visits.visit_details[1].no_of_visit":{
+				number:"Digits Only"
+			},
+			"visits.visit_details[2].no_of_visit":{
+				number:"Digits Only"
+			},
+			"visits.visit_details[3].no_of_visit":{
+				number:"Digits Only"
+			},
+			"points.point_details[0].no_of_point":{
+				required:"Required",
+				number:"Digits Only"
+			},
+			"points.point_details[1].no_of_point":{
+				number:"Digits Only"
+			},
+			"points.point_details[2].no_of_point":{
+				number:"Digits Only"
+			},
+			"points.point_details[3].no_of_point":{
+				number:"Digits Only"
+			},
+			"points.point_details[0].description":{
+				required:"Required"
+			},
+		},
+		
+		errorClass : "candyValidation",
+		errorElement : "em",
+		highlight: function (element) {
+		    $(element).closest('.control-group').removeClass('success').addClass('error');
+		},
+		success: function(element) {
+		     element
+		        .addClass('valid')
+		        .removeClass('candyValidation')
+		        .closest('.control-group').removeClass('error').addClass('success');
+		}
+	});
+	//Check Expired Date
+	 jQuery.validator.addMethod("checkExpired", function(values, element) {
+		var date = new Date();	
+		var from = values; 
+		var numbers = from.match(/\d+/g); 
+		var expired_date = new Date(numbers[2], numbers[1]-1, numbers[0]); //Date("yyyy/mm/dd")
+	 	if(date.getTime() < expired_date.getTime())
+		{
+			return true;
+		}
+		else
+		{	 
+			return false;
+		} 		
+	},"");
+	
+});
+
+function enter(elem){
+    elem.style.backgroundColor = '#00A5D5';
+}
+
+function leave(elem){
+    elem.style.backgroundColor = 'rgb(247, 247, 247)';
+}
+
+function validateNoOfVisits() {
+	var value0 = $('#candy_no_of_visit_0').val();
+	var value1 = $('#candy_no_of_visit_1').val();
+	var value2 = $('#candy_no_of_visit_2').val();
+	var value3 = $('#candy_no_of_visit_3').val();
+	if (value2 == '' || parseInt(value3) <= parseInt(value2)) {
+		$('#candy_no_of_visit_3').val('');
+		value3 = '';
+	}
+	if (value1 == '' || parseInt(value2) <= parseInt(value1)) {
+		$('#candy_no_of_visit_2').val('');
+		value2 = '';
+	}
+	if (value0 == '' || parseInt(value1) <= parseInt(value0)) {
+		$('#candy_no_of_visit_1').val('');
+		value1 = '';
+	}
+	
+	if (value1 == '' || parseInt(value2) <= parseInt(value1)) {
+		$('#candy_no_of_visit_2').val('');
+		value2 = '';
+		if (value2 == '' || parseInt(value3) <= parseInt(value2)) {
+			$('#candy_no_of_visit_3').val('');
+		}
+	}
+}
+
+$('[id^=candy_no_of_visit]').change(function(){
+	validateNoOfVisits();
+});
+
+function validateNoOfPoints() {
+	var value0 = $('#candy_no_of_point_0').val();
+	var value1 = $('#candy_no_of_point_1').val();
+	var value2 = $('#candy_no_of_point_2').val();
+	var value3 = $('#candy_no_of_point_3').val();
+	if (value2 == '' || parseInt(value3) <= parseInt(value2)) {
+		$('#candy_no_of_point_3').val('');
+		value3 = '';
+	}
+	if (value1 == '' || parseInt(value2) <= parseInt(value1)) {
+		$('#candy_no_of_point_2').val('');
+		value2 = '';
+	}
+	if (value0 == '' || parseInt(value1) <= parseInt(value0)) {
+		$('#candy_no_of_point_1').val('');
+		value1 = '';
+	}
+	
+	if (value1 == '' || parseInt(value2) <= parseInt(value1)) {
+		$('#candy_no_of_point_2').val('');
+		value2 = '';
+		if (value2 == '' || parseInt(value3) <= parseInt(value2)) {
+			$('#candy_no_of_point_3').val('');
+		}
+	}
+}
+
+$('[id^=candy_no_of_point]').change(function(){
+	validateNoOfPoints();
+});
+
+
+
+
+</script>

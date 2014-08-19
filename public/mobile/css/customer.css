@@ -1,0 +1,125 @@
+@CHARSET "ISO-8859-1";
+
+body{
+	padding-top: 70px;
+}
+
+.navBar{
+	text-shadow: 0 -1px 0 rgba(0,0,0,.15);
+	background-color: #563d7c;
+	border-color: #463265;
+	box-shadow: 0 1px 0 rgba(255,255,255,.1);
+}
+
+.whiteColor{
+	color: #fff !important;
+}
+
+.navbar-default .navbar-nav>li>a{
+	color: #fff !important;
+	text-shadow: none;
+}
+
+.navbar-default .navbar-nav>li>a:HOVER{
+	color: #f7f7f7;
+}	
+
+.navbar .nav li.dropdown.open > .dropdown-toggle{
+	background: #463265;
+}
+
+.searchBtn{
+	width: 11% !important;
+	vertical-align: middle;
+}
+
+.form-group{
+	width: 55%;
+	margin: 8px 15px 0 0;
+}
+
+.form-control{
+	border-radius: 5px !important;
+	border-color: transparent !important;
+	height: 26px;
+	width: 70%;
+}
+
+.form-control:FOCUS{
+	border-color: #463265 !important;
+}
+
+.dropdown-menu li a:HOVER{
+	background: #563d7c !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ui-btn-up-c{
+	background: #95abb3;
+	border: 1px solid #95abb3;
+}
+
+.myMerchants h2, .myMerchants p, .myMerchants a div{
+	text-shadow: none;
+	color: #2f3e46;
+}
+
+.my-merchant img{
+	margin: 0.8%;
+}
+
+.ui-title{
+	margin: 0 2% !important;
+	text-align: left !important;
+}
+
+.merchantUL{
+	margin: 0 !important;
+}
+
+.merchantUL li{
+	padding: 0 !important;
+}
+
+.my-candy-program:HOVER{
+	text-decoration: none !important;
+}
+
+.merchantInnerUL{
+	font-weight: normal;
+	margin-left: 15%;
+}
+
+.imageDiv{
+	float: left;
+	width: 15%;
+}
+
+.imgInnerDiv{
+ 	float: left;
+ 	width: 34%;
+	margin: 2% 5%;
+}
+
+.imgInnerDiv span{
+	font-size: 70%;
+}
+
+.respCandyImg{
+	float
+	width: 80%;
+}
+

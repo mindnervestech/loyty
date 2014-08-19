@@ -1,0 +1,15 @@
+<ul class="listview list-layout list-layout-category nav" style="width: 240px;overflow-y: inherit;">
+	<%	_.each(rc,function(item, key, list) { %>
+	<li>
+	<a class="category-nav-bar listview-item listview-item-category" style="width: 240px;background-color: <%=color[key % colorCount]%>" data-categoryId="<%=item.attributes.categoryId%>" >
+      <div class="pull-left" href="#">
+         <img class="listview-item-object" data-src="holder.js/60x60" alt="60x60" style="width: 60px; height: 60px;" src="images/<%=item.attributes.categoryValue%>.png">
+      </div>
+      <div class="listview-item-body">
+          <h4 class="listview-item-heading"><%=item.attributes.categoryName%></h4>
+      </div>
+    </a>
+    <li>
+   <%	}); %>
+</ul>
+

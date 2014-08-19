@@ -1,0 +1,146 @@
+@(_treeNode: com.mnt.core.ui.component.TreeNode)
+
+<style type="text/css">
+	.over{outline:solid 1px #afa}
+	.on{background:green;border:solid 1px green;}
+	.below{border-bottom:solid 2px #ddf;}
+	.below span{}
+	.above{border-top:solid 2px #ddf;}
+	.tree_hover{background:#fafaff}
+
+	ul.tree, ul.tree ul{list-style-type:none;padding:0;}
+	ul.tree li, ul.tree li ul li{
+		line-height:1.7em;cursor:default;
+		background:url(/assets/icons/line.png) no-repeat;;
+		padding-left:16px;
+	}
+	ul.tree li a.caption{
+		background:url(/assets/icons/page.png) no-repeat left center;
+		padding-left:20px;
+		min-width:200px;
+	}
+	ul.tree li.parent.expanded>a.caption{
+	background:url(/assets/icons/folder.png) no-repeat left center;
+	}
+	ul.tree li.parent.collapsed>a.caption{
+	background-image:url(/assets/icons/folder_page.png);
+	}
+	ul.tree li:last-child{
+		background:url(/assets/icons/end.png) no-repeat;
+	}
+
+
+
+	/* IE */
+	ul.tree li.last{
+		background:url(/assets/icons/end.png) no-repeat;
+	}
+	
+	span.callback{
+		color:#aaa;
+		font-size:.8em;
+		margin-right:5px;
+	}
+	ul.tree li span.cmds{
+		float:right;
+		display:block;
+		line-height:.8em;
+	}
+		
+	div.treeGrid,div.syntaxhighlighter{border:double 3px #aaa;padding:10px 20px;box-shadow: inset 2px 2px 2px #ccc;}
+	div.syntaxhighlighter div.toolbar{display:none;}
+	table.options tr td:first-child{font-family:courier;padding-right:1em;vertical-align:top;}
+</style>
+
+
+<div class="container">	
+ <div class="row-fluid">
+		<div id="treeGrid" class="span4" >
+		
+			<ul id="PageTree" class="tree sortable">
+				
+				@if(_treeNode!=null){
+				<li class="" data-id='@_treeNode.positionID'>
+					<a class="caption ui-droppable">@_treeNode.name</a>
+					<span class="cmds"  data-type="@_treeNode._type" data-position="@_treeNode.positionID" data-ref="@_treeNode.refID">
+						<span class="callback" >Add</span>
+						<span class="callback" >Edit</span>
+						<span class="callback" >Remove</span>
+					</span>
+					@if(_treeNode.node!=null && _treeNode.node.size !=0 ){
+						<ul style="display: none;" >
+							@displayNodeInLi(_treeNode)
+						</ul>
+					}
+				</li>
+										
+				}	
+			</ul>
+			
+			
+		@displayNodeInLi(_treeNode: com.mnt.core.ui.component.TreeNode) = {
+		  @if(_treeNode.node!=null){
+		  
+			  @for(node<-_treeNode.node.iterator){
+				  <li class="parent collapsed" data-id='@node.positionID'>
+				  	<a class="caption ui-droppable" >@node.name</a>
+						<span class="cmds"  data-type="@node._type" data-position="@node.positionID" data-ref="@node.refID">
+							<span class="callback">Add</span>
+							<span class="callback">Edit</span>
+							<span class="callback">Remove</span>
+						</span>
+				  	@if(node.node!=null && node.node.size !=0 ){
+				  		<ul style="display: none;" >
+				  			@displayNodeInLi(node)
+				  		</ul>	 
+				  	}
+				  </li>
+				  	 
+			  }
+		   }
+		}
+		
+		@displayNodeInUl(_treeNode: com.mnt.core.ui.component.TreeNode) = {
+		  <ul style="display: none;" >
+		  	displayNodeInLi(node)
+		  </ul>	 
+		}	
+		<div id="MoveResults"></div>
+ </div>
+
+		<div id="treeContent" class="span8" >
+		
+		</div>
+ </div>
+</div>
+<script>
+$(document).ready(function(){
+	var tree = $("ul.tree").liveflex_treeview({
+		handle:'a.caption'
+		,callbackSelector: 'span.callback'
+		,callback: function(e){
+			$.ajax({
+				url:'/doCatalogItemOperation',
+				data: {
+					type: $(e.target).parent().data("type"),
+					ref:$(e.target).parent().data("refID"),
+					position:$(e.target).parent().data("position"),
+					oprt:$(e.target).html()
+					},
+				success: function(data) {
+					$("#treeContent").html(data);
+		        }
+			});
+			;
+			
+		},itemMoved: function(csv){
+			$('#MoveResults').html(csv);
+		},dirClick: function(node){
+		},nodeClick: function(node){
+		}
+	});
+	SyntaxHighlighter.all({gutter: false});
+})
+</script>
+
+
